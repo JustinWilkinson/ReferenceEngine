@@ -61,12 +61,15 @@ namespace Bibtex.Abstractions.Entries
 
         public string Year { get; set; }
 
+        public static Dictionary<string, Func<BibtexEntry, string>> _propertyGetters { get; } = new Dictionary<string, Func<BibtexEntry, string>>(StringComparer.OrdinalIgnoreCase);
+
         private static readonly Dictionary<string, Action<BibtexEntry, string>> _propertySetters = new Dictionary<string, Action<BibtexEntry, string>>(StringComparer.OrdinalIgnoreCase);
 
         static BibtexEntry()
         {
-            foreach (var property in typeof(BibtexEntry).GetProperties().Where(p => p.CanWrite))
+            foreach (var property in typeof(BibtexEntry).GetProperties().Where(p => p.CanWrite && p.PropertyType == typeof(string)))
             {
+                _propertyGetters.Add(property.Name, (Func<BibtexEntry, string>)Delegate.CreateDelegate(typeof(Func<BibtexEntry, string>), property.GetMethod));
                 _propertySetters.Add(property.Name, (Action<BibtexEntry, string>)Delegate.CreateDelegate(typeof(Action<BibtexEntry, string>), property.SetMethod));
             }
         }
@@ -86,6 +89,26 @@ namespace Bibtex.Abstractions.Entries
                     }
                 }
             }
+        }
+
+        public string GetDetailFromTemplate(BibitemTemplate template)
+        {
+            if (template is null)
+            {
+                throw new ArgumentNullException(nameof(template));
+            }
+
+            var templateToPopulate = template.Duplicate();
+
+            foreach (var includedProperty in templateToPopulate.IncludedProperties)
+            {
+                if (_propertyGetters.TryGetValue(includedProperty.Value, out var propertyGetter))
+                {
+                    includedProperty.Value = propertyGetter(this); //includedProperty.Value.Equals("Author", StringComparison.OrdinalIgnoreCase) ? templateToPopulate.AuthorFormat.FormatAuthorField(propertyGetter(this)) : propertyGetter(this);
+                }
+            }
+
+            return string.Join(templateToPopulate.PropertyDelimiter, templateToPopulate.IncludedProperties.Where(x => !string.IsNullOrWhiteSpace(x.Value)).Select(x => x.ToString()));
         }
     }
 }

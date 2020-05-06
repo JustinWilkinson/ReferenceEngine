@@ -8,9 +8,28 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Bibtex
+namespace Bibtex.Parser
 {
-    public class BibtexParser
+    public interface IBibtexParser
+    {
+        BibtexDatabase ParseFile(string path);
+
+        BibtexDatabase ParseString(string databaseName, string bibtex);
+
+        BibtexDatabase ParseStream(string databaseName, Stream stream);
+
+        EntryType? GetEntryType(StreamReader sr);
+
+        BibtexEntry GetEntryContent(EntryType entryType, StreamReader sr);
+
+        Comment GetComment(StreamReader sr);
+
+        Preamble GetPreamble(StreamReader sr);
+
+        StringEntry GetStringEntry(StreamReader sr);
+    }
+
+    public class BibtexParser : IBibtexParser
     {
         private readonly ILogger<BibtexParser> _logger;
 
@@ -132,7 +151,7 @@ namespace Bibtex
                     var split = field.TrimIgnoredCharacters().Split('=', 2, StringSplitOptions.RemoveEmptyEntries);
                     if (split.Length == 2)
                     {
-                        keyValuePairs.Add(split[0].TrimIgnoredCharacters(), split[1].TrimIgnoredCharacters());
+                        keyValuePairs.Add(split[0].TrimIgnoredCharacters().ReplaceBraces(), split[1].TrimIgnoredCharacters().ReplaceBraces());
                     }
                 }
 
@@ -150,6 +169,7 @@ namespace Bibtex
 
         public StringEntry GetStringEntry(StreamReader sr) => new StringEntry(GetTextBetweenBraces(sr));
 
+        #region Private
         private string GetTextBetweenBraces(StreamReader sr)
         {
             var content = new StringBuilder();
@@ -201,7 +221,7 @@ namespace Bibtex
             return content.ToString();
         }
 
-        public List<string> SplitOnUnquotedCharacter(string input, char splitChar  = ',')
+        private List<string> SplitOnUnquotedCharacter(string input, char splitChar  = ',')
         {
             List<string> lst = new List<string>();
 
@@ -241,5 +261,6 @@ namespace Bibtex
 
             return lst;
         }
+        #endregion
     }
 }
