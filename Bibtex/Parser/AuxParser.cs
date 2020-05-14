@@ -31,26 +31,26 @@ namespace Bibtex.Parser
 
         public AuxEntry ParseEntry(string line)
         {
-            if (line.StartsWith("\\relax"))
+            if (line.StartsWith(@"\relax"))
             {
                 return new AuxEntry(AuxEntryType.Relax);
             }
-            else if (line.StartsWith("\\bibstyle"))
+            else if (line.StartsWith(@"\bibstyle"))
             {
-                return new AuxEntry(AuxEntryType.Bibstyle) { Key = line.Replace("\\bibstyle", "").TrimIgnoredCharacters() };
+                return new AuxEntry(AuxEntryType.Bibstyle) { Key = line.Replace(@"\bibstyle", "").TrimIgnoredCharacters() };
             }
-            else if (line.StartsWith("\\citation"))
+            else if (line.StartsWith(@"\citation"))
             {
-                return new AuxEntry(AuxEntryType.Bibstyle) { Key = line.Replace("\\citation", "").TrimIgnoredCharacters() };
+                return new AuxEntry(AuxEntryType.Citation) { Key = line.Replace(@"\citation", "").TrimIgnoredCharacters() };
             }
-            else if (line.StartsWith("\\bibdata"))
+            else if (line.StartsWith(@"\bibdata"))
             {
-                return new AuxEntry(AuxEntryType.Bibdata) { Key = line.Replace("\\bibdata", "").TrimIgnoredCharacters() };
+                return new AuxEntry(AuxEntryType.Bibdata) { Key = line.Replace(@"\bibdata", "").TrimIgnoredCharacters() };
             }
-            else if (line.StartsWith("\\bibcite"))
+            else if (line.StartsWith(@"\bibcite"))
             {
                 var entry = new AuxEntry(AuxEntryType.Bibcite);
-                var info = line.Replace("\\bibcite", "").TrimIgnoredCharacters().Split("}{", StringSplitOptions.RemoveEmptyEntries);
+                var info = line.Replace(@"\bibcite", "").TrimIgnoredCharacters().Split("}{", StringSplitOptions.RemoveEmptyEntries);
                 entry.Key = info.Length > 0 ? info[0] : null;
                 entry.Label = info.Length > 1 ? info[1] : null;
                 return entry;
