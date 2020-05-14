@@ -5,7 +5,7 @@ namespace Bibtex.Abstractions
 {
     public class Bibitem
     {
-        public Bibitem (AuxEntry auxEntry, BibtexEntry bibtexEntry, BibitemTemplate bibitemTemplate)
+        public Bibitem(AuxEntry auxEntry, BibtexEntry bibtexEntry, BibitemTemplate bibitemTemplate)
         {
             if (auxEntry is null)
             {

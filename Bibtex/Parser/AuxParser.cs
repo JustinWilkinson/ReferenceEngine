@@ -1,6 +1,7 @@
 ﻿using Bibtex.Abstractions;
 using Bibtex.Enumerations;
 using Bibtex.Extensions;
+using Bibtex.Manager;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -22,10 +23,12 @@ namespace Bibtex.Parser
 
     public class AuxParser : IAuxParser
     {
+        private readonly IFileManager _fileManager;
         private readonly ILogger<AuxParser> _logger;
 
-        public AuxParser(ILogger<AuxParser> logger)
+        public AuxParser(IFileManager fileManager, ILogger<AuxParser> logger)
         {
+            _fileManager = fileManager;
             _logger = logger;
         }
 
@@ -63,17 +66,7 @@ namespace Bibtex.Parser
 
         public IEnumerable<AuxEntry> ParseFile(string path)
         {
-            var directory = Path.GetDirectoryName(path);
-            var fileName = Path.GetFileName(path);
-
-            if (!Directory.Exists(directory))
-            {
-                throw new DirectoryNotFoundException($"Could not find directory: '{directory}'");
-            }
-            else if (!File.Exists(path))
-            {
-                throw new FileNotFoundException($"Could not find file: '{fileName}' in '{directory}'");
-            }
+            _fileManager.ThrowIfFileDoesNotExist(path);
 
             using var fs = File.Open(path, FileMode.Open, FileAccess.Read);
             foreach (var entry in ParseStream(fs))

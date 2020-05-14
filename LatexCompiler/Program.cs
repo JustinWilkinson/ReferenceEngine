@@ -1,4 +1,5 @@
 ﻿using Bibtex;
+using Bibtex.Manager;
 using Bibtex.Parser;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -51,6 +52,7 @@ namespace LatexCompiler
                     oLogBuilder.ClearProviders();
                     oLogBuilder.AddNLog();
                 })
+                .AddSingleton<IFileManager, FileManager>()
                 .AddSingleton<IAuxParser, AuxParser>()
                 .AddSingleton<IBibtexParser, BibtexParser>()
                 .AddSingleton<IBibliographyBuilder, BibliographyBuilder>()

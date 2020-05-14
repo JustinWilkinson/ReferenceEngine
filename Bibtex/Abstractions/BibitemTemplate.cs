@@ -16,7 +16,7 @@ namespace Bibtex.Abstractions
         public static BibitemTemplate DefaultBook { get; } = new BibitemTemplate
         {
             PropertyDelimiter = ",\r\n",
-            AuthorFormat =  AuthorFormat.Default,
+            AuthorFormat = AuthorFormat.Default,
             IncludedProperties = new List<LatexString>
             {
                 new LatexString("Author"),
@@ -24,7 +24,7 @@ namespace Bibtex.Abstractions
                 new LatexString("Publisher"),
                 new LatexString("Address"),
                 new LatexString("Year")
-            } 
+            }
         };
 
         public static BibitemTemplate GetDefaultTemplate(EntryType type)

@@ -1,4 +1,5 @@
 ﻿using Bibtex.Enumerations;
+using Bibtex.Manager;
 using Bibtex.Parser;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -9,7 +10,7 @@ namespace Test.Bibtex.Parser
     [TestFixture]
     public class AuxParserTest
     {
-        private readonly AuxParser _parser = new AuxParser(new Mock<ILogger<AuxParser>>().Object);
+        private readonly AuxParser _parser = new AuxParser(new Mock<IFileManager>().Object, new Mock<ILogger<AuxParser>>().Object);
 
         [TestCase(@"\relax", ExpectedResult = AuxEntryType.Relax)]
         [TestCase(@"\bibstyle", ExpectedResult = AuxEntryType.Bibstyle)]
