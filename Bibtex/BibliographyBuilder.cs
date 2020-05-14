@@ -51,11 +51,11 @@ namespace Bibtex
 
             if (TexFilePath == null)
             {
-                throw new ArgumentNullException("TexFilePath to build bibliography for cannot be null!");
+                throw new ArgumentNullException(nameof(TexFilePath));
             }
             else if (BibFilePath == null)
             {
-                throw new ArgumentNullException("BibFilePath cannot be null!");
+                throw new ArgumentNullException(nameof(BibFilePath));
             }
 
             _fileManager.ThrowIfFileDoesNotExist(TexFilePath);

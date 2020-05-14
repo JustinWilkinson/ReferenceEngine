@@ -17,7 +17,7 @@ namespace Bibtex.Manager
         /// <param name="path">Original file path</param>
         /// <param name="newExtension">Extension to replace with</param>
         /// <returns>Original path with new extensions</returns>
-        string ReplaceExtension(string path, string newExtension)
+        string ReplaceExtension(string path, string newExtension);
     }
 
     public class FileManager : IFileManager
