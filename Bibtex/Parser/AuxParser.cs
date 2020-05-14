@@ -1,6 +1,7 @@
 ﻿using Bibtex.Abstractions;
 using Bibtex.Enumerations;
 using Bibtex.Extensions;
+using Bibtex.Manager;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -22,35 +23,37 @@ namespace Bibtex.Parser
 
     public class AuxParser : IAuxParser
     {
+        private readonly IFileManager _fileManager;
         private readonly ILogger<AuxParser> _logger;
 
-        public AuxParser(ILogger<AuxParser> logger)
+        public AuxParser(IFileManager fileManager, ILogger<AuxParser> logger)
         {
+            _fileManager = fileManager;
             _logger = logger;
         }
 
         public AuxEntry ParseEntry(string line)
         {
-            if (line.StartsWith("\\relax"))
+            if (line.StartsWith(@"\relax"))
             {
                 return new AuxEntry(AuxEntryType.Relax);
             }
-            else if (line.StartsWith("\\bibstyle"))
+            else if (line.StartsWith(@"\bibstyle"))
             {
-                return new AuxEntry(AuxEntryType.Bibstyle) { Key = line.Replace("\\bibstyle", "").TrimIgnoredCharacters() };
+                return new AuxEntry(AuxEntryType.Bibstyle) { Key = line.Replace(@"\bibstyle", "").TrimIgnoredCharacters() };
             }
-            else if (line.StartsWith("\\citation"))
+            else if (line.StartsWith(@"\citation"))
             {
-                return new AuxEntry(AuxEntryType.Bibstyle) { Key = line.Replace("\\citation", "").TrimIgnoredCharacters() };
+                return new AuxEntry(AuxEntryType.Citation) { Key = line.Replace(@"\citation", "").TrimIgnoredCharacters() };
             }
-            else if (line.StartsWith("\\bibdata"))
+            else if (line.StartsWith(@"\bibdata"))
             {
-                return new AuxEntry(AuxEntryType.Bibdata) { Key = line.Replace("\\bibdata", "").TrimIgnoredCharacters() };
+                return new AuxEntry(AuxEntryType.Bibdata) { Key = line.Replace(@"\bibdata", "").TrimIgnoredCharacters() };
             }
-            else if (line.StartsWith("\\bibcite"))
+            else if (line.StartsWith(@"\bibcite"))
             {
                 var entry = new AuxEntry(AuxEntryType.Bibcite);
-                var info = line.Replace("\\bibcite", "").TrimIgnoredCharacters().Split("}{", StringSplitOptions.RemoveEmptyEntries);
+                var info = line.Replace(@"\bibcite", "").TrimIgnoredCharacters().Split("}{", StringSplitOptions.RemoveEmptyEntries);
                 entry.Key = info.Length > 0 ? info[0] : null;
                 entry.Label = info.Length > 1 ? info[1] : null;
                 return entry;
@@ -63,17 +66,7 @@ namespace Bibtex.Parser
 
         public IEnumerable<AuxEntry> ParseFile(string path)
         {
-            var directory = Path.GetDirectoryName(path);
-            var fileName = Path.GetFileName(path);
-
-            if (!Directory.Exists(directory))
-            {
-                throw new DirectoryNotFoundException($"Could not find directory: '{directory}'");
-            }
-            else if (!File.Exists(path))
-            {
-                throw new FileNotFoundException($"Could not find file: '{fileName}' in '{directory}'");
-            }
+            _fileManager.ThrowIfFileDoesNotExist(path);
 
             using var fs = File.Open(path, FileMode.Open, FileAccess.Read);
             foreach (var entry in ParseStream(fs))

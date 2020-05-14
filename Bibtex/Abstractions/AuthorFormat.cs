@@ -21,14 +21,14 @@ namespace Bibtex.Abstractions
 
         public LatexString TruncatedAuthors { get; set; }
 
-        public static AuthorFormat Default { get; } = new AuthorFormat 
-        { 
+        public static AuthorFormat Default { get; } = new AuthorFormat
+        {
             RespectBibtexAbbreviation = true,
             LastNameFirst = false,
             Delimiter = ',',
             FinalDelimiter = "and",
             NumberOfNamedAuthors = 3,
-            TruncatedAuthors = new LatexString("et al") { Italic = true } 
+            TruncatedAuthors = new LatexString("et al") { Italic = true }
         };
 
         public string FormatAuthorField(string authorField)

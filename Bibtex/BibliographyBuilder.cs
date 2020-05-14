@@ -1,5 +1,6 @@
 ﻿using Bibtex.Abstractions;
 using Bibtex.Enumerations;
+using Bibtex.Manager;
 using Bibtex.Parser;
 using Microsoft.Extensions.Logging;
 using System;
@@ -22,14 +23,16 @@ namespace Bibtex
 
     public class BibliographyBuilder : IBibliographyBuilder
     {
-        private readonly ILogger<BibliographyBuilder> _logger;
+        private readonly IFileManager _fileManager;
         private readonly IAuxParser _auxParser;
         private readonly IBibtexParser _bibParser;
+        private readonly ILogger<BibliographyBuilder> _logger;
 
         private readonly List<Bibitem> _bibitems = new List<Bibitem>();
 
-        public BibliographyBuilder(IAuxParser auxParser, IBibtexParser bibParser, ILogger<BibliographyBuilder> logger)
+        public BibliographyBuilder(IFileManager fileManager, IAuxParser auxParser, IBibtexParser bibParser, ILogger<BibliographyBuilder> logger)
         {
+            _fileManager = fileManager;
             _auxParser = auxParser;
             _bibParser = bibParser;
             _logger = logger;
@@ -48,35 +51,18 @@ namespace Bibtex
 
             if (TexFilePath == null)
             {
-                throw new ArgumentNullException("TexFilePath to build bibliography for cannot be null!");
+                throw new ArgumentNullException(nameof(TexFilePath));
             }
             else if (BibFilePath == null)
             {
-                throw new ArgumentNullException("BibFilePath cannot be null!");
+                throw new ArgumentNullException(nameof(BibFilePath));
             }
 
-            var texDirectory = Path.GetDirectoryName(TexFilePath);
-            var texFileNameWithoutExtension = Path.GetFileNameWithoutExtension(TexFilePath);
-            var bibDirectory = Path.GetDirectoryName(BibFilePath);
+            _fileManager.ThrowIfFileDoesNotExist(TexFilePath);
+            _fileManager.ThrowIfFileDoesNotExist(BibFilePath);
+            var auxPath = _fileManager.ReplaceExtension(TexFilePath, "aux");
 
-            if (!Directory.Exists(texDirectory))
-            {
-                throw new DirectoryNotFoundException($"Could not find directory: '{texDirectory}'");
-            }
-            else if (!Directory.Exists(bibDirectory))
-            {
-                throw new DirectoryNotFoundException($"Could not find directory: '{bibDirectory}'");
-            }
-            else if (!File.Exists(TexFilePath))
-            {
-                throw new FileNotFoundException($"Could not find file: '{Path.GetFileName(TexFilePath)}' in '{texDirectory}'");
-            }
-            else if (!File.Exists(BibFilePath))
-            {
-                throw new FileNotFoundException($"Could not find file: '{Path.GetFileName(BibFilePath)}' in '{bibDirectory}'");
-            }
-
-            var auxEntries = _auxParser.ParseFile(Path.Combine(texDirectory, $"{texFileNameWithoutExtension}.aux"));
+            var auxEntries = _auxParser.ParseFile(auxPath);
             var bibtexDatabase = _bibParser.ParseFile(BibFilePath);
 
             foreach (var auxEntry in auxEntries.Where(x => x.Type == AuxEntryType.Bibcite))
@@ -96,10 +82,10 @@ namespace Bibtex
         {
             _logger.LogTrace("Starting write of .bbl file.");
 
-            string targetPath = Path.Combine(Path.GetDirectoryName(TexFilePath), $"{Path.GetFileNameWithoutExtension(TexFilePath)}.bbl");
+            string targetPath = _fileManager.ReplaceExtension(TexFilePath, "bbl");
 
             File.Delete(targetPath);
-            
+
             using var writer = new StreamWriter(targetPath);
             writer.WriteLine("\\begin{thebibliography}{1}\r\n");
             foreach (var bibitem in _bibitems)

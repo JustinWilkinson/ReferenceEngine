@@ -2,6 +2,7 @@
 using Bibtex.Abstractions.Entries;
 using Bibtex.Enumerations;
 using Bibtex.Extensions;
+using Bibtex.Manager;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -31,29 +32,20 @@ namespace Bibtex.Parser
 
     public class BibtexParser : IBibtexParser
     {
+        private readonly IFileManager _fileManager;
         private readonly ILogger<BibtexParser> _logger;
 
-        public BibtexParser(ILogger<BibtexParser> logger)
+        public BibtexParser(IFileManager fileManager, ILogger<BibtexParser> logger)
         {
+            _fileManager = fileManager;
             _logger = logger;
         }
 
         public BibtexDatabase ParseFile(string path)
         {
-            var directory = Path.GetDirectoryName(path);
-            var fileName = Path.GetFileName(path);
-
-            if (!Directory.Exists(directory))
-            {
-                throw new DirectoryNotFoundException($"Could not find directory: '{directory}'");
-            }
-            else if (!File.Exists(path))
-            {
-                throw new FileNotFoundException($"Could not find file: '{fileName}' in '{directory}'");
-            }
-
+            _fileManager.ThrowIfFileDoesNotExist(path);
             using var fs = File.Open(path, FileMode.Open, FileAccess.Read);
-            return ParseStream(fileName, fs);
+            return ParseStream(Path.GetFileName(path), fs);
         }
 
         public BibtexDatabase ParseString(string databaseName, string bibtex)
@@ -111,7 +103,7 @@ namespace Bibtex.Parser
             while ((charCode = sr.Peek()) >= 0)
             {
                 var character = Convert.ToChar(charCode);
-                                
+
                 if (foundStart)
                 {
                     if (character == '{' || character == '(' || character == ' ')
@@ -140,12 +132,12 @@ namespace Bibtex.Parser
         {
             var keyValuePairs = new Dictionary<string, string>();
             List<string> fields = SplitOnUnquotedCharacter(GetTextBetweenBraces(sr));
-            
+
             if (fields.Count > 0)
             {
                 var citationKey = fields[0];
                 fields.RemoveAt(0);
-                
+
                 foreach (var field in fields)
                 {
                     var split = field.TrimIgnoredCharacters().Split('=', 2, StringSplitOptions.RemoveEmptyEntries);
@@ -221,7 +213,7 @@ namespace Bibtex.Parser
             return content.ToString();
         }
 
-        private List<string> SplitOnUnquotedCharacter(string input, char splitChar  = ',')
+        private List<string> SplitOnUnquotedCharacter(string input, char splitChar = ',')
         {
             List<string> lst = new List<string>();
 

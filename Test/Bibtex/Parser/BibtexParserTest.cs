@@ -1,17 +1,18 @@
-using Bibtex;
 using Bibtex.Enumerations;
+using Bibtex.Manager;
+using Bibtex.Parser;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 using System.IO;
 using System.Text;
 
-namespace Test.Bibtex
+namespace Test.Bibtex.Parser
 {
     [TestFixture]
     public class BibtexParserTest
     {
-        private readonly BibtexParser _parser = new BibtexParser(new Mock<ILogger<BibtexParser>>().Object);
+        private readonly BibtexParser _parser = new BibtexParser(new Mock<IFileManager>().Object, new Mock<ILogger<BibtexParser>>().Object);
 
         private const string BookEntry = @"@Book{steward03,
               author =	 { Martha Steward },
@@ -92,7 +93,7 @@ namespace Test.Bibtex
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(databaseName, result.Name);
-            
+
             // Comment tags.
             Assert.AreEqual(1, result.Comments.Count);
             Assert.AreEqual("this will be ignored during compilation", result.Comments[0].Text);
@@ -108,7 +109,7 @@ namespace Test.Bibtex
 
             // Entries
             Assert.AreEqual(3, result.Entries.Count);
-            
+
             var firstEntry = result.Entries[0];
             Assert.IsNotNull(firstEntry);
             Assert.AreEqual(EntryType.Article, firstEntry.EntryType);

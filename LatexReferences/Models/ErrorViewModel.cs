@@ -1,5 +1,3 @@
-using System;
-
 namespace LatexReferences.Models
 {
     public class ErrorViewModel
