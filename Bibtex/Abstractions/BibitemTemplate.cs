@@ -9,14 +9,14 @@ namespace Bibtex.Abstractions
     {
         public string PropertyDelimiter { get; set; }
 
-        public AuthorFormat AuthorFormat { get; set; }
+        public OutputAuthorFormat AuthorFormat { get; set; }
 
         public List<LatexString> IncludedProperties { get; set; }
 
         public static BibitemTemplate DefaultBook { get; } = new BibitemTemplate
         {
             PropertyDelimiter = ",\r\n",
-            AuthorFormat = AuthorFormat.Default,
+            AuthorFormat = OutputAuthorFormat.Default,
             IncludedProperties = new List<LatexString>
             {
                 new LatexString("Author"),

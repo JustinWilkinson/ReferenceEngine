@@ -68,21 +68,20 @@ namespace Bibtex.Parser
 
                     if (entryType.HasValue)
                     {
-                        if (entryType == EntryType.Comment)
+                        switch (entryType)
                         {
-                            database.Comments.Add(GetComment(sr));
-                        }
-                        else if (entryType == EntryType.Preamble)
-                        {
-                            database.Preambles.Add(GetPreamble(sr));
-                        }
-                        else if (entryType == EntryType.String)
-                        {
-                            database.Strings.Add(GetStringEntry(sr));
-                        }
-                        else
-                        {
-                            database.Entries.Add(GetEntryContent(entryType.Value, sr));
+                            case EntryType.Comment:
+                                database.Comments.Add(GetComment(sr));
+                                break;
+                            case EntryType.Preamble:
+                                database.Preambles.Add(GetPreamble(sr));
+                                break;
+                            case EntryType.String:
+                                database.Strings.Add(GetStringEntry(sr));
+                                break;
+                            default:
+                                database.Entries.Add(GetEntryContent(entryType.Value, sr));
+                                break;
                         }
                     }
                 }
