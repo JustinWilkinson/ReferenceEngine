@@ -63,7 +63,7 @@ namespace Test.Bibtex.Parser
         }
 
         [Test]
-        public void GetEntryContent_StreamWithBibtexContent_GetsContentType()
+        public void GetEntryContent_StreamWithBibtexContent_GetsCorrectContent()
         {
             // Arrange
             using var stream = new MemoryStream(Encoding.ASCII.GetBytes(BookEntry.Replace("@Book", "")));
@@ -82,7 +82,7 @@ namespace Test.Bibtex.Parser
         }
 
         [Test]
-        public void ParseString_StreamWithBibtexContent_GetsContentType()
+        public void ParseString_StreamWithBibtexContent_GetsCorrectContent()
         {
             // Arrange 
             var databaseName = "DatabaseName";
