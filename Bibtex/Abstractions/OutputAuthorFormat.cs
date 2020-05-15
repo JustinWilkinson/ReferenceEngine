@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Bibtex.Abstractions
 {
@@ -12,6 +13,10 @@ namespace Bibtex.Abstractions
         public int? AbbreviateFirstNameCharacters { get; set; }
 
         public bool LastNameFirst { get; set; }
+
+        public bool IncludeMiddleNames { get; set; }
+
+        public bool IncludeSuffix { get; set; }
 
         public char Delimiter { get; set; }
 
@@ -24,7 +29,6 @@ namespace Bibtex.Abstractions
         public static OutputAuthorFormat Default { get; } = new OutputAuthorFormat
         {
             RespectBibtexAbbreviation = true,
-            LastNameFirst = false,
             Delimiter = ',',
             FinalDelimiter = "and",
             NumberOfNamedAuthors = 3,
@@ -61,42 +65,25 @@ namespace Bibtex.Abstractions
 
         private IEnumerable<string> GetFormattedAuthors(string authorField)
         {
-            var authors = authorField.Split("and", StringSplitOptions.RemoveEmptyEntries).Select(x => x.TrimIgnoredCharacters());
+            var authors = authorField.Split("and", StringSplitOptions.RemoveEmptyEntries).Select(x => x.TrimIgnoredCharacters()).Select(x => BibtexAuthor.FromString(x));
 
             foreach (var author in authors)
             {
-                if (LastNameFirst || AbbreviateFirstNameCharacters.HasValue)
-                {
-                    var names = author.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-                    if (names.Length == 0)
-                    {
-                        continue;
-                    }
-                    else if (names.Length == 1)
-                    {
-                        yield return names[0];
-                    }
-                    else
-                    {
-                        if (AbbreviateFirstNameCharacters.HasValue)
-                        {
-                            names[0] = names[0].Take(AbbreviateFirstNameCharacters.Value).ToString();
-                        }
+                var authorBuilder = new StringBuilder();
+                var firstName = AbbreviateFirstNameCharacters.HasValue ? $"{author.FirstName.Take(AbbreviateFirstNameCharacters.Value)}." : author.FirstName;
+                var middleNames = IncludeMiddleNames ? $" {string.Join(" ", author.MiddleNames)}" : "";
+                var suffix = IncludeSuffix ? $" {author.Suffix}" : "";
 
-                        if (LastNameFirst)
-                        {
-                            yield return $"{names[^1]} {string.Join(" ", names[..^1])}";
-                        }
-                        else
-                        {
-                            yield return $"{string.Join(" ", names)}";
-                        }
-                    }
+                if (LastNameFirst)
+                {
+                    authorBuilder.Append($"{author.LastName},{firstName}{middleNames}{suffix}");
                 }
                 else
                 {
-                    yield return author;
+                    authorBuilder.Append($"{firstName}{middleNames}{author.LastName}{suffix}");
                 }
+
+                yield return authorBuilder.ToString();
             }
         }
     }
