@@ -98,9 +98,23 @@ namespace Test.Bibtex.Abstractions
         }
 
         [Test]
-        public void GetFormattedAuthors_NullAuthorField_ReturnsNull()
+        public void FormatAuthorField_NullAuthorField_ReturnsNull()
         {
             Assert.AreEqual(null, new OutputAuthorFormat().FormatAuthorField(null));
+        }
+
+        [Test]
+        public void FormatAuthorField_AuthorField_ReturnsFormattedString()
+        {
+            // Arrange
+            var input = "A. N. Author and Author, Anne Other and A. Final Author";
+            var format = new OutputAuthorFormat { IncludeMiddleNames = true, Delimiter = ',', FinalDelimiter = "and", NumberOfNamedAuthors = 3 };
+
+            // Act
+            var result = format.FormatAuthorField(input);
+
+            // Assert
+            Assert.AreEqual("A. N. Author, Anne Other Author and A. Final Author", result);
         }
     }
 }
