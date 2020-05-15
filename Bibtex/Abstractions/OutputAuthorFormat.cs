@@ -39,7 +39,7 @@ namespace Bibtex.Abstractions
         {
             if (authorField != null)
             {
-                var authors = GetFormattedAuthors(authorField).Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
+                var authors = GetFormattedIndividualAuthors(authorField).Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
                 if (authors.Length == 0)
                 {
                     return null;
@@ -63,15 +63,20 @@ namespace Bibtex.Abstractions
             }
         }
 
-        private IEnumerable<string> GetFormattedAuthors(string authorField)
+        public IEnumerable<string> GetFormattedIndividualAuthors(string authorField)
         {
+            if (authorField is null)
+            {
+                throw new ArgumentNullException(nameof(authorField));
+            }
+
             var authors = authorField.Split("and", StringSplitOptions.RemoveEmptyEntries).Select(x => x.TrimIgnoredCharacters()).Select(x => BibtexAuthor.FromString(x));
 
             foreach (var author in authors)
             {
                 var authorBuilder = new StringBuilder();
-                var firstName = AbbreviateFirstNameCharacters.HasValue ? $"{author.FirstName.Take(AbbreviateFirstNameCharacters.Value)}." : author.FirstName;
-                var middleNames = IncludeMiddleNames ? $" {string.Join(" ", author.MiddleNames)}" : "";
+                var firstName = AbbreviateFirstNameCharacters.HasValue && AbbreviateFirstNameCharacters.Value > 0 ? $"{string.Concat(author.FirstName.Take(AbbreviateFirstNameCharacters.Value))}." : author.FirstName;
+                var middleNames = IncludeMiddleNames ? $" {string.Join(" ", author.MiddleNames)} " : " ";
                 var suffix = IncludeSuffix ? $" {author.Suffix}" : "";
 
                 if (LastNameFirst)
