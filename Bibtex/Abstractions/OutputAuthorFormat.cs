@@ -81,7 +81,7 @@ namespace Bibtex.Abstractions
 
                 if (LastNameFirst)
                 {
-                    authorBuilder.Append($"{author.LastName},{firstName}{middleNames}{suffix}");
+                    authorBuilder.Append($"{author.LastName}, {firstName}{middleNames}{suffix}".TrimEnd());
                 }
                 else
                 {

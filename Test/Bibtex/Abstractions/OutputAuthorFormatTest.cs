@@ -47,6 +47,56 @@ namespace Test.Bibtex.Abstractions
             return result[0];
         }
 
+        [TestCase("Anthony Author", true, ExpectedResult = "Author, Anthony")]
+        [TestCase("Author, Anthony", true, ExpectedResult = "Author, Anthony")]
+        [TestCase("Anthony Author", false, ExpectedResult = "Anthony Author")]
+        [TestCase("Author, Anthony", false, ExpectedResult = "Anthony Author")]
+        public string GetFormattedIndividualAuthors_LastNameFirst_FormatsCorrectly(string input, bool lastNameFirst)
+        {
+            // Arrange
+            var format = new OutputAuthorFormat { LastNameFirst = lastNameFirst };
+
+            // Act
+            var result = format.GetFormattedIndividualAuthors(input).ToList();
+
+            // Assert
+            Assert.AreEqual(1, result.Count);
+            return result[0];
+        }
+
+        [TestCase("A. N. Author", true, ExpectedResult = "A. N. Author")]
+        [TestCase("A. N. Author", false, ExpectedResult = "A. Author")]
+        [TestCase("Author, A. N.", true, ExpectedResult = "A. N. Author")]
+        [TestCase("Author, A. N.", false, ExpectedResult = "A. Author")]
+        public string GetFormattedIndividualAuthors_IncludeMiddleNames_FormatsCorrectly(string input, bool includeMiddleNames)
+        {
+            // Arrange
+            var format = new OutputAuthorFormat { IncludeMiddleNames = includeMiddleNames };
+
+            // Act
+            var result = format.GetFormattedIndividualAuthors(input).ToList();
+
+            // Assert
+            Assert.AreEqual(1, result.Count);
+            return result[0];
+        }
+
+
+        [TestCase("Author, Jr., Anthony", true, ExpectedResult = "Anthony Author Jr.")]
+        [TestCase("Author, Jr., Anthony", false, ExpectedResult = "Anthony Author")]
+        public string GetFormattedIndividualAuthors_IncludeSuffix_FormatsCorrectly(string input, bool includeSuffix)
+        {
+            // Arrange
+            var format = new OutputAuthorFormat { IncludeSuffix = includeSuffix };
+
+            // Act
+            var result = format.GetFormattedIndividualAuthors(input).ToList();
+
+            // Assert
+            Assert.AreEqual(1, result.Count);
+            return result[0];
+        }
+
         [Test]
         public void GetFormattedAuthors_NullAuthorField_ReturnsNull()
         {
