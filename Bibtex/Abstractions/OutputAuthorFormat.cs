@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Bibtex.Abstractions
 {
-    public class AuthorFormat
+    public class OutputAuthorFormat
     {
         public bool RespectBibtexAbbreviation { get; set; }
 
@@ -21,7 +21,7 @@ namespace Bibtex.Abstractions
 
         public LatexString TruncatedAuthors { get; set; }
 
-        public static AuthorFormat Default { get; } = new AuthorFormat
+        public static OutputAuthorFormat Default { get; } = new OutputAuthorFormat
         {
             RespectBibtexAbbreviation = true,
             LastNameFirst = false,
@@ -46,7 +46,7 @@ namespace Bibtex.Abstractions
                 }
                 else if (authors.Length <= NumberOfNamedAuthors)
                 {
-                    return $"{string.Join($"{Delimiter} ", authors[0..^2])} {FinalDelimiter} {authors[^1]}";
+                    return $"{string.Join($"{Delimiter} ", authors[..^1])} {FinalDelimiter} {authors[^1]}";
                 }
                 else
                 {
@@ -61,7 +61,7 @@ namespace Bibtex.Abstractions
 
         private IEnumerable<string> GetFormattedAuthors(string authorField)
         {
-            var authors = authorField.Split(new[] { ",", "and" }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.TrimIgnoredCharacters());
+            var authors = authorField.Split("and", StringSplitOptions.RemoveEmptyEntries).Select(x => x.TrimIgnoredCharacters());
 
             foreach (var author in authors)
             {
@@ -85,7 +85,7 @@ namespace Bibtex.Abstractions
 
                         if (LastNameFirst)
                         {
-                            yield return $"{names[^0]} {string.Join(" ", names[0..^1])}";
+                            yield return $"{names[^1]} {string.Join(" ", names[..^1])}";
                         }
                         else
                         {

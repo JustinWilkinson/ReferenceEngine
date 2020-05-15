@@ -104,7 +104,7 @@ namespace Bibtex.Abstractions.Entries
             {
                 if (_propertyGetters.TryGetValue(includedProperty.Value, out var propertyGetter))
                 {
-                    includedProperty.Value = propertyGetter(this); //includedProperty.Value.Equals("Author", StringComparison.OrdinalIgnoreCase) ? templateToPopulate.AuthorFormat.FormatAuthorField(propertyGetter(this)) : propertyGetter(this);
+                    includedProperty.Value = includedProperty.Value.Equals("Author", StringComparison.OrdinalIgnoreCase) ? templateToPopulate.AuthorFormat.FormatAuthorField(propertyGetter(this)) : propertyGetter(this);
                 }
             }
 
