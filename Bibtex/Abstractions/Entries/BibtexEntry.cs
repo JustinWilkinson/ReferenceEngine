@@ -31,7 +31,7 @@ namespace Bibtex.Abstractions.Entries
 
         public string Email { get; set; }
 
-        public string Howpublished { get; set; }
+        public string HowPublished { get; set; }
 
         public string Institution { get; set; }
 
@@ -61,7 +61,7 @@ namespace Bibtex.Abstractions.Entries
 
         public string Year { get; set; }
 
-        public static Dictionary<string, Func<BibtexEntry, string>> _propertyGetters { get; } = new Dictionary<string, Func<BibtexEntry, string>>(StringComparer.OrdinalIgnoreCase);
+        private static readonly Dictionary<string, Func<BibtexEntry, string>> _propertyGetters = new Dictionary<string, Func<BibtexEntry, string>>(StringComparer.OrdinalIgnoreCase);
 
         private static readonly Dictionary<string, Action<BibtexEntry, string>> _propertySetters = new Dictionary<string, Action<BibtexEntry, string>>(StringComparer.OrdinalIgnoreCase);
 

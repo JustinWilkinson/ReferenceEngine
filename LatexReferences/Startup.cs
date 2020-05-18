@@ -1,4 +1,5 @@
 using ElectronNET.API;
+using ElectronNET.API.Entities;
 using LatexReferences.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -52,7 +53,13 @@ namespace LatexReferences
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            Task.Run(async () => await Electron.WindowManager.CreateWindowAsync());
+            Task.Run(async () => await Electron.WindowManager.CreateWindowAsync(new BrowserWindowOptions
+            {
+                WebPreferences = new WebPreferences
+                {
+                    NodeIntegration = false
+                }
+            }));
         }
     }
 }

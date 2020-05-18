@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LatexReferences.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200518134459_InitialCreate")]
+    [Migration("20200518153153_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,9 +25,6 @@ namespace LatexReferences.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("EntryType")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("FullFormatId")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("IncludeAddress")
@@ -60,7 +57,7 @@ namespace LatexReferences.Migrations
                     b.Property<bool>("IncludeEmail")
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IncludeHowpublished")
+                    b.Property<bool>("IncludeHowPublished")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("IncludeInstitution")
@@ -108,14 +105,17 @@ namespace LatexReferences.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("StyleId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("FullFormatId");
+                    b.HasIndex("StyleId");
 
                     b.ToTable("BibEntryFormats");
                 });
 
-            modelBuilder.Entity("LatexReferences.Models.Format.FullFormat", b =>
+            modelBuilder.Entity("LatexReferences.Models.Format.Style", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -126,14 +126,14 @@ namespace LatexReferences.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("FullFormats");
+                    b.ToTable("Styles");
                 });
 
             modelBuilder.Entity("LatexReferences.Models.Format.BibEntryFormat", b =>
                 {
-                    b.HasOne("LatexReferences.Models.Format.FullFormat", null)
+                    b.HasOne("LatexReferences.Models.Format.Style", null)
                         .WithMany("EntryFormats")
-                        .HasForeignKey("FullFormatId");
+                        .HasForeignKey("StyleId");
                 });
 #pragma warning restore 612, 618
         }

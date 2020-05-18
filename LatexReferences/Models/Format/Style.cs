@@ -2,7 +2,7 @@
 
 namespace LatexReferences.Models.Format
 {
-    public class FullFormat
+    public class Style
     {
         public int Id { get; set; }
 

@@ -6,136 +6,161 @@
 
 <h1>Create</h1>
 
-<h4>BibEntryFormat</h4>
+<h4>New Bibliography Entry Format</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-12">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IncludeAddress" /> @Html.DisplayNameFor(model => model.IncludeAddress)
-                </label>
+            <div class="d-flex">
+                <div class="form-group col pl-0">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group col pr-0">
+                    <label asp-for="EntryType" class="control-label"></label>
+                    <select asp-for="EntryType" asp-items="Html.GetEnumSelectList(typeof(EntryType))" class="form-control"></select>
+                </div>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IncludeAnnote" /> @Html.DisplayNameFor(model => model.IncludeAnnote)
-                </label>
+            <div class="d-flex">
+                <div class="form-group form-check col">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="IncludeAddress" /> @Html.DisplayNameFor(model => model.IncludeAddress)
+                    </label>
+                </div>
+                <div class="form-group form-check col">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="IncludeAnnote" /> @Html.DisplayNameFor(model => model.IncludeAnnote)
+                    </label>
+                </div>
+                <div class="form-group form-check col">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="IncludeAuthor" /> @Html.DisplayNameFor(model => model.IncludeAuthor)
+                    </label>
+                </div>
+                <div class="form-group form-check col">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="IncludeBooktitle" /> @Html.DisplayNameFor(model => model.IncludeBooktitle)
+                    </label>
+                </div>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IncludeAuthor" /> @Html.DisplayNameFor(model => model.IncludeAuthor)
-                </label>
+            <div class="d-flex">
+                <div class="form-group form-check col">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="IncludeChapter" /> @Html.DisplayNameFor(model => model.IncludeChapter)
+                    </label>
+                </div>
+                <div class="form-group form-check col">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="IncludeCrossReference" /> @Html.DisplayNameFor(model => model.IncludeCrossReference)
+                    </label>
+                </div>
+                <div class="form-group form-check col">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="IncludeDOI" /> @Html.DisplayNameFor(model => model.IncludeDOI)
+                    </label>
+                </div>
+                <div class="form-group form-check col">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="IncludeEdition" /> @Html.DisplayNameFor(model => model.IncludeEdition)
+                    </label>
+                </div>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IncludeBooktitle" /> @Html.DisplayNameFor(model => model.IncludeBooktitle)
-                </label>
+            <div class="d-flex">
+                <div class="form-group form-check col">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="IncludeEditor" /> @Html.DisplayNameFor(model => model.IncludeEditor)
+                    </label>
+                </div>
+                <div class="form-group form-check col">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="IncludeEmail" /> @Html.DisplayNameFor(model => model.IncludeEmail)
+                    </label>
+                </div>
+                <div class="form-group form-check col">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="IncludeHowPublished" /> @Html.DisplayNameFor(model => model.IncludeHowPublished)
+                    </label>
+                </div>
+                <div class="form-group form-check col">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="IncludeInstitution" /> @Html.DisplayNameFor(model => model.IncludeInstitution)
+                    </label>
+                </div>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IncludeChapter" /> @Html.DisplayNameFor(model => model.IncludeChapter)
-                </label>
+            <div class="d-flex">
+                <div class="form-group form-check col">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="IncludeJournal" /> @Html.DisplayNameFor(model => model.IncludeJournal)
+                    </label>
+                </div>
+                <div class="form-group form-check col">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="IncludeKey" /> @Html.DisplayNameFor(model => model.IncludeKey)
+                    </label>
+                </div>
+                <div class="form-group form-check col">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="IncludeMonth" /> @Html.DisplayNameFor(model => model.IncludeMonth)
+                    </label>
+                </div>
+                <div class="form-group form-check col">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="IncludeNumber" /> @Html.DisplayNameFor(model => model.IncludeNumber)
+                    </label>
+                </div>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IncludeCrossReference" /> @Html.DisplayNameFor(model => model.IncludeCrossReference)
-                </label>
+            <div class="d-flex">
+                <div class="form-group form-check col">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="IncludeOrganization" /> @Html.DisplayNameFor(model => model.IncludeOrganization)
+                    </label>
+                </div>
+                <div class="form-group form-check col">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="IncludePages" /> @Html.DisplayNameFor(model => model.IncludePages)
+                    </label>
+                </div>
+                <div class="form-group form-check col">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="IncludePublisher" /> @Html.DisplayNameFor(model => model.IncludePublisher)
+                    </label>
+                </div>
+                <div class="form-group form-check col">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="IncludeSchool" /> @Html.DisplayNameFor(model => model.IncludeSchool)
+                    </label>
+                </div>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IncludeDOI" /> @Html.DisplayNameFor(model => model.IncludeDOI)
-                </label>
+            <div class="d-flex">
+                <div class="form-group form-check col">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="IncludeSeries" /> @Html.DisplayNameFor(model => model.IncludeSeries)
+                    </label>
+                </div>
+                <div class="form-group form-check col">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="IncludeTitle" /> @Html.DisplayNameFor(model => model.IncludeTitle)
+                    </label>
+                </div>
+                <div class="form-group form-check col">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="IncludeType" /> @Html.DisplayNameFor(model => model.IncludeType)
+                    </label>
+                </div>
+                <div class="form-group form-check col">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="IncludeVolume" /> @Html.DisplayNameFor(model => model.IncludeVolume)
+                    </label>
+                </div>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IncludeEdition" /> @Html.DisplayNameFor(model => model.IncludeEdition)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IncludeEditor" /> @Html.DisplayNameFor(model => model.IncludeEditor)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IncludeEmail" /> @Html.DisplayNameFor(model => model.IncludeEmail)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IncludeHowpublished" /> @Html.DisplayNameFor(model => model.IncludeHowpublished)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IncludeInstitution" /> @Html.DisplayNameFor(model => model.IncludeInstitution)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IncludeJournal" /> @Html.DisplayNameFor(model => model.IncludeJournal)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IncludeKey" /> @Html.DisplayNameFor(model => model.IncludeKey)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IncludeMonth" /> @Html.DisplayNameFor(model => model.IncludeMonth)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IncludeNumber" /> @Html.DisplayNameFor(model => model.IncludeNumber)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IncludeOrganization" /> @Html.DisplayNameFor(model => model.IncludeOrganization)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IncludePages" /> @Html.DisplayNameFor(model => model.IncludePages)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IncludePublisher" /> @Html.DisplayNameFor(model => model.IncludePublisher)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IncludeSchool" /> @Html.DisplayNameFor(model => model.IncludeSchool)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IncludeSeries" /> @Html.DisplayNameFor(model => model.IncludeSeries)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IncludeTitle" /> @Html.DisplayNameFor(model => model.IncludeTitle)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IncludeType" /> @Html.DisplayNameFor(model => model.IncludeType)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IncludeVolume" /> @Html.DisplayNameFor(model => model.IncludeVolume)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IncludeYear" /> @Html.DisplayNameFor(model => model.IncludeYear)
-                </label>
+            <div class="d-flex">
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="IncludeYear" /> @Html.DisplayNameFor(model => model.IncludeYear)
+                    </label>
+                </div>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

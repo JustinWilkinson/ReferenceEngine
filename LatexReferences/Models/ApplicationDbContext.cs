@@ -7,7 +7,7 @@ namespace LatexReferences.Models
     {
         public DbSet<BibEntryFormat> BibEntryFormats { get; set; }
 
-        public DbSet<FullFormat> FullFormats { get; set; }
+        public DbSet<Style> Styles { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {

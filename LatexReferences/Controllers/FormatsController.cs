@@ -44,7 +44,7 @@ namespace LatexReferences.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,IncludeAddress,IncludeAnnote,IncludeAuthor,IncludeBooktitle,IncludeChapter,IncludeCrossReference,IncludeDOI,IncludeEdition,IncludeEditor,IncludeEmail,IncludeHowpublished,IncludeInstitution,IncludeJournal,IncludeKey,IncludeMonth,IncludeNumber,IncludeOrganization,IncludePages,IncludePublisher,IncludeSchool,IncludeSeries,IncludeTitle,IncludeType,IncludeVolume,IncludeYear")] BibEntryFormat bibEntryFormat)
+        public async Task<IActionResult> Create(BibEntryFormat bibEntryFormat)
         {
             if (ModelState.IsValid)
             {
@@ -76,7 +76,7 @@ namespace LatexReferences.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,IncludeAddress,IncludeAnnote,IncludeAuthor,IncludeBooktitle,IncludeChapter,IncludeCrossReference,IncludeDOI,IncludeEdition,IncludeEditor,IncludeEmail,IncludeHowpublished,IncludeInstitution,IncludeJournal,IncludeKey,IncludeMonth,IncludeNumber,IncludeOrganization,IncludePages,IncludePublisher,IncludeSchool,IncludeSeries,IncludeTitle,IncludeType,IncludeVolume,IncludeYear")] BibEntryFormat bibEntryFormat)
+        public async Task<IActionResult> Edit(int id, BibEntryFormat bibEntryFormat)
         {
             if (id != bibEntryFormat.Id)
             {

@@ -7,7 +7,7 @@ namespace LatexReferences.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "FullFormats",
+                name: "Styles",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -16,7 +16,7 @@ namespace LatexReferences.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FullFormats", x => x.Id);
+                    table.PrimaryKey("PK_Styles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -37,7 +37,7 @@ namespace LatexReferences.Migrations
                     IncludeEdition = table.Column<bool>(nullable: false),
                     IncludeEditor = table.Column<bool>(nullable: false),
                     IncludeEmail = table.Column<bool>(nullable: false),
-                    IncludeHowpublished = table.Column<bool>(nullable: false),
+                    IncludeHowPublished = table.Column<bool>(nullable: false),
                     IncludeInstitution = table.Column<bool>(nullable: false),
                     IncludeJournal = table.Column<bool>(nullable: false),
                     IncludeKey = table.Column<bool>(nullable: false),
@@ -52,23 +52,23 @@ namespace LatexReferences.Migrations
                     IncludeType = table.Column<bool>(nullable: false),
                     IncludeVolume = table.Column<bool>(nullable: false),
                     IncludeYear = table.Column<bool>(nullable: false),
-                    FullFormatId = table.Column<int>(nullable: true)
+                    StyleId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_BibEntryFormats", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BibEntryFormats_FullFormats_FullFormatId",
-                        column: x => x.FullFormatId,
-                        principalTable: "FullFormats",
+                        name: "FK_BibEntryFormats_Styles_StyleId",
+                        column: x => x.StyleId,
+                        principalTable: "Styles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_BibEntryFormats_FullFormatId",
+                name: "IX_BibEntryFormats_StyleId",
                 table: "BibEntryFormats",
-                column: "FullFormatId");
+                column: "StyleId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -77,7 +77,7 @@ namespace LatexReferences.Migrations
                 name: "BibEntryFormats");
 
             migrationBuilder.DropTable(
-                name: "FullFormats");
+                name: "Styles");
         }
     }
 }
