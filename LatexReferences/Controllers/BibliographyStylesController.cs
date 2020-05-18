@@ -7,19 +7,19 @@ using System.Threading.Tasks;
 
 namespace LatexReferences.Controllers
 {
-    public class FormatsController : Controller
+    public class BibliographyStylesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public FormatsController(ApplicationDbContext context)
+        public BibliographyStylesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Formats
-        public async Task<IActionResult> Index() => View(await _context.BibEntryFormats.ToListAsync());
+        // GET: Styles
+        public async Task<IActionResult> Index() => View(await _context.BibliographyStyles.ToListAsync());
 
-        // GET: Formats/Details/5
+        // GET: Styles/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -27,35 +27,35 @@ namespace LatexReferences.Controllers
                 return NotFound();
             }
 
-            var bibEntryFormat = await _context.BibEntryFormats.FirstOrDefaultAsync(m => m.Id == id);
-            if (bibEntryFormat == null)
+            var style = await _context.BibliographyStyles.FirstOrDefaultAsync(m => m.Id == id);
+            if (style == null)
             {
                 return NotFound();
             }
 
-            return View(bibEntryFormat);
+            return View(style);
         }
 
-        // GET: Formats/Create
+        // GET: Styles/Create
         public IActionResult Create() => View();
 
-        // POST: Formats/Create
+        // POST: Styles/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(BibEntryFormat bibEntryFormat)
+        public async Task<IActionResult> Create([Bind("Id,Name")] BibliographyStyle style)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(bibEntryFormat);
+                _context.Add(style);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(bibEntryFormat);
+            return View(style);
         }
 
-        // GET: Formats/Edit/5
+        // GET: Styles/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -63,22 +63,22 @@ namespace LatexReferences.Controllers
                 return NotFound();
             }
 
-            var bibEntryFormat = await _context.BibEntryFormats.FindAsync(id);
-            if (bibEntryFormat == null)
+            var style = await _context.BibliographyStyles.FindAsync(id);
+            if (style == null)
             {
                 return NotFound();
             }
-            return View(bibEntryFormat);
+            return View(style);
         }
 
-        // POST: Formats/Edit/5
+        // POST: Styles/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, BibEntryFormat bibEntryFormat)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] BibliographyStyle style)
         {
-            if (id != bibEntryFormat.Id)
+            if (id != style.Id)
             {
                 return NotFound();
             }
@@ -87,12 +87,12 @@ namespace LatexReferences.Controllers
             {
                 try
                 {
-                    _context.Update(bibEntryFormat);
+                    _context.Update(style);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BibEntryFormatExists(bibEntryFormat.Id))
+                    if (!styleExists(style.Id))
                     {
                         return NotFound();
                     }
@@ -103,10 +103,10 @@ namespace LatexReferences.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(bibEntryFormat);
+            return View(style);
         }
 
-        // GET: Formats/Delete/5
+        // GET: Styles/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -114,26 +114,26 @@ namespace LatexReferences.Controllers
                 return NotFound();
             }
 
-            var bibEntryFormat = await _context.BibEntryFormats.FirstOrDefaultAsync(m => m.Id == id);
-            if (bibEntryFormat == null)
+            var style = await _context.BibliographyStyles.FirstOrDefaultAsync(m => m.Id == id);
+            if (style == null)
             {
                 return NotFound();
             }
 
-            return View(bibEntryFormat);
+            return View(style);
         }
 
-        // POST: Formats/Delete/5
+        // POST: Styles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var bibEntryFormat = await _context.BibEntryFormats.FindAsync(id);
-            _context.BibEntryFormats.Remove(bibEntryFormat);
+            var style = await _context.BibliographyStyles.FindAsync(id);
+            _context.BibliographyStyles.Remove(style);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool BibEntryFormatExists(int id) => _context.BibEntryFormats.Any(e => e.Id == id);
+        private bool styleExists(int id) => _context.BibliographyStyles.Any(e => e.Id == id);
     }
 }

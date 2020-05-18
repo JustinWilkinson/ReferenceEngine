@@ -5,9 +5,9 @@ namespace LatexReferences.Models
 {
     public class ApplicationDbContext : DbContext
     {
-        public DbSet<BibEntryFormat> BibEntryFormats { get; set; }
+        public DbSet<EntryStyle> EntryStyles { get; set; }
 
-        public DbSet<Style> Styles { get; set; }
+        public DbSet<BibliographyStyle> BibliographyStyles { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
