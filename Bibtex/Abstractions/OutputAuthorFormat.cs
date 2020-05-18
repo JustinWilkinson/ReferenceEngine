@@ -8,8 +8,6 @@ namespace Bibtex.Abstractions
 {
     public class OutputAuthorFormat
     {
-        public bool RespectBibtexAbbreviation { get; set; }
-
         public int? AbbreviateFirstNameCharacters { get; set; }
 
         public bool LastNameFirst { get; set; }
@@ -28,7 +26,6 @@ namespace Bibtex.Abstractions
 
         public static OutputAuthorFormat Default { get; } = new OutputAuthorFormat
         {
-            RespectBibtexAbbreviation = true,
             Delimiter = ',',
             FinalDelimiter = "and",
             NumberOfNamedAuthors = 3,
