@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LatexReferences.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200518163831_InitialCreate")]
+    [Migration("20200519090903_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -18,7 +18,7 @@ namespace LatexReferences.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.4");
 
-            modelBuilder.Entity("LatexReferences.Models.Format.BibliographyStyle", b =>
+            modelBuilder.Entity("LatexReferences.Models.BibliographyStyle", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -32,7 +32,7 @@ namespace LatexReferences.Migrations
                     b.ToTable("BibliographyStyles");
                 });
 
-            modelBuilder.Entity("LatexReferences.Models.Format.EntryStyle", b =>
+            modelBuilder.Entity("LatexReferences.Models.EntryStyle", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -51,10 +51,10 @@ namespace LatexReferences.Migrations
                     b.ToTable("EntryStyles");
                 });
 
-            modelBuilder.Entity("LatexReferences.Models.Format.EntryStyle", b =>
+            modelBuilder.Entity("LatexReferences.Models.EntryStyle", b =>
                 {
-                    b.HasOne("LatexReferences.Models.Format.BibliographyStyle", null)
-                        .WithMany("EntryFormats")
+                    b.HasOne("LatexReferences.Models.BibliographyStyle", null)
+                        .WithMany("EntryStyles")
                         .HasForeignKey("BibliographyStyleId");
                 });
 #pragma warning restore 612, 618

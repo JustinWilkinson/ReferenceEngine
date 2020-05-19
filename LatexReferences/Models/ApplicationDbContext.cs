@@ -1,5 +1,4 @@
-﻿using LatexReferences.Models.Format;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace LatexReferences.Models
 {

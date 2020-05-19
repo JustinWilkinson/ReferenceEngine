@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace LatexReferences.Models.Format
+namespace LatexReferences.Models
 {
     public class BibliographyStyle
     {
@@ -8,6 +8,6 @@ namespace LatexReferences.Models.Format
 
         public string Name { get; set; }
 
-        public IEnumerable<EntryStyle> EntryFormats { get; set; } 
+        public IEnumerable<EntryStyle> EntryStyles { get; set; } 
     }
 }

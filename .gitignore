@@ -4,6 +4,9 @@ LatexCompiler/Latex/
 # Ignore SQLite Database
 *.sqlite
 
+# Ignore extra JS libraries.
+LatexReferences/wwwroot/lib/extras/*
+
 # User-specific files
 *.rsuser
 *.suo
