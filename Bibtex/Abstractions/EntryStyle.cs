@@ -18,13 +18,18 @@ namespace Bibtex.Abstractions
         public EntryType Type { get; set; }
 
         [JsonIgnore]
-        private string FieldsString { get; set; }
+        internal string FieldsString { get; set; }
 
         [NotMapped]
+        [JsonConverter(typeof(FieldConverter))]
         public IEnumerable<Field> Fields
         {
-            get => FieldsString != null ? JsonConvert.DeserializeObject<IEnumerable<Field>>(FieldsString) : new List<Field>();
-            set => FieldsString = JsonConvert.SerializeObject(value);
+            get => FieldsString != null ? JsonConvert.DeserializeObject<IEnumerable<Field>>(FieldsString, new FieldConverter()) : new List<Field>();
+            set
+            {
+                FieldsString = JsonConvert.SerializeObject(value);
+                System.Diagnostics.Debug.WriteLine(FieldsString);
+            }
         }
 
         public static EntryStyle Default = new EntryStyle { Fields = new List<Field>() };

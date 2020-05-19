@@ -6,10 +6,10 @@ namespace Bibtex.Abstractions.Fields
     {
         protected Field(FieldType type)
         {
-            FieldType = type;
+            Type = type;
         }
 
-        public FieldType FieldType { get; set; }
+        public FieldType Type { get; set; }
 
         public bool Bold { get; set; }
 

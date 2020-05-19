@@ -39,6 +39,10 @@ namespace Bibtex.Migrations
                     b.Property<int?>("BibliographyStyleId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("FieldsString")
+                        .HasColumnName("Fields")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 

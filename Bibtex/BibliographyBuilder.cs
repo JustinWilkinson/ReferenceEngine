@@ -3,6 +3,7 @@ using Bibtex.Enumerations;
 using Bibtex.Manager;
 using Bibtex.Parser;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,6 +16,10 @@ namespace Bibtex
         public string TexFilePath { get; set; }
 
         public string BibFilePath { get; set; }
+
+        public string StyleFilePath { get; set; }
+
+        public BibliographyStyle BibliographyStyle { get; set; }
 
         public void Build();
 
@@ -42,6 +47,8 @@ namespace Bibtex
 
         public string BibFilePath { get; set; }
 
+        public string StyleFilePath { get; set; }
+
         public BibliographyStyle BibliographyStyle { get; set; }
 
         public void Build()
@@ -58,7 +65,23 @@ namespace Bibtex
             }
             else if (BibliographyStyle == null)
             {
-
+                if (StyleFilePath != null)
+                {
+                    _fileManager.ThrowIfFileDoesNotExist(StyleFilePath);
+                    try
+                    {
+                        BibliographyStyle = JsonConvert.DeserializeObject<BibliographyStyle>(File.ReadAllText(StyleFilePath));
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "An error occurred parsing the style file.");
+                        throw;
+                    }
+                }
+                else
+                {
+                    throw new ArgumentNullException(nameof(BibliographyStyle));
+                }
             }
 
             _fileManager.ThrowIfFileDoesNotExist(TexFilePath);

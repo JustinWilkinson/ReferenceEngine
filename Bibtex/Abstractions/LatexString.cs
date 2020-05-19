@@ -26,7 +26,5 @@
             }
             return $"\\newblock {value}";
         }
-
-        public LatexString Duplicate() => new LatexString(Value) { Bold = Bold, Italic = Italic };
     }
 }

@@ -12,5 +12,10 @@ namespace Bibtex.Abstractions
         {
             options.UseSqlite("Data Source=LatexReferences.sqlite", b => b.MigrationsAssembly("Bibtex"));
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<EntryStyle>().Property(es => es.FieldsString).HasColumnName("Fields");
+        }
     }
 }

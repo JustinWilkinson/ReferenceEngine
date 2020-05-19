@@ -27,6 +27,7 @@ namespace Bibtex.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(nullable: true),
                     Type = table.Column<int>(nullable: false),
+                    Fields = table.Column<string>(nullable: true),
                     BibliographyStyleId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>

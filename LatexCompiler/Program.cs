@@ -23,6 +23,7 @@ namespace LatexCompiler
                 var bibliographyBuilder = serviceProvider.GetRequiredService<IBibliographyBuilder>();
                 bibliographyBuilder.TexFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Latex", "document.tex");
                 bibliographyBuilder.BibFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Latex", "lib.bib");
+                bibliographyBuilder.StyleFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Latex", "style.json");
 
                 bibliographyBuilder.Build();
                 bibliographyBuilder.Write();

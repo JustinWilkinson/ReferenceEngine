@@ -104,7 +104,7 @@ namespace Bibtex.Abstractions.Entries
 
             foreach (var field in style.Fields)
             {
-                switch (field.FieldType)
+                switch (field.Type)
                 {
                     case FieldType.Constant:
                         builder.Append(new LatexString(field.Value) { Bold = field.Bold, Italic = field.Italic });

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bibtex.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200519125134_InitialCreate")]
+    [Migration("20200519151022_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,6 +40,10 @@ namespace Bibtex.Migrations
 
                     b.Property<int?>("BibliographyStyleId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("FieldsString")
+                        .HasColumnName("Fields")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");

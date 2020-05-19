@@ -88,7 +88,7 @@ namespace LatexReferences.Controllers
             catch (Exception ex)
             {
                 entryStyle = await _context.EntryStyles.FindAsync(id);
-                ModelState.AddModelError("", ex.ToString());
+                ModelState.AddModelError("", ex.Message);
             }
 
             if (ModelState.IsValid)
