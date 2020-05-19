@@ -20,8 +20,5 @@ namespace Bibtex.Abstractions.Fields
 
         [JsonProperty(Order = -2)]
         public bool Italic { get; set; }
-
-        [JsonProperty(Order = -2)]
-        public string Value { get; set; }
     }
 }

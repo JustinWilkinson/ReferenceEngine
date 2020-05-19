@@ -107,11 +107,10 @@ namespace Bibtex.Abstractions.Entries
                 switch (field.Type)
                 {
                     case FieldType.Constant:
-                        builder.Append(new LatexString(field.Value) { Bold = field.Bold, Italic = field.Italic });
+                        builder.Append(new LatexString((field as ConstantField).Value) { Bold = field.Bold, Italic = field.Italic });
                         break;
                     case FieldType.Field:
-                        var entryField = field as EntryField;
-                        _propertyGetters.TryGetValue(entryField.Value, out var propertyGetter);
+                        _propertyGetters.TryGetValue((field as EntryField).Value, out var propertyGetter);
                         builder.Append(propertyGetter(this));
                         break;
                     case FieldType.AuthorField:

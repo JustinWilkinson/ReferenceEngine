@@ -8,5 +8,7 @@ namespace Bibtex.Abstractions.Fields
         {
 
         }
+
+        public string Value { get; set; }
     }
 }
