@@ -3,6 +3,7 @@ using Bibtex.Enumerations;
 using Bibtex.Manager;
 using Bibtex.Parser;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,6 +16,10 @@ namespace Bibtex
         public string TexFilePath { get; set; }
 
         public string BibFilePath { get; set; }
+
+        public string StyleFilePath { get; set; }
+
+        public BibliographyStyle BibliographyStyle { get; set; }
 
         public void Build();
 
@@ -36,14 +41,15 @@ namespace Bibtex
             _auxParser = auxParser;
             _bibParser = bibParser;
             _logger = logger;
-            CustomItemTemplates = new Dictionary<EntryType, BibitemTemplate>();
         }
 
         public string TexFilePath { get; set; }
 
         public string BibFilePath { get; set; }
 
-        public Dictionary<EntryType, BibitemTemplate> CustomItemTemplates { get; set; }
+        public string StyleFilePath { get; set; }
+
+        public BibliographyStyle BibliographyStyle { get; set; }
 
         public void Build()
         {
@@ -56,6 +62,26 @@ namespace Bibtex
             else if (BibFilePath == null)
             {
                 throw new ArgumentNullException(nameof(BibFilePath));
+            }
+            else if (BibliographyStyle == null)
+            {
+                if (StyleFilePath != null)
+                {
+                    _fileManager.ThrowIfFileDoesNotExist(StyleFilePath);
+                    try
+                    {
+                        BibliographyStyle = JsonConvert.DeserializeObject<BibliographyStyle>(File.ReadAllText(StyleFilePath));
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "An error occurred parsing the style file.");
+                        throw;
+                    }
+                }
+                else
+                {
+                    throw new ArgumentNullException(nameof(BibliographyStyle));
+                }
             }
 
             _fileManager.ThrowIfFileDoesNotExist(TexFilePath);
@@ -70,8 +96,8 @@ namespace Bibtex
                 var bibtexEntry = bibtexDatabase.Entries.SingleOrDefault(bibtexEntry => bibtexEntry.CitationKey == auxEntry.Key);
                 if (bibtexEntry != null)
                 {
-                    var bibitemTemplate = CustomItemTemplates.TryGetValue(bibtexEntry.EntryType, out var template) ? template : BibitemTemplate.GetDefaultTemplate(bibtexEntry.EntryType);
-                    _bibitems.Add(new Bibitem(auxEntry, bibtexEntry, bibitemTemplate));
+                    var style = BibliographyStyle.EntryStyles.SingleOrDefault(s => s.Type == bibtexEntry.EntryType) ?? EntryStyle.Default;
+                    _bibitems.Add(new Bibitem(auxEntry, bibtexEntry, style));
                 }
             }
 

@@ -1,24 +1,26 @@
 ﻿using Bibtex.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace LatexReferences.Controllers
 {
-    public class BibliographyStylesController : Controller
+    public class EntryStylesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public BibliographyStylesController(ApplicationDbContext context)
+        public EntryStylesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Styles
-        public async Task<IActionResult> Index() => View(await _context.BibliographyStyles.ToListAsync());
+        // GET: EntryStyles
+        public async Task<IActionResult> Index() => View(await _context.EntryStyles.ToListAsync());
 
-        // GET: Styles/Details/5
+        // GET: EntryStyles/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -26,35 +28,35 @@ namespace LatexReferences.Controllers
                 return NotFound();
             }
 
-            var style = await _context.BibliographyStyles.FirstOrDefaultAsync(m => m.Id == id);
-            if (style == null)
+            var entryStyle = await _context.EntryStyles.FirstOrDefaultAsync(m => m.Id == id);
+            if (entryStyle == null)
             {
                 return NotFound();
             }
 
-            return View(style);
+            return View(entryStyle);
         }
 
-        // GET: Styles/Create
+        // GET: EntryStyles/Create
         public IActionResult Create() => View();
 
-        // POST: Styles/Create
+        // POST: EntryStyles/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] BibliographyStyle style)
+        public async Task<IActionResult> Create([Bind("Id,Name")] EntryStyle entryStyle)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(style);
+                _context.Add(entryStyle);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(style);
+            return View(entryStyle);
         }
 
-        // GET: Styles/Edit/5
+        // GET: EntryStyles/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -62,36 +64,43 @@ namespace LatexReferences.Controllers
                 return NotFound();
             }
 
-            var style = await _context.BibliographyStyles.FindAsync(id);
-            if (style == null)
+            var entryStyle = await _context.EntryStyles.FindAsync(id);
+            if (entryStyle == null)
             {
                 return NotFound();
             }
-            return View(style);
+            return View(entryStyle);
         }
 
-        // POST: Styles/Edit/5
+        // POST: EntryStyles/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] BibliographyStyle style)
+        public async Task<IActionResult> Edit(int id, string entryStyleString)
         {
-            if (id != style.Id)
+            EntryStyle entryStyle = null;
+            try
             {
-                return NotFound();
+                entryStyle = JsonConvert.DeserializeObject<EntryStyle>(entryStyleString);
+                entryStyle.Id = id;
+            }
+            catch (Exception ex)
+            {
+                entryStyle = await _context.EntryStyles.FindAsync(id);
+                ModelState.AddModelError("", ex.Message);
             }
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(style);
+                    _context.Update(entryStyle);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!StyleExists(style.Id))
+                    if (!EntryStyleExists(entryStyle.Id))
                     {
                         return NotFound();
                     }
@@ -102,10 +111,10 @@ namespace LatexReferences.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(style);
+            return View(entryStyle);
         }
 
-        // GET: Styles/Delete/5
+        // GET: EntryStyles/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -113,26 +122,26 @@ namespace LatexReferences.Controllers
                 return NotFound();
             }
 
-            var style = await _context.BibliographyStyles.FirstOrDefaultAsync(m => m.Id == id);
-            if (style == null)
+            var entryStyle = await _context.EntryStyles.FirstOrDefaultAsync(m => m.Id == id);
+            if (entryStyle == null)
             {
                 return NotFound();
             }
 
-            return View(style);
+            return View(entryStyle);
         }
 
-        // POST: Styles/Delete/5
+        // POST: EntryStyles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var style = await _context.BibliographyStyles.FindAsync(id);
-            _context.BibliographyStyles.Remove(style);
+            var entryStyle = await _context.EntryStyles.FindAsync(id);
+            _context.EntryStyles.Remove(entryStyle);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool StyleExists(int id) => _context.BibliographyStyles.Any(e => e.Id == id);
+        private bool EntryStyleExists(int id) => _context.EntryStyles.Any(e => e.Id == id);
     }
 }

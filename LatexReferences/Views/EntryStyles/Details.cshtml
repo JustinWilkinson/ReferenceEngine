@@ -1,0 +1,28 @@
+﻿@model EntryStyle
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details for Entry Style @Model.Name</h1>
+<hr />
+
+<div>
+    <div class="col-12" style="height: 60vh;">
+        <div id="editor" class="w-100 h-100">@JsonConvert.SerializeObject(Model, Formatting.Indented)</div>
+    </div>
+</div>
+<div class=" mt-2">
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    <script src="/lib/extras/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+        let editor = ace.edit("editor");
+        editor.setTheme("ace/theme/monokai");
+        editor.session.setMode("ace/mode/json");
+        editor.setReadOnly(true);
+    </script>
+}
