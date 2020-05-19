@@ -1,4 +1,4 @@
-﻿@model LatexReferences.Models.EntryStyle
+﻿@model EntryStyle
 
 @{
     ViewData["Title"] = "Details";
@@ -7,18 +7,31 @@
 <h1>Details</h1>
 
 <div>
-    <h4>EntryStyle</h4>
+    <h4>Entry Style: @Model.Name</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
     </dl>
+    <div class="col-12" style="height: 60vh;">
+        <div id="editor" class="w-100 h-100">@JsonConvert.SerializeObject(Model, Formatting.Indented)</div>
+    </div>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+
+@section Scripts {
+    <script src="/lib/extras/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+        let editor = ace.edit("editor");
+        editor.setTheme("ace/theme/monokai");
+        editor.session.setMode("ace/mode/json");
+        editor.setReadOnly(true);
+    </script>
+}

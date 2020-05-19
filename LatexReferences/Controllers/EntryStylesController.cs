@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LatexReferences.Models;
+using Newtonsoft.Json;
+using Microsoft.AspNetCore.Http;
 
 namespace LatexReferences.Controllers
 {
@@ -29,8 +31,7 @@ namespace LatexReferences.Controllers
                 return NotFound();
             }
 
-            var entryStyle = await _context.EntryStyles
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var entryStyle = await _context.EntryStyles.FirstOrDefaultAsync(m => m.Id == id);
             if (entryStyle == null)
             {
                 return NotFound();
@@ -79,8 +80,11 @@ namespace LatexReferences.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] EntryStyle entryStyle)
+        public async Task<IActionResult> Edit(int id, string entryStyleString) //(IFormCollection fc)
         {
+            var entryStyle = JsonConvert.DeserializeObject<EntryStyle>(entryStyleString);
+            entryStyle.Id = id;
+
             if (id != entryStyle.Id)
             {
                 return NotFound();

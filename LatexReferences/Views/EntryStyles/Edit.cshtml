@@ -1,24 +1,24 @@
-﻿@model LatexReferences.Models.EntryStyle
+﻿@model EntryStyle
 
 @{
     ViewData["Title"] = "Edit";
+    var value = JsonConvert.SerializeObject(Model, Formatting.Indented);
 }
 
 <h1>Edit</h1>
 
-<h4>EntryStyle</h4>
+<h4>Entry Style: @Model.Name</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-12">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+            @Html.Hidden("EntryStyleString", value, new { id = "entryStyleString" });
+            <div class="col-12" style="height: 60vh;">
+                <div id="editor" class="w-100 h-100">@value</div>
             </div>
-            <div class="form-group">
+            <div class="form-group col mt-2">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
@@ -31,4 +31,15 @@
 
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script src="/lib/extras/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+        let editor = ace.edit("editor");
+        editor.setTheme("ace/theme/monokai");
+        editor.session.setMode("ace/mode/json");
+
+        $('form').submit(function () {
+            console.log($('#entryStyleString').val(editor.getSession().getValue()));
+            $('#entryStyleString').val(editor.getSession().getValue());
+        });
+    </script>
 }
