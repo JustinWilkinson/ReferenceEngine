@@ -4,7 +4,7 @@ namespace Bibtex.Abstractions.Fields
 {
     public class EntryAuthorField : Field
     {
-        public EntryAuthorField() : base(FieldType.EntryAuthorField)
+        public EntryAuthorField() : base(FieldType.AuthorField)
         {
 
         }

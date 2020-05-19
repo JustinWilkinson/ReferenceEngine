@@ -44,8 +44,8 @@ namespace Bibtex.Abstractions.Fields
                 return type switch
                 {
                     FieldType.Constant => JsonConvert.DeserializeObject<ConstantField>(obj.ToString()),
-                    FieldType.EntryAuthorField => JsonConvert.DeserializeObject<EntryAuthorField>(obj.ToString()),
-                    FieldType.EntryField => JsonConvert.DeserializeObject<EntryField>(obj.ToString()),
+                    FieldType.AuthorField => JsonConvert.DeserializeObject<EntryAuthorField>(obj.ToString()),
+                    FieldType.Field => JsonConvert.DeserializeObject<EntryField>(obj.ToString()),
                     _ => throw new ArgumentException($"Unrecognized Type {obj["Type"]}")
                 };
             }

@@ -17,9 +17,6 @@ namespace Bibtex.Abstractions
         [JsonConverter(typeof(StringEnumConverter))]
         public EntryType Type { get; set; }
 
-        [JsonIgnore]
-        internal string FieldsString { get; set; }
-
         [NotMapped]
         [JsonConverter(typeof(FieldConverter))]
         public IEnumerable<Field> Fields
@@ -28,9 +25,11 @@ namespace Bibtex.Abstractions
             set
             {
                 FieldsString = JsonConvert.SerializeObject(value);
-                System.Diagnostics.Debug.WriteLine(FieldsString);
             }
         }
+
+        [JsonIgnore]
+        internal string FieldsString { get; set; }
 
         public static EntryStyle Default = new EntryStyle { Fields = new List<Field>() };
     }

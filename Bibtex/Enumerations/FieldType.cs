@@ -3,7 +3,7 @@
     public enum FieldType
     {
         Constant,
-        EntryField,
-        EntryAuthorField
+        Field,
+        AuthorField
     }
 }
