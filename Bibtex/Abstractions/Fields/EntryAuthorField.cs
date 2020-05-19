@@ -1,6 +1,6 @@
-﻿using Bibtex.Abstractions;
+﻿using Bibtex.Enumerations;
 
-namespace LatexReferences.Models.Fields
+namespace Bibtex.Abstractions.Fields
 {
     public class EntryAuthorField : Field
     {

@@ -1,7 +1,9 @@
-﻿using Bibtex.Enumerations;
+﻿using Bibtex.Abstractions.Fields;
+using Bibtex.Enumerations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Bibtex.Abstractions.Entries
 {
@@ -91,24 +93,35 @@ namespace Bibtex.Abstractions.Entries
             }
         }
 
-        public string GetDetailFromTemplate(BibitemTemplate template)
+        public string ApplyStyle(EntryStyle style)
         {
-            if (template is null)
+            if (style is null)
             {
-                throw new ArgumentNullException(nameof(template));
+                throw new ArgumentNullException(nameof(style));
             }
 
-            var templateToPopulate = template.Duplicate();
+            var builder = new StringBuilder();
 
-            foreach (var includedProperty in templateToPopulate.IncludedProperties)
+            foreach (var field in style.Fields)
             {
-                if (_propertyGetters.TryGetValue(includedProperty.Value, out var propertyGetter))
+                switch (field.FieldType)
                 {
-                    includedProperty.Value = includedProperty.Value.Equals("Author", StringComparison.OrdinalIgnoreCase) ? templateToPopulate.AuthorFormat.FormatAuthorField(propertyGetter(this)) : propertyGetter(this);
+                    case FieldType.Constant:
+                        builder.Append(new LatexString(field.Value) { Bold = field.Bold, Italic = field.Italic });
+                        break;
+                    case FieldType.EntryField:
+                        var entryField = field as EntryField;
+                        _propertyGetters.TryGetValue(entryField.Value, out var propertyGetter);
+                        builder.Append(propertyGetter(this));
+                        break;
+                    case FieldType.EntryAuthorField:
+                        var authorField = field as EntryAuthorField;
+                        builder.Append(authorField.Format.FormatAuthorField(Author));
+                        break;
                 }
             }
 
-            return string.Join(templateToPopulate.PropertyDelimiter, templateToPopulate.IncludedProperties.Where(x => !string.IsNullOrWhiteSpace(x.Value)).Select(x => x.ToString()));
+            return builder.ToString();
         }
     }
 }

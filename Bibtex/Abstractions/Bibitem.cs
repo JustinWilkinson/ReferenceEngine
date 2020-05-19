@@ -5,7 +5,7 @@ namespace Bibtex.Abstractions
 {
     public class Bibitem
     {
-        public Bibitem(AuxEntry auxEntry, BibtexEntry bibtexEntry, BibitemTemplate bibitemTemplate)
+        public Bibitem(AuxEntry auxEntry, BibtexEntry bibtexEntry, EntryStyle entryStyle)
         {
             if (auxEntry is null)
             {
@@ -15,14 +15,14 @@ namespace Bibtex.Abstractions
             {
                 throw new ArgumentNullException(nameof(bibtexEntry));
             }
-            if (bibitemTemplate is null)
+            if (entryStyle is null)
             {
-                throw new ArgumentNullException(nameof(bibitemTemplate));
+                throw new ArgumentNullException(nameof(entryStyle));
             }
 
             CitationKey = auxEntry.Key;
             Label = auxEntry.Label;
-            Detail = bibtexEntry.GetDetailFromTemplate(bibitemTemplate);
+            Detail = bibtexEntry.ApplyStyle(entryStyle);
         }
 
         public string CitationKey { get; set; }

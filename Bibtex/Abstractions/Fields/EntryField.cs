@@ -1,4 +1,6 @@
-﻿namespace LatexReferences.Models.Fields
+﻿using Bibtex.Enumerations;
+
+namespace Bibtex.Abstractions.Fields
 {
     public class EntryField : Field
     {

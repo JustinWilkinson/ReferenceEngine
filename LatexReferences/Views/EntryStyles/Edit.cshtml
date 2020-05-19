@@ -14,7 +14,7 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            @Html.Hidden("EntryStyleString", value, new { id = "entryStyleString" });
+            @Html.Hidden("EntryStyleString", value, new { id = "entryStyleString" })
             <div class="col-12" style="height: 60vh;">
                 <div id="editor" class="w-100 h-100">@value</div>
             </div>
@@ -38,7 +38,6 @@
         editor.session.setMode("ace/mode/json");
 
         $('form').submit(function () {
-            console.log($('#entryStyleString').val(editor.getSession().getValue()));
             $('#entryStyleString').val(editor.getSession().getValue());
         });
     </script>

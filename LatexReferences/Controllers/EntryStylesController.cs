@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Bibtex.Abstractions;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using LatexReferences.Models;
-using Newtonsoft.Json;
-using Microsoft.AspNetCore.Http;
 
 namespace LatexReferences.Controllers
 {
@@ -80,14 +77,18 @@ namespace LatexReferences.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, string entryStyleString) //(IFormCollection fc)
+        public async Task<IActionResult> Edit(int id, string entryStyleString)
         {
-            var entryStyle = JsonConvert.DeserializeObject<EntryStyle>(entryStyleString);
-            entryStyle.Id = id;
-
-            if (id != entryStyle.Id)
+            EntryStyle entryStyle = null;
+            try
             {
-                return NotFound();
+                entryStyle = JsonConvert.DeserializeObject<EntryStyle>(entryStyleString);
+                entryStyle.Id = id;
+            }
+            catch (Exception ex)
+            {
+                entryStyle = await _context.EntryStyles.FindAsync(id);
+                ModelState.AddModelError("", ex.ToString());
             }
 
             if (ModelState.IsValid)

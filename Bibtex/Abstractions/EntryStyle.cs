@@ -1,9 +1,11 @@
-﻿using LatexReferences.Models.Fields;
+﻿using Bibtex.Abstractions.Fields;
+using Bibtex.Enumerations;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace LatexReferences.Models
+namespace Bibtex.Abstractions
 {
     public class EntryStyle
     {
@@ -11,6 +13,9 @@ namespace LatexReferences.Models
         public int Id { get; set; }
 
         public string Name { get; set; }
+
+        [JsonConverter(typeof(StringEnumConverter))]
+        public EntryType Type { get; set; }
 
         [JsonIgnore]
         private string FieldsString { get; set; }
@@ -21,5 +26,7 @@ namespace LatexReferences.Models
             get => FieldsString != null ? JsonConvert.DeserializeObject<IEnumerable<Field>>(FieldsString) : new List<Field>();
             set => FieldsString = JsonConvert.SerializeObject(value);
         }
+
+        public static EntryStyle Default = new EntryStyle { Fields = new List<Field>() };
     }
 }

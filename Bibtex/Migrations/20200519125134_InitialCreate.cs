@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace LatexReferences.Migrations
+namespace Bibtex.Migrations
 {
     public partial class InitialCreate : Migration
     {
@@ -26,6 +26,7 @@ namespace LatexReferences.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(nullable: true),
+                    Type = table.Column<int>(nullable: false),
                     BibliographyStyleId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>

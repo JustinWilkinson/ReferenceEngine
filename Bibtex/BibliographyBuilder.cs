@@ -36,14 +36,13 @@ namespace Bibtex
             _auxParser = auxParser;
             _bibParser = bibParser;
             _logger = logger;
-            CustomItemTemplates = new Dictionary<EntryType, BibitemTemplate>();
         }
 
         public string TexFilePath { get; set; }
 
         public string BibFilePath { get; set; }
 
-        public Dictionary<EntryType, BibitemTemplate> CustomItemTemplates { get; set; }
+        public BibliographyStyle BibliographyStyle { get; set; }
 
         public void Build()
         {
@@ -56,6 +55,10 @@ namespace Bibtex
             else if (BibFilePath == null)
             {
                 throw new ArgumentNullException(nameof(BibFilePath));
+            }
+            else if (BibliographyStyle == null)
+            {
+
             }
 
             _fileManager.ThrowIfFileDoesNotExist(TexFilePath);
@@ -70,8 +73,8 @@ namespace Bibtex
                 var bibtexEntry = bibtexDatabase.Entries.SingleOrDefault(bibtexEntry => bibtexEntry.CitationKey == auxEntry.Key);
                 if (bibtexEntry != null)
                 {
-                    var bibitemTemplate = CustomItemTemplates.TryGetValue(bibtexEntry.EntryType, out var template) ? template : BibitemTemplate.GetDefaultTemplate(bibtexEntry.EntryType);
-                    _bibitems.Add(new Bibitem(auxEntry, bibtexEntry, bibitemTemplate));
+                    var style = BibliographyStyle.EntryStyles.SingleOrDefault(s => s.Type == bibtexEntry.EntryType) ?? EntryStyle.Default;
+                    _bibitems.Add(new Bibitem(auxEntry, bibtexEntry, style));
                 }
             }
 

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace LatexReferences.Models
+namespace Bibtex.Abstractions
 {
     public class BibliographyStyle
     {
@@ -8,6 +8,6 @@ namespace LatexReferences.Models
 
         public string Name { get; set; }
 
-        public IEnumerable<EntryStyle> EntryStyles { get; set; } 
+        public List<EntryStyle> EntryStyles { get; set; }
     }
 }

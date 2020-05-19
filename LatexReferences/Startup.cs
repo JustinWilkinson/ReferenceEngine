@@ -1,6 +1,6 @@
+using Bibtex.Abstractions;
 using ElectronNET.API;
 using ElectronNET.API.Entities;
-using LatexReferences.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
