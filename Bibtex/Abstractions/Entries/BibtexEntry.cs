@@ -111,11 +111,10 @@ namespace Bibtex.Abstractions.Entries
                         break;
                     case FieldType.Field:
                         _propertyGetters.TryGetValue((field as EntryField).Value, out var propertyGetter);
-                        builder.Append(propertyGetter(this));
+                        builder.Append(new LatexString(propertyGetter(this)) { Bold = field.Bold, Italic = field.Italic });
                         break;
                     case FieldType.AuthorField:
-                        var authorField = field as EntryAuthorField;
-                        builder.Append(authorField.Format.FormatAuthorField(Author));
+                        builder.Append(new LatexString((field as EntryAuthorField).Format.FormatAuthorField(Author)) { Bold = field.Bold, Italic = field.Italic });
                         break;
                 }
             }
