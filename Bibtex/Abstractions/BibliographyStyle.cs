@@ -8,6 +8,6 @@ namespace Bibtex.Abstractions
 
         public string Name { get; set; }
 
-        public List<EntryStyle> EntryStyles { get; set; }
+        public List<EntryStyle> EntryStyles { get; set; } = new List<EntryStyle>();
     }
 }

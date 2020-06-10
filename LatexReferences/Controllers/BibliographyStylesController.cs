@@ -1,6 +1,8 @@
 ﻿using Bibtex.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -26,13 +28,8 @@ namespace LatexReferences.Controllers
                 return NotFound();
             }
 
-            var style = await _context.BibliographyStyles.FirstOrDefaultAsync(m => m.Id == id);
-            if (style == null)
-            {
-                return NotFound();
-            }
-
-            return View(style);
+            var style = await _context.BibliographyStyles.Include(x => x.EntryStyles).SingleOrDefaultAsync(m => m.Id == id);
+            return style != null ? View(style) as IActionResult : NotFound();
         }
 
         // GET: Styles/Create
@@ -62,12 +59,8 @@ namespace LatexReferences.Controllers
                 return NotFound();
             }
 
-            var style = await _context.BibliographyStyles.FindAsync(id);
-            if (style == null)
-            {
-                return NotFound();
-            }
-            return View(style);
+            var style = await _context.BibliographyStyles.Include(x => x.EntryStyles).SingleOrDefaultAsync(x => x.Id == id);
+            return style != null ? View(style) as IActionResult : NotFound();
         }
 
         // POST: Styles/Edit/5
@@ -75,17 +68,39 @@ namespace LatexReferences.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] BibliographyStyle style)
+        public async Task<IActionResult> Edit(int id, string name, string entryStyleIds)
         {
-            if (id != style.Id)
+            var style = await _context.BibliographyStyles.Include(x => x.EntryStyles).SingleOrDefaultAsync(x => x.Id == id);
+
+            if (style == null)
             {
                 return NotFound();
+            }
+
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                ModelState.AddModelError("Name", "Name cannot be blank!");
+            }
+
+            var ids = new List<int>();
+            try
+            {
+                if (entryStyleIds != null)
+                {
+                    ids.AddRange(entryStyleIds.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(x => Convert.ToInt32(x)));
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
             }
 
             if (ModelState.IsValid)
             {
                 try
                 {
+                    style.Name = name;
+                    style.EntryStyles = await _context.EntryStyles.Where(x => ids.Contains(x.Id)).ToListAsync();
                     _context.Update(style);
                     await _context.SaveChangesAsync();
                 }
@@ -113,13 +128,8 @@ namespace LatexReferences.Controllers
                 return NotFound();
             }
 
-            var style = await _context.BibliographyStyles.FirstOrDefaultAsync(m => m.Id == id);
-            if (style == null)
-            {
-                return NotFound();
-            }
-
-            return View(style);
+            var style = await _context.BibliographyStyles.SingleOrDefaultAsync(m => m.Id == id);
+            return style != null ? View(style) as IActionResult : NotFound();
         }
 
         // POST: Styles/Delete/5

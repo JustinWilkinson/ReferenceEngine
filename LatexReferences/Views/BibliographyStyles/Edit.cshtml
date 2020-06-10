@@ -26,18 +26,15 @@
                     <label class="col-2 font-weight-bold">Type</label>
                     <label class="col-4 font-weight-bold">Name</label>
                 </div>
-                @if (Model.EntryStyles != null)
+                @foreach (var entryStyle in Model.EntryStyles.OrderBy(x => x.Type.ToString()).ThenBy(x => x.Name))
                 {
-                    @foreach (var entryStyle in Model.EntryStyles.OrderBy(x => x.Type.ToString()).ThenBy(x => x.Name))
-                    {
-                        <div class="row mb-1 align-items-center" id="entry-style-@entryStyle.Id">
-                            <label class="col-2">@entryStyle.Type</label>
-                            <label class="col-4">@entryStyle.Name</label>
-                            <div class="col-2">
-                                <button class="btn btn-danger" onclick="removeEntryStyle(@entryStyle.Id);">Remove</button>
-                            </div>
+                    <div class="row mb-1 align-items-center" id="entry-style-@entryStyle.Id">
+                        <label class="col-2">@entryStyle.Type</label>
+                        <label class="col-4">@entryStyle.Name</label>
+                        <div class="col-2">
+                            <button type="button" class="btn btn-danger" onclick="removeEntryStyle(@entryStyle.Id);">Remove</button>
                         </div>
-                    }
+                    </div>
                 }
             </div>
             <hr />
@@ -91,8 +88,8 @@
 
         function removeEntryStyle(id) {
             let ids = $('#entryStyleIds').val().split(',');
-            $('#entryStyleIds').val(ids.filter(x => x !== id).join(','));
-            $(`entry-style-${id}`).remove();
+            $('#entryStyleIds').val(ids.filter(x => Number(x) !== id).join(','));
+            $(`#entry-style-${id}`).remove();
         }
 
         function addEntryStyle() {
@@ -116,7 +113,7 @@
                         <label class="col-2">${type}</label>
                         <label class="col-2">${name}</label>
                         <div class="col-2">
-                            <button class="btn btn-danger" onclick="removeEntryStyle(${id})">Remove</button>
+                            <button type="button" class="btn btn-danger" onclick="removeEntryStyle(${id})">Remove</button>
                         </div>
                     </div>`);
                 }
