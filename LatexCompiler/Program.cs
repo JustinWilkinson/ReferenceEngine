@@ -1,17 +1,31 @@
 ﻿using Bibtex;
+using Bibtex.Abstractions;
+using Bibtex.Abstractions.Fields;
 using Bibtex.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using NLog;
 using NLog.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 
 namespace LatexCompiler
 {
     public class Program
     {
+        private static readonly string _baseDirectory;
+        private static readonly IConfiguration _config;
+
+        static Program()
+        {
+            _baseDirectory = Path.GetDirectoryName(Uri.UnescapeDataString(new UriBuilder(Assembly.GetExecutingAssembly().CodeBase).Path));
+            _config = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("LatexCompiler.json", false, true).Build();
+        }
+
         public static void Main(string[] args)
         {
             var logger = LogManager.GetCurrentClassLogger();
@@ -21,9 +35,9 @@ namespace LatexCompiler
                 var serviceProvider = ConfigureServices();
 
                 var bibliographyBuilder = serviceProvider.GetRequiredService<IBibliographyBuilder>();
-                bibliographyBuilder.TexFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Latex", "document.tex");
-                bibliographyBuilder.BibFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Latex", "lib.bib");
-                bibliographyBuilder.StyleFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Latex", "style.json");
+                bibliographyBuilder.TexFilePath = GetConfiguredPath("TexFilePath");
+                bibliographyBuilder.BibFilePath = GetConfiguredPath("BibFilePath");
+                bibliographyBuilder.StyleFilePath = GetConfiguredPath("StyleFilePath");
 
                 bibliographyBuilder.Build();
                 bibliographyBuilder.Write();
@@ -35,17 +49,11 @@ namespace LatexCompiler
             finally
             {
                 LogManager.Shutdown();
-                Console.ReadKey();
             }
         }
 
         private static IServiceProvider ConfigureServices()
         {
-            IConfiguration oConfig = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("LatexCompiler.json", false, true)
-                .Build();
-
             return new ServiceCollection()
                 .AddLogging(oLogBuilder =>
                 {
@@ -55,5 +63,7 @@ namespace LatexCompiler
                 .AddBibliographyBuilder()
                 .BuildServiceProvider();
         }
+
+        private static string GetConfiguredPath(string pathName) => _config[$"Paths:{pathName}"].Replace("[CURRENT_DIRECTORY]", _baseDirectory);
     }
 }

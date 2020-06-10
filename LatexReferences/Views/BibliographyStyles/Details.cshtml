@@ -17,6 +17,22 @@
             @Html.DisplayFor(model => model.Name)
         </dd>
     </dl>
+    <hr />
+    <h4>Styles</h4>
+    <hr />
+    <div id="entryStylesContainer" class="mb-1">
+        <div class="row mb-2">
+            <label class="col-2 font-weight-bold">Type</label>
+            <label class="col-4 font-weight-bold">Name</label>
+        </div>
+        @foreach (var entryStyle in Model.EntryStyles.OrderBy(x => x.Type.ToString()).ThenBy(x => x.Name))
+        {
+            <div class="row mb-1 align-items-center" id="entry-style-@entryStyle.Id">
+                <label class="col-2">@entryStyle.Type</label>
+                <label class="col-4">@entryStyle.Name</label>
+            </div>
+        }
+    </div>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |

@@ -22,7 +22,7 @@
             }
             if (Bold)
             {
-                value = $"\\texbf{{{value}}}";
+                value = $"\\textbf{{{value}}}";
             }
             return $"\\newblock {value}";
         }
