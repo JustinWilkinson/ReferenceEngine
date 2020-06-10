@@ -1,3 +1,7 @@
 {
-  
+  "Paths": { // Use [CURRENT_DIRECTORY] to use exe location.
+    "TexFilePath": "[CURRENT_DIRECTORY]/Latex/document.tex",
+    "BibFilePath": "[CURRENT_DIRECTORY]/Latex/lib.bib",
+    "StyleFilePath": "[CURRENT_DIRECTORY]/Latex/style.json"
+  }
 }
