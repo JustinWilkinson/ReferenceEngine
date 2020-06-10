@@ -1,11 +1,15 @@
 ﻿using Bibtex;
+using Bibtex.Abstractions;
+using Bibtex.Abstractions.Fields;
 using Bibtex.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using NLog;
 using NLog.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
