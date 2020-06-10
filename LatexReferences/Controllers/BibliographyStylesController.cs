@@ -49,7 +49,7 @@ namespace LatexReferences.Controllers
             {
                 _context.Add(style);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Edit), new { id = style.Id });
             }
             return View(style);
         }

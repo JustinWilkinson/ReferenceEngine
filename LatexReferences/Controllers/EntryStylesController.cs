@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,6 +20,9 @@ namespace LatexReferences.Controllers
 
         // GET: EntryStyles
         public async Task<IActionResult> Index() => View(await _context.EntryStyles.ToListAsync());
+
+        // GET: EntryStyles/List
+        public async Task<IEnumerable<EntryStyle>> List() => await _context.EntryStyles.ToListAsync();
 
         // GET: EntryStyles/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -51,7 +55,7 @@ namespace LatexReferences.Controllers
             {
                 _context.Add(entryStyle);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Edit), new { id = entryStyle.Id });
             }
             return View(entryStyle);
         }

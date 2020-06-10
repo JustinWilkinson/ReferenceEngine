@@ -9,17 +9,52 @@
 <h4>Bibliography Style</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-12">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
+            @Html.Hidden("EntryStyleIds", Model.EntryStyles != null ? string.Join(",", Model.EntryStyles.Select(x => x.Id)) : "", new { id = "entryStyleIds" })
+            <div class="form-group row ml-0">
+                <label asp-for="Name" class="col-form-label mr-2"></label>
+                <input asp-for="Name" class="form-control col-4" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
+            <h4>Styles</h4>
+            <hr />
+            <div id="entryStylesContainer" class="mb-1">
+                <div class="row mb-2">
+                    <label class="col-2 font-weight-bold">Type</label>
+                    <label class="col-4 font-weight-bold">Name</label>
+                </div>
+                @if (Model.EntryStyles != null)
+                {
+                    @foreach (var entryStyle in Model.EntryStyles.OrderBy(x => x.Type.ToString()).ThenBy(x => x.Name))
+                    {
+                        <div class="row mb-1 align-items-center" id="entry-style-@entryStyle.Id">
+                            <label class="col-2">@entryStyle.Type</label>
+                            <label class="col-4">@entryStyle.Name</label>
+                            <div class="col-2">
+                                <button class="btn btn-danger" onclick="removeEntryStyle(@entryStyle.Id);">Remove</button>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+            <hr />
+            <div class="row align-items-center">
+                <div class="col-4">
+                    <select id="styleSelect" class="w-100"></select>
+                </div>
+                <div class="col-2">
+                    <button type="button" class="btn btn-primary py-1 px-2" onclick="addEntryStyle();">Add Style</button>
+                </div>
+                <div class="col-6">
+                    <label id="styleValidation" class="text-danger"></label>
+                </div>
+            </div>
+            <hr />
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-success" />
             </div>
         </form>
     </div>
@@ -31,4 +66,64 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="/lib/jquery/dist/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#styleValidation').hide();
+
+            $.ajax({
+                url: '/EntryStyles/List',
+                type: 'GET',
+                success: function (styles) {
+                    if (styles && styles.length > 0) {
+                        let options = ['<option value="-1" selected disabled>Select a style to add here</option>'];
+                        for (let style of styles) {
+                            options.push(`<option value="${style.id}" data-style-type="${style.type}">${style.name}</option>`)
+                        }
+                        $('#styleSelect').html(options.join(','));
+                    } else {
+                        $('#styleSelect').html('<option value="-1">No styles found</option>');
+                    }
+                },
+                error: (xhr, textStatus, errorThrown) => console.log(`${xhr}, ${textStatus}, ${errorThrown}`)
+            });
+        });
+
+        function removeEntryStyle(id) {
+            let ids = $('#entryStyleIds').val().split(',');
+            $('#entryStyleIds').val(ids.filter(x => x !== id).join(','));
+            $(`entry-style-${id}`).remove();
+        }
+
+        function addEntryStyle() {
+            $('#styleValidation').hide();
+
+            let selected = $('#styleSelect').children('option:selected');
+            let id = selected.val();
+
+            if (id > 0) {
+                let type = selected.attr('data-style-type');
+                let name = selected.text();
+
+                let ids = $('#entryStyleIds').val().split(',');
+                if (ids.includes(id)) {
+                    $('#styleValidation').html('This entry style has already been selected!');
+                    $('#styleValidation').show();
+                } else {
+                    ids.push(id);
+                    $('#entryStyleIds').val(ids.join(','));
+                    $('#entryStylesContainer').append(`<div class="row mb-1 align-items-center" id="entry-style-${id}">
+                        <label class="col-2">${type}</label>
+                        <label class="col-2">${name}</label>
+                        <div class="col-2">
+                            <button class="btn btn-danger" onclick="removeEntryStyle(${id})">Remove</button>
+                        </div>
+                    </div>`);
+                }
+            } else {
+                $('#styleValidation').html('Please select a style!');
+                $('#styleValidation').show();
+            }
+        }
+    </script>
 }
