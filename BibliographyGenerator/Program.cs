@@ -8,6 +8,7 @@ using NLog.Extensions.Logging;
 using System;
 using System.IO;
 using System.Reflection;
+using ILogger = NLog.ILogger;
 
 namespace BibliographyGenerator
 {
@@ -15,32 +16,36 @@ namespace BibliographyGenerator
     {
         private static readonly string _baseDirectory;
         private static readonly IConfiguration _config;
+        private static readonly ILogger _logger;
 
         static Program()
         {
             _baseDirectory = Path.GetDirectoryName(Uri.UnescapeDataString(new UriBuilder(Assembly.GetExecutingAssembly().CodeBase).Path));
             _config = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("bibgen.json", false, true).Build();
+            _logger = LogManager.GetCurrentClassLogger();
         }
 
         public static void Main(string[] args)
         {
-            var logger = LogManager.GetCurrentClassLogger();
-
             try
             {
+                _logger.Trace("Bibliography generaor started.");
+
                 var serviceProvider = ConfigureServices();
 
                 var bibliographyBuilder = serviceProvider.GetRequiredService<IBibliographyBuilder>();
                 bibliographyBuilder.TexFilePath = GetConfiguredPath("TexFilePath");
                 bibliographyBuilder.BibFilePath = GetConfiguredPath("BibFilePath");
                 bibliographyBuilder.StyleFilePath = GetConfiguredPath("StyleFilePath");
-
+                
                 bibliographyBuilder.Build();
                 bibliographyBuilder.Write();
+
+                _logger.Trace("Bibliography successfully generated.");
             }
             catch (Exception ex)
             {
-                logger.Error(ex, "An unexpected error occurred running the latex compiler!");
+                _logger.Error(ex, "An unexpected error occurred running the latex compiler!");
             }
             finally
             {
