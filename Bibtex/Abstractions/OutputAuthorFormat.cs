@@ -29,6 +29,7 @@ namespace Bibtex.Abstractions
             Delimiter = ',',
             FinalDelimiter = "and",
             NumberOfNamedAuthors = 3,
+            IncludeMiddleNames = true,
             TruncatedAuthors = new LatexString("et al.") { Italic = true }
         };
 

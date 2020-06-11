@@ -1,4 +1,5 @@
 ﻿using Bibtex.Abstractions;
+using LatexReferences.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -68,12 +69,8 @@ namespace LatexReferences.Controllers
                 return NotFound();
             }
 
-            var entryStyle = await _context.EntryStyles.FindAsync(id);
-            if (entryStyle == null)
-            {
-                return NotFound();
-            }
-            return View(entryStyle);
+            var (found, value) = await _context.EntryStyles.TryFindAsync(id);
+            return found ? NotFound() : (IActionResult)View(value);
         }
 
         // POST: EntryStyles/Edit/5
