@@ -11,7 +11,8 @@ A class library to assist with parsing of .bib files, and the translation to int
 
 ### LatexReferences
 An Electron.NET GUI to assist with the creation, configuration and saving of different styles which can be used by the BibliographyGenerator.
-These configured styles can then be exported to a JSON file which is read by the bibgen.exe and used to create a .bbl file used by LaTeX.
+These configured styles can then be exported to a JSON file which is read by the bibgen.exe and used to create a .bbl file used by LaTex.
+
 
 ### Test
 An NUnit Test project containing tests for the solution.
