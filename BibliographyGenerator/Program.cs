@@ -1,19 +1,15 @@
 ﻿using Bibtex;
-using Bibtex.Abstractions;
-using Bibtex.Abstractions.Fields;
 using Bibtex.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using NLog;
 using NLog.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
-namespace LatexCompiler
+namespace BibliographyGenerator
 {
     public class Program
     {
@@ -23,7 +19,7 @@ namespace LatexCompiler
         static Program()
         {
             _baseDirectory = Path.GetDirectoryName(Uri.UnescapeDataString(new UriBuilder(Assembly.GetExecutingAssembly().CodeBase).Path));
-            _config = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("LatexCompiler.json", false, true).Build();
+            _config = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("BibliographyGenerator.json", false, true).Build();
         }
 
         public static void Main(string[] args)

@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29920.165
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LatexReferences", "LatexReferences\LatexReferences.csproj", "{591A9062-2740-4EDA-8276-5F939754C1BA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LatexCompiler", "LatexCompiler\LatexCompiler.csproj", "{CD6773B7-2804-4D3C-9858-15B921CB65D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BibliographyGenerator", "BibliographyGenerator\BibliographyGenerator.csproj", "{CD6773B7-2804-4D3C-9858-15B921CB65D2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bibtex", "Bibtex\Bibtex.csproj", "{3E2B945F-E51B-44E1-8FA1-8E65B02D9364}"
 EndProject

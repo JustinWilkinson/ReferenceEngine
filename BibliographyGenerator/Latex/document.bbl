@@ -1,0 +1,38 @@
+\begin{thebibliography}{1}
+
+\bibitem{xrandom}
+L.~Breiman and P.~Spector.
+\newblock Submodel selection and evaluation in regression -- the x- random
+  case.
+\newblock Technical Report 197, Department of Statistics, University of
+  California, Berkeley, Berkeley, CA, June 1990.
+
+\bibitem{strontiummottling}
+M.E.J Curzon and P.C. Spector.
+\newblock Enamel mottling in a high strontium area of the {U.S.A}.
+\newblock {\em Comm. Dent. Oral Epid.}, 5:243--247, 1977.
+
+\bibitem{stablestrontium}
+M.E.J. Curzon and P.C. Spector.
+\newblock {\em Hanbook of Stable Strontium}, chapter Strontium in Human Dental
+  Enamel, pages 581--592.
+\newblock Plenum Press, 1981.
+
+\bibitem{wic}
+L.~Ritchie, S.~Whatley, P.~Spector, J.~Gomez, and P.~Crawford.
+\newblock Favorable inpact of nutrition education on california {WIC} families.
+\newblock {\em Journal of Nutrition Education and Behavior}, 42(3S):S2--S10,
+  2010.
+
+\bibitem{sugirepeated}
+P.C. Spector.
+\newblock Strategies for repeated measures analysis of variance.
+\newblock In {\em Proceedings of the 12th SAS User’s Group}, pages
+  1174--1177, 1987.
+
+\bibitem{datamanipulation}
+Phil Spector.
+\newblock {\em Data Manipulation with R}.
+\newblock Springer, New York, 2008.
+
+\end{thebibliography}

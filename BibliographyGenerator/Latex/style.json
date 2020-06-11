@@ -1,0 +1,80 @@
+{
+  "Id": 0,
+  "Name": "Example",
+  "EntryStyles": [
+    {
+      "Name": "Article Rule",
+      "Type": "Article",
+      "Fields": [
+        {
+          "Type": "Field",
+          "Bold": false,
+          "Italic": false,
+          "Value": "Title"
+        },
+        {
+          "Type": "Field",
+          "Bold": true,
+          "Italic": false,
+          "Value": "Year"
+        },
+        {
+          "Type": "AuthorField",
+          "Bold": false,
+          "Italic": false,
+          "Format": {
+            "AbbreviateFirstNameCharacters": null,
+            "LastNameFirst": false,
+            "IncludeMiddleNames": false,
+            "IncludeSuffix": false,
+            "Delimiter": ",",
+            "FinalDelimiter": "and",
+            "NumberOfNamedAuthors": 3,
+            "TruncatedAuthors": {
+              "Bold": false,
+              "Italic": true,
+              "Value": "et al"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "Name": "Book Rule",
+      "Type": "Book",
+      "Fields": [
+        {
+          "Type": "Field",
+          "Bold": false,
+          "Italic": false,
+          "Value": "Title"
+        },
+        {
+          "Type": "Field",
+          "Bold": false,
+          "Italic": false,
+          "Value": "Year"
+        },
+        {
+          "Type": "AuthorField",
+          "Bold": false,
+          "Italic": false,
+          "Format": {
+            "AbbreviateFirstNameCharacters": null,
+            "LastNameFirst": false,
+            "IncludeMiddleNames": false,
+            "IncludeSuffix": false,
+            "Delimiter": ",",
+            "FinalDelimiter": "and",
+            "NumberOfNamedAuthors": 3,
+            "TruncatedAuthors": {
+              "Bold": false,
+              "Italic": true,
+              "Value": "et al"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
