@@ -1,6 +1,3 @@
-# Ignore temporary test files
-LatexCompiler/Latex/
-
 # Ignore SQLite Database
 *.sqlite
 
