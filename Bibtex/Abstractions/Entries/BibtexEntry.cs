@@ -102,20 +102,44 @@ namespace Bibtex.Abstractions.Entries
 
             var builder = new StringBuilder();
 
+            var isFirst = true;
             foreach (var field in style.Fields)
             {
+                string text = null;
+
                 switch (field.Type)
                 {
                     case FieldType.Constant:
-                        builder.Append(new LatexString((field as ConstantField).Value) { Bold = field.Bold, Italic = field.Italic });
+                        text = (field as ConstantField).Value;
                         break;
                     case FieldType.Field:
                         _propertyGetters.TryGetValue((field as EntryField).Value, out var propertyGetter);
-                        builder.Append(new LatexString(propertyGetter(this)) { Bold = field.Bold, Italic = field.Italic });
+                        text = propertyGetter(this);
                         break;
                     case FieldType.AuthorField:
-                        builder.Append(new LatexString((field as EntryAuthorField).Format.FormatAuthorField(Author)) { Bold = field.Bold, Italic = field.Italic });
+                        text = (field as EntryAuthorField).Format.FormatAuthorField(Author);
                         break;
+                }
+
+                if (text != null)
+                {
+                    if (field.Prefix != null)
+                    {
+                        builder.Append(field.Prefix);
+                    }
+                    else
+                    {
+                        if (!isFirst)
+                        {
+                            builder.Append(" ");
+                        }
+                        else
+                        {
+                            isFirst = false;
+                        }
+                    }
+                    builder.Append(new LatexString(text) { Bold = field.Bold, Italic = field.Italic });
+                    builder.Append(field.Suffix);
                 }
             }
 

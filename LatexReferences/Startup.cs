@@ -1,11 +1,15 @@
 using Bibtex.Abstractions;
+using Bibtex.Extensions;
 using ElectronNET.API;
 using ElectronNET.API.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using NLog.Extensions.Logging;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
@@ -25,11 +29,22 @@ namespace LatexReferences
         {
             services.AddControllersWithViews().AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
             services.AddDbContext<ApplicationDbContext>();
+            services.AddLogging(oLogBuilder =>
+            {
+                oLogBuilder.ClearProviders();
+                oLogBuilder.AddNLog();
+            });
+            services.AddBibliographyBuilder();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                scope.ServiceProvider.GetRequiredService<ApplicationDbContext>().Database.Migrate();
+            }
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

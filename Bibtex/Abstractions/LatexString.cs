@@ -15,16 +15,23 @@
 
         public override string ToString()
         {
+            if (string.IsNullOrWhiteSpace(Value))
+            {
+                return "";
+            }
+
             string value = Value;
+
             if (Italic)
             {
-                value = $"{{\\em {value}}}";
+                value = $"\\emph{{{value}}}";
             }
             if (Bold)
             {
                 value = $"\\textbf{{{value}}}";
             }
-            return $"\\newblock {value}";
+
+            return value;
         }
     }
 }
