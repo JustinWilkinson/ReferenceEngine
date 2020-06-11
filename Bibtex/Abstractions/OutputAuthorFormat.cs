@@ -29,7 +29,7 @@ namespace Bibtex.Abstractions
             Delimiter = ',',
             FinalDelimiter = "and",
             NumberOfNamedAuthors = 3,
-            TruncatedAuthors = new LatexString("et al") { Italic = true }
+            TruncatedAuthors = new LatexString("et al.") { Italic = true }
         };
 
         public string FormatAuthorField(string authorField)
@@ -85,7 +85,7 @@ namespace Bibtex.Abstractions
                     authorBuilder.Append($"{firstName}{middleNames}{author.LastName}{suffix}");
                 }
 
-                yield return authorBuilder.ToString();
+                yield return authorBuilder.ToString().TrimIgnoredCharacters();
             }
         }
     }

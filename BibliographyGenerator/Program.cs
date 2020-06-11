@@ -19,7 +19,7 @@ namespace BibliographyGenerator
         static Program()
         {
             _baseDirectory = Path.GetDirectoryName(Uri.UnescapeDataString(new UriBuilder(Assembly.GetExecutingAssembly().CodeBase).Path));
-            _config = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("BibliographyGenerator.json", false, true).Build();
+            _config = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("bibgen.json", false, true).Build();
         }
 
         public static void Main(string[] args)

@@ -13,10 +13,60 @@
           "Value": "Title"
         },
         {
+          "Type": "AuthorField",
+          "Bold": false,
+          "Italic": false,
+          "Format": {
+            "AbbreviateFirstNameCharacters": null,
+            "LastNameFirst": false,
+            "IncludeMiddleNames": false,
+            "IncludeSuffix": false,
+            "Delimiter": ",",
+            "FinalDelimiter": "and",
+            "NumberOfNamedAuthors": 3,
+            "TruncatedAuthors": {
+              "Bold": false,
+              "Italic": true,
+              "Value": "et al."
+            }
+          },
+          "Suffix": ","
+        },
+        {
           "Type": "Field",
-          "Bold": true,
+          "Bold": false,
+          "Italic": true,
+          "Value": "Journal"
+        },
+        {
+          "Type": "Field",
+          "Bold": false,
           "Italic": false,
           "Value": "Year"
+        }
+      ]
+    },
+    {
+      "Name": "In Book Rule",
+      "Type": "InBook",
+      "Fields": [
+        {
+          "Type": "Field",
+          "Bold": false,
+          "Italic": false,
+          "Value": "Title"
+        },
+        {
+          "Type": "Field",
+          "Bold": false,
+          "Italic": true,
+          "Value": "Pages"
+        },
+        {
+          "Type": "Constant",
+          "Bold": false,
+          "Italic": false,
+          "Value": "by"
         },
         {
           "Type": "AuthorField",
@@ -33,9 +83,21 @@
             "TruncatedAuthors": {
               "Bold": false,
               "Italic": true,
-              "Value": "et al"
+              "Value": "et al."
             }
           }
+        },
+        {
+          "Type": "Field",
+          "Bold": false,
+          "Italic": false,
+          "Value": "Publisher"
+        },
+        {
+          "Type": "Field",
+          "Bold": false,
+          "Italic": false,
+          "Value": "Year"
         }
       ]
     },
@@ -52,8 +114,14 @@
         {
           "Type": "Field",
           "Bold": false,
+          "Italic": true,
+          "Value": "Pages"
+        },
+        {
+          "Type": "Constant",
+          "Bold": false,
           "Italic": false,
-          "Value": "Year"
+          "Value": "by"
         },
         {
           "Type": "AuthorField",
@@ -70,9 +138,151 @@
             "TruncatedAuthors": {
               "Bold": false,
               "Italic": true,
-              "Value": "et al"
+              "Value": "et al."
             }
           }
+        },
+        {
+          "Type": "Field",
+          "Bold": false,
+          "Italic": false,
+          "Value": "Publisher"
+        },
+        {
+          "Type": "Field",
+          "Bold": false,
+          "Italic": false,
+          "Value": "Year"
+        }
+      ]
+    },
+    {
+      "Name": "Conference Rule",
+      "Type": "Conference",
+      "Fields": [
+        {
+          "Type": "Field",
+          "Bold": false,
+          "Italic": false,
+          "Value": "Title"
+        },
+        {
+          "Type": "AuthorField",
+          "Bold": false,
+          "Italic": false,
+          "Format": {
+            "AbbreviateFirstNameCharacters": null,
+            "LastNameFirst": false,
+            "IncludeMiddleNames": false,
+            "IncludeSuffix": false,
+            "Delimiter": ",",
+            "FinalDelimiter": "and",
+            "NumberOfNamedAuthors": 3,
+            "TruncatedAuthors": {
+              "Bold": false,
+              "Italic": true,
+              "Value": "et al."
+            }
+          }
+        },
+        {
+          "Type": "Field",
+          "Bold": true,
+          "Italic": false,
+          "Value": "Journal",
+          "Suffix": ","
+        },
+        {
+          "Type": "Field",
+          "Bold": false,
+          "Italic": false,
+          "Value": "Year"
+        }
+      ]
+    },
+    {
+      "Name": "Tech Report Rule",
+      "Type": "TechReport",
+      "Fields": [
+        {
+          "Type": "Field",
+          "Bold": false,
+          "Italic": false,
+          "Value": "Title"
+        },
+        {
+          "Type": "AuthorField",
+          "Bold": false,
+          "Italic": false,
+          "Format": {
+            "AbbreviateFirstNameCharacters": null,
+            "LastNameFirst": false,
+            "IncludeMiddleNames": false,
+            "IncludeSuffix": false,
+            "Delimiter": ",",
+            "FinalDelimiter": "and",
+            "NumberOfNamedAuthors": 3,
+            "TruncatedAuthors": {
+              "Bold": false,
+              "Italic": true,
+              "Value": "et al."
+            }
+          }
+        },
+        {
+          "Type": "Field",
+          "Bold": false,
+          "Italic": false,
+          "Value": "Institution"
+        },
+        {
+          "Type": "Field",
+          "Bold": false,
+          "Italic": false,
+          "Value": "Year"
+        }
+      ]
+    },
+    {
+      "Name": "PhD Thesis Rule",
+      "Type": "PhDThesis",
+      "Fields": [
+        {
+          "Type": "Field",
+          "Bold": false,
+          "Italic": false,
+          "Value": "Title"
+        },
+        {
+          "Type": "AuthorField",
+          "Bold": false,
+          "Italic": false,
+          "Format": {
+            "AbbreviateFirstNameCharacters": null,
+            "LastNameFirst": false,
+            "IncludeMiddleNames": false,
+            "IncludeSuffix": false,
+            "Delimiter": ",",
+            "FinalDelimiter": "and",
+            "NumberOfNamedAuthors": 3,
+            "TruncatedAuthors": {
+              "Bold": false,
+              "Italic": true,
+              "Value": "et al."
+            }
+          }
+        },
+        {
+          "Type": "Field",
+          "Bold": false,
+          "Italic": false,
+          "Value": "School"
+        },
+        {
+          "Type": "Field",
+          "Bold": false,
+          "Italic": false,
+          "Value": "Year"
         }
       ]
     }
