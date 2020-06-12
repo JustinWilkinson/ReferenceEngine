@@ -1,4 +1,5 @@
 ﻿using Bibtex.Abstractions;
+using LatexReferences.Database;
 using LatexReferences.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

@@ -17,13 +17,13 @@ namespace Test.Bibtex.Abstractions
         [Test]
         public void FromString_GivenEmptyString_ThrowsFormatException()
         {
-            Assert.Throws<FormatException>(() => BibtexAuthor.FromString(""));
+            Assert.Throws<ArgumentException>(() => BibtexAuthor.FromString(""));
         }
 
         [Test]
         public void FromString_GivenWhitespaceString_ThrowsFormatException()
         {
-            Assert.Throws<FormatException>(() => BibtexAuthor.FromString("  "));
+            Assert.Throws<ArgumentException>(() => BibtexAuthor.FromString("  "));
         }
 
         [Test]

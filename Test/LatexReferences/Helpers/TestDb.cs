@@ -1,4 +1,4 @@
-﻿using Bibtex.Abstractions;
+﻿using LatexReferences.Database;
 using Microsoft.EntityFrameworkCore;
 
 namespace Test.LatexReferences.Helpers

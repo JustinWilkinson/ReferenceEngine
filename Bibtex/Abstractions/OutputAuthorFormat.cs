@@ -6,33 +6,62 @@ using System.Text;
 
 namespace Bibtex.Abstractions
 {
+    /// <summary>
+    /// Represents the format to apply to the Author field.
+    /// </summary>
     public class OutputAuthorFormat
     {
-        public int? AbbreviateFirstNameCharacters { get; set; }
+        /// <summary>
+        /// The number of characters to abbreviate the first name to, if not specified the full name is taken.
+        /// Defaults to null.
+        /// </summary>
+        public int? AbbreviateFirstNameCharacters { get; set; } = null;
 
-        public bool LastNameFirst { get; set; }
+        /// <summary>
+        /// Specifies whether the last name is listed before the first name.
+        /// Defaults to false.
+        /// </summary>
+        public bool LastNameFirst { get; set; } = false;
 
-        public bool IncludeMiddleNames { get; set; }
+        /// <summary>
+        /// Specifies whether to include the middle names of authors.
+        /// Defaults to true.
+        /// </summary>
+        public bool IncludeMiddleNames { get; set; } = true;
 
-        public bool IncludeSuffix { get; set; }
+        /// <summary>
+        /// Specifies whether to include any suffices the author may have, e.g. Jr. or PhD.
+        /// Defaults to true.
+        /// </summary>
+        public bool IncludeSuffix { get; set; } = true;
 
-        public char Delimiter { get; set; }
+        /// <summary>
+        /// The character to used to delimit multiple authors.
+        /// Defaults to a comma ','.
+        /// </summary>
+        public char Delimiter { get; set; } = ',';
 
-        public string FinalDelimiter { get; set; }
+        /// <summary>
+        /// Allows a special delimiter to be used for the seperate the final two authors.
+        /// Defaults to "and".
+        /// </summary>
+        public string FinalDelimiter { get; set; } = "and";
 
-        public int NumberOfNamedAuthors { get; set; }
+        /// <summary>
+        /// The number of authors to include before truncating, and appending the TruncatedAuthorsText
+        /// </summary>
+        public int NumberOfNamedAuthors { get; set; } = 3;
 
-        public LatexString TruncatedAuthors { get; set; }
+        /// <summary>
+        /// A LatexString defining whether or not, defaults to "<i>et al.</i>"
+        /// </summary>
+        public LatexString TruncatedAuthorsText { get; set; } = new LatexString("et al.") { Italic = true };
 
-        public static OutputAuthorFormat Default { get; } = new OutputAuthorFormat
-        {
-            Delimiter = ',',
-            FinalDelimiter = "and",
-            NumberOfNamedAuthors = 3,
-            IncludeMiddleNames = true,
-            TruncatedAuthors = new LatexString("et al.") { Italic = true }
-        };
-
+        /// <summary>
+        /// Fully applies this format to the provided author field.
+        /// </summary>
+        /// <param name="authorField">The contents of the author field.</param>
+        /// <returns>A formatted string containing the authors or null if the provided string is null</returns>
         public string FormatAuthorField(string authorField)
         {
             if (authorField != null)
@@ -48,11 +77,11 @@ namespace Bibtex.Abstractions
                 }
                 else if (authors.Length <= NumberOfNamedAuthors)
                 {
-                    return $"{string.Join($"{Delimiter} ", authors[..^1])} {FinalDelimiter} {authors[^1]}";
+                    return $"{string.Join($"{Delimiter} ", authors[..^1])} {FinalDelimiter ?? Delimiter.ToString()} {authors[^1]}";
                 }
                 else
                 {
-                    return $"{string.Join($"{Delimiter} ", authors[0..NumberOfNamedAuthors])} {TruncatedAuthors}";
+                    return $"{string.Join($"{Delimiter} ", authors[0..NumberOfNamedAuthors])} {TruncatedAuthorsText}";
                 }
             }
             else
@@ -61,6 +90,12 @@ namespace Bibtex.Abstractions
             }
         }
 
+        /// <summary>
+        /// Breaks down the contents of the Author field into a collection of BibtexAuthors and formats them.
+        /// </summary>
+        /// <param name="authorField">The contents of the author field.</param>
+        /// <returns>An IEnumerable of formatted author names.</returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public IEnumerable<string> GetFormattedIndividualAuthors(string authorField)
         {
             if (authorField is null)

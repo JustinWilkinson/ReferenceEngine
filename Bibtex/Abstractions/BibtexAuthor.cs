@@ -3,16 +3,36 @@ using System.Collections.Generic;
 
 namespace Bibtex.Abstractions
 {
+    /// <summary>
+    /// Represents a Bibtex Author - the author field is a little more complex than the other fields, so has some special handling.
+    /// </summary>
     public class BibtexAuthor
     {
+        /// <summary>
+        /// The first name of the author.
+        /// </summary>
         public string FirstName { get; set; }
 
+        /// <summary>
+        /// Any middle names of the author.
+        /// </summary>
         public IEnumerable<string> MiddleNames { get; set; }
 
+        /// <summary>
+        /// The last name of the author.
+        /// </summary>
         public string LastName { get; set; }
 
         public string Suffix { get; set; }
 
+        /// <summary>
+        /// Builds a BibtexAuthor from the given string.
+        /// This method supports all accepted BibTeX formats: https://texfaq.org/FAQ-manyauthor.
+        /// </summary>
+        /// <param name="author">The string to parse into an author</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// /// <exception cref="ArgumentException">Thrown if the provided string is empty or consists solely of whitespace.</exception>
         public static BibtexAuthor FromString(string author)
         {
             if (author is null)
@@ -21,10 +41,9 @@ namespace Bibtex.Abstractions
             }
             else if (author.Trim().Length == 0)
             {
-                throw new FormatException($"Parameter should not be empty or whitespace: {nameof(author)}");
+                throw new ArgumentException($"Parameter should not be empty or whitespace: {nameof(author)}");
             }
 
-            // Parse author field using accepted BibTeX formats: https://texfaq.org/FAQ-manyauthor.
             var bibtexAuthor = new BibtexAuthor();
             var commaSplit = author.Split(',', StringSplitOptions.RemoveEmptyEntries);
 

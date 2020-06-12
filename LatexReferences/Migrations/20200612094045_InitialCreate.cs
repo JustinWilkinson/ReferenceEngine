@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Bibtex.Migrations
+namespace LatexReferences.Migrations
 {
     public partial class InitialCreate : Migration
     {

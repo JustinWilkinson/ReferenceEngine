@@ -7,30 +7,51 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Bibtex.Abstractions
 {
+    /// <summary>
+    /// Represents the styling of an entry.
+    /// </summary>
     public class EntryStyle
     {
+        /// <summary>
+        /// The Id of the entry style, useful for identification.
+        /// </summary>
         [JsonIgnore]
         public int Id { get; set; }
 
+        /// <summary>
+        /// The name of the style.
+        /// </summary>
         public string Name { get; set; }
 
+        /// <summary>
+        /// The type of entry to apply this style to.
+        /// </summary>
         [JsonConverter(typeof(StringEnumConverter))]
         public EntryType Type { get; set; }
 
+        /// <summary>
+        /// The fields to be extracted from the entry.
+        /// </summary>
         [NotMapped]
         [JsonConverter(typeof(FieldConverter))]
         public IEnumerable<Field> Fields
         {
-            get => FieldsString != null ? JsonConvert.DeserializeObject<IEnumerable<Field>>(FieldsString, new FieldConverter()) : new List<Field>();
+            get => FieldsJson != null ? JsonConvert.DeserializeObject<IEnumerable<Field>>(FieldsJson, new FieldConverter()) : new List<Field>();
             set
             {
-                FieldsString = JsonConvert.SerializeObject(value);
+                FieldsJson = JsonConvert.SerializeObject(value);
             }
         }
 
+        /// <summary>
+        /// A JSON representation of the Fields - useful for entity framework.
+        /// </summary>
         [JsonIgnore]
-        internal string FieldsString { get; set; }
+        public string FieldsJson { get; set; }
 
+        /// <summary>
+        /// The default styling.
+        /// </summary>
         public static EntryStyle Default = new EntryStyle { Fields = new List<Field>() };
     }
 }

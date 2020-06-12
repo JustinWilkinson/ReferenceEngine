@@ -1,7 +1,7 @@
-using Bibtex.Abstractions;
 using Bibtex.Extensions;
 using ElectronNET.API;
 using ElectronNET.API.Entities;
+using LatexReferences.Database;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
