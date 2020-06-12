@@ -25,7 +25,7 @@ namespace Test.Bibtex.Abstractions
 
             // Assert
             Assert.AreEqual(1, result.Count);
-            Assert.AreEqual("Anthony Author", result[0]);
+            Assert.AreEqual("Anthony N. Author", result[0]);
         }
 
         [TestCase(1, ExpectedResult = "A. Author")]

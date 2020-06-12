@@ -23,6 +23,9 @@ namespace Bibtex.Abstractions
         /// </summary>
         public string LastName { get; set; }
 
+        /// <summary>
+        /// The suffix of the author's name, e.g. Jr. or PhD.
+        /// </summary>
         public string Suffix { get; set; }
 
         /// <summary>
