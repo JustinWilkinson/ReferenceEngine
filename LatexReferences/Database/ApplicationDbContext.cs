@@ -16,7 +16,7 @@ namespace LatexReferences.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<EntryStyle>().Property(es => es.FieldsString).HasColumnName("Fields");
+            modelBuilder.Entity<EntryStyle>().Property(es => es.FieldsJson).HasColumnName("Fields");
         }
     }
 }

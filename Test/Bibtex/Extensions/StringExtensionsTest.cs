@@ -18,7 +18,7 @@ namespace Test.Bibtex.Extensions
         [TestCase("{Some value with {nested value here}}", ExpectedResult = "Some value with nested value here")]
         public string ReplaceBraces_RemovesBraces_Successfully(string toTrim)
         {
-            return toTrim.ReplaceBraces();
+            return toTrim.RemoveBraces();
         }
     }
 }

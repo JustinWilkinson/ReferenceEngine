@@ -11,21 +11,45 @@ using System.Linq;
 
 namespace Bibtex
 {
+    /// <summary>
+    /// Defines the methods required to build a bibliography style and write a styled .bbl file.
+    /// </summary>
     public interface IBibliographyBuilder
     {
+        /// <summary>
+        /// The path to the .tex file to read.
+        /// </summary>
         public string TexFilePath { get; set; }
 
+        /// <summary>
+        /// The path to the .bib file to read.
+        /// </summary>
         public string BibFilePath { get; set; }
 
+        /// <summary>
+        /// The path to the style file to read.
+        /// </summary>
         public string StyleFilePath { get; set; }
 
+        /// <summary>
+        /// The bibliography style to use.
+        /// </summary>
         public BibliographyStyle BibliographyStyle { get; set; }
 
+        /// <summary>
+        /// Builds the BibliographyStyle and applies it to the contents of the BibFilePath.
+        /// </summary>
         public void Build();
 
+        /// <summary>
+        /// Writes the bibliography to a .bbl file.
+        /// </summary>
         public void Write();
     }
 
+    /// <summary>
+    /// An implementation of the IBibliographyBuilder used to build and write a styled .bbl file.
+    /// </summary>
     public class BibliographyBuilder : IBibliographyBuilder
     {
         private readonly IFileManager _fileManager;
@@ -35,6 +59,13 @@ namespace Bibtex
 
         private readonly List<Bibitem> _bibitems = new List<Bibitem>();
 
+        /// <summary>
+        /// Constructs a new BibliographyBuilder.
+        /// </summary>
+        /// <param name="fileManager">FileManager used to check the existence of files.</param>
+        /// <param name="auxParser">The AuxParser instance to use to read the .aux file.</param>
+        /// <param name="bibParser">The BibtexParser instance to use to read the .bib file.</param>
+        /// <param name="logger">The Logger used by this instance.</param>
         public BibliographyBuilder(IFileManager fileManager, IAuxParser auxParser, IBibtexParser bibParser, ILogger<BibliographyBuilder> logger)
         {
             _fileManager = fileManager;
@@ -43,14 +74,20 @@ namespace Bibtex
             _logger = logger;
         }
 
+        /// <inheritdoc />
         public string TexFilePath { get; set; }
 
+        /// <inheritdoc />
         public string BibFilePath { get; set; }
 
+        /// <inheritdoc />
         public string StyleFilePath { get; set; }
-
+        
+        /// <inheritdoc />
         public BibliographyStyle BibliographyStyle { get; set; }
 
+        /// <inheritdoc />
+        /// <exception cref="ArgumentNullException">The TexFilePath, BibFilePath and BibliographyStyle (or a path to the Style file) must be provided</exception>
         public void Build()
         {
             _logger.LogTrace("Starting build of bibliography.");
@@ -104,6 +141,7 @@ namespace Bibtex
             _logger.LogTrace("Bibliography build completed.");
         }
 
+        /// <inheritdoc />
         public void Write()
         {
             _logger.LogTrace("Starting write of .bbl file.");
@@ -120,7 +158,7 @@ namespace Bibtex
             }
             writer.WriteLine("\\end{thebibliography}");
 
-            _logger.LogTrace("Starting build of .bbl file.");
+            _logger.LogTrace("Finished writing .bbl file.");
         }
     }
 }

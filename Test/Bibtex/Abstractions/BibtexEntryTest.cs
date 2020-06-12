@@ -28,7 +28,7 @@ namespace Test.Bibtex.Abstractions
                 {
                     new EntryField { Value = "Title" },
                     new ConstantField { Value = "by" },
-                    new EntryAuthorField { Format = OutputAuthorFormat.Default },
+                    new EntryAuthorField { Format = new OutputAuthorFormat() },
                     new ConstantField { Value = "in" },
                     new EntryField { Value = "Journal", Italic = true, Suffix = "," },
                     new EntryField { Value = "Year", Suffix = "." }
