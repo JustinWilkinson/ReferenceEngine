@@ -29,7 +29,7 @@ namespace Bibtex.Abstractions
         }
 
         [JsonIgnore]
-        internal string FieldsString { get; set; }
+        public string FieldsString { get; set; }
 
         public static EntryStyle Default = new EntryStyle { Fields = new List<Field>() };
     }
