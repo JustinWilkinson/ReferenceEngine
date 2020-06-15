@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Bibtex\BibliographyBuilder.csproj" />
+    <ProjectReference Include="..\ReferenceEngine.Bibtex\ReferenceEngine.Bibtex.csproj" />
   </ItemGroup>
 
   <ItemGroup>

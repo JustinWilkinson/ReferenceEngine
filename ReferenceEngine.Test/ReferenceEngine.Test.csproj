@@ -18,8 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Bibtex\BibliographyBuilder.csproj" />
-    <ProjectReference Include="..\LatexReferences\BibliographyStyles.csproj" />
+    <ProjectReference Include="..\ReferenceEngine.Generator\ReferenceEngine.Generator.csproj" />
+    <ProjectReference Include="..\ReferenceEngine.Styles.UI\ReferenceEngine.Styles.UI.csproj" />
   </ItemGroup>
 
 </Project>
