@@ -2,9 +2,11 @@
 using LatexReferences.Database;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace LatexReferences.Controllers
@@ -142,6 +144,14 @@ namespace LatexReferences.Controllers
             _context.BibliographyStyles.Remove(style);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        // GET: Styles/Export/5
+        public async Task<IActionResult> Export(int id)
+        {
+            var style = await _context.BibliographyStyles.Include(x => x.EntryStyles).SingleOrDefaultAsync(x => x.Id == id);
+            var json = JsonConvert.SerializeObject(style, Formatting.Indented);
+            return File(Encoding.UTF8.GetBytes(json), "application/json", $"{style.Name}.style.json");
         }
 
         private bool StyleExists(int id) => _context.BibliographyStyles.Any(e => e.Id == id);
