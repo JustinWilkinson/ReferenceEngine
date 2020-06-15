@@ -1,7 +1,7 @@
-﻿using LatexReferences.Database;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using ReferenceEngine.Styles.UI.Database;
 
-namespace Test.LatexReferences.Helpers
+namespace ReferenceEngine.Test.Styles.UI.Helpers
 {
     public class TestDb : ApplicationDbContext
     {

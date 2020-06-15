@@ -1,13 +1,13 @@
-using Bibtex.Enumerations;
-using Bibtex.Manager;
-using Bibtex.Parser;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
+using ReferenceEngine.Bibtex.Enumerations;
+using ReferenceEngine.Bibtex.Manager;
+using ReferenceEngine.Bibtex.Parser;
 using System.IO;
 using System.Text;
 
-namespace Test.Bibtex.Parser
+namespace ReferenceEngine.Test.Bibtex.Parser
 {
     [TestFixture]
     public class BibtexParserTest

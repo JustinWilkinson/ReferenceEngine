@@ -1,4 +1,4 @@
-namespace LatexReferences.Models
+namespace ReferenceEngine.Styles.UI.Models
 {
     public class ErrorViewModel
     {

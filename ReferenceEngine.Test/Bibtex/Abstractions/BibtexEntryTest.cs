@@ -1,12 +1,13 @@
-﻿using Bibtex.Abstractions;
-using Bibtex.Abstractions.Entries;
-using Bibtex.Abstractions.Fields;
-using Bibtex.Enumerations;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using ReferenceEngine.Bibtex.Abstractions;
+using ReferenceEngine.Bibtex.Abstractions.Entries;
+using ReferenceEngine.Bibtex.Abstractions.Fields;
+using ReferenceEngine.Bibtex.Enumerations;
+using ReferenceEngine.Bibtex.Abstractions;
 using System;
 using System.Collections.Generic;
 
-namespace Test.Bibtex.Abstractions
+namespace ReferenceEngine.Test.Bibtex.Abstractions
 {
     [TestFixture]
     public class BibtexEntryTest
@@ -44,7 +45,7 @@ namespace Test.Bibtex.Abstractions
 
         public BibtexEntry GetEntry()
         {
-            return new BibtexEntry(EntryType.Article, "Article1", new Dictionary<string, string> 
+            return new BibtexEntry(EntryType.Article, "Article1", new Dictionary<string, string>
             {
                 { "Author", "A. N. Author" },
                 { "Title", "A Really Awesome Article" },

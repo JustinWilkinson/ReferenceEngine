@@ -1,9 +1,9 @@
-﻿using Bibtex.Abstractions;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using ReferenceEngine.Bibtex.Abstractions;
 using System;
 using System.Linq;
 
-namespace Test.Bibtex.Abstractions
+namespace ReferenceEngine.Test.Bibtex.Abstractions
 {
     [TestFixture]
     public class OutputAuthorFormatTest

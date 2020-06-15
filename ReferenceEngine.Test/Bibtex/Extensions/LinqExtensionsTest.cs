@@ -1,9 +1,8 @@
-﻿using Bibtex.Extensions;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using ReferenceEngine.Bibtex.Extensions;
 using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
 
-namespace Test.Bibtex.Extensions
+namespace ReferenceEngine.Test.Bibtex.Extensions
 {
     [TestFixture]
     public class LinqExtensionsTest

@@ -1,6 +1,6 @@
-﻿using Bibtex.Extensions;
+﻿using ReferenceEngine.Bibtex.Extensions;
 
-namespace Bibtex.Abstractions.Entries
+namespace ReferenceEngine.Bibtex.Abstractions.Entries
 {
     /// <summary>
     /// Represents a comment entry in a .bib file. These values are ignored by a bibtex parser but can be helpful for a reader.

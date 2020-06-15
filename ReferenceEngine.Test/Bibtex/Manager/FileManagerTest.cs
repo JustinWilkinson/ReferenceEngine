@@ -1,7 +1,7 @@
-﻿using Bibtex.Manager;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using ReferenceEngine.Bibtex.Manager;
 
-namespace Test.Bibtex.Manager
+namespace ReferenceEngine.Test.Bibtex.Manager
 {
     [TestFixture]
     public class FileManagerTest

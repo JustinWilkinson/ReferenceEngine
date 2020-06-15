@@ -1,14 +1,14 @@
-﻿using Bibtex.Abstractions;
-using Bibtex.Enumerations;
-using Bibtex.Extensions;
-using Bibtex.Manager;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
+using ReferenceEngine.Bibtex.Abstractions;
+using ReferenceEngine.Bibtex.Enumerations;
+using ReferenceEngine.Bibtex.Extensions;
+using ReferenceEngine.Bibtex.Manager;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Bibtex.Parser
+namespace ReferenceEngine.Bibtex.Parser
 {
     /// <summary>
     /// Defines the methods used to parse .aux content.

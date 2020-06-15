@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Bibtex.Abstractions
+namespace ReferenceEngine.Bibtex.Abstractions
 {
     /// <summary>
     /// Represents a style to apply to a bibliography.

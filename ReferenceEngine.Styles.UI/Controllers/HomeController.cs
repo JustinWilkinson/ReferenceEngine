@@ -1,9 +1,9 @@
-﻿using LatexReferences.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using ReferenceEngine.Styles.UI.Models;
 using System.Diagnostics;
 
-namespace LatexReferences.Controllers
+namespace ReferenceEngine.Styles.UI.Controllers
 {
     public class HomeController : Controller
     {

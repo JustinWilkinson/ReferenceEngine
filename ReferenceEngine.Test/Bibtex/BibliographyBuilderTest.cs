@@ -1,15 +1,15 @@
-﻿using Bibtex;
-using Bibtex.Abstractions;
-using Bibtex.Manager;
-using Bibtex.Parser;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
+using ReferenceEngine.Bibtex;
+using ReferenceEngine.Bibtex.Abstractions;
+using ReferenceEngine.Bibtex.Manager;
+using ReferenceEngine.Bibtex.Parser;
 using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Test.Bibtex
+namespace ReferenceEngine.Test.Bibtex
 {
     [TestFixture]
     public class BibliographyBuilderTest

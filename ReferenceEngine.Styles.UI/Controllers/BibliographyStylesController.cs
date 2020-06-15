@@ -1,15 +1,15 @@
-﻿using Bibtex.Abstractions;
-using LatexReferences.Database;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using ReferenceEngine.Bibtex.Abstractions;
+using ReferenceEngine.Styles.UI.Database;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LatexReferences.Controllers
+namespace ReferenceEngine.Styles.UI.Controllers
 {
     public class BibliographyStylesController : Controller
     {
@@ -32,7 +32,7 @@ namespace LatexReferences.Controllers
             }
 
             var style = await _context.BibliographyStyles.Include(x => x.EntryStyles).SingleOrDefaultAsync(m => m.Id == id);
-            return style != null ? View(style) as IActionResult : NotFound();
+            return style != null ? View(style) : NotFound() as IActionResult;
         }
 
         // GET: Styles/Create
@@ -63,7 +63,7 @@ namespace LatexReferences.Controllers
             }
 
             var style = await _context.BibliographyStyles.Include(x => x.EntryStyles).SingleOrDefaultAsync(x => x.Id == id);
-            return style != null ? View(style) as IActionResult : NotFound();
+            return style != null ? View(style) : NotFound() as IActionResult;
         }
 
         // POST: Styles/Edit/5
@@ -132,7 +132,7 @@ namespace LatexReferences.Controllers
             }
 
             var style = await _context.BibliographyStyles.SingleOrDefaultAsync(m => m.Id == id);
-            return style != null ? View(style) as IActionResult : NotFound();
+            return style != null ? View(style) : NotFound() as IActionResult;
         }
 
         // POST: Styles/Delete/5

@@ -1,10 +1,10 @@
-﻿using Bibtex.Abstractions;
-using LatexReferences.Extensions;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using ReferenceEngine.Bibtex.Abstractions;
+using ReferenceEngine.Styles.UI.Extensions;
+using ReferenceEngine.Test.Styles.UI.Helpers;
 using System.Threading.Tasks;
-using Test.LatexReferences.Helpers;
 
-namespace Test.LatexReferences.Extensions
+namespace ReferenceEngine.Test.Styles.UI.Extensions
 {
     [TestFixture]
     public class DbSetExtensionsTest

@@ -1,4 +1,4 @@
-﻿namespace Bibtex.Abstractions
+﻿namespace ReferenceEngine.Bibtex.Abstractions
 {
     /// <summary>
     /// A wrapper for a string that has basic latex styling applied to it.

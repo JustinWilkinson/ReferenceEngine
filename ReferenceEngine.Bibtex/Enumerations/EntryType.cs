@@ -1,4 +1,4 @@
-﻿namespace Bibtex.Enumerations
+﻿namespace ReferenceEngine.Bibtex.Enumerations
 {
     /// <summary>
     /// Represents the known Bibtex entry types: <a href="http://bib-it.sourceforge.net/help/fieldsAndEntryTypes.php"></a> found in a .bib file.

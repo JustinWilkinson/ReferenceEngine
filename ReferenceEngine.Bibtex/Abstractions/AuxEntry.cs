@@ -1,6 +1,6 @@
-﻿using Bibtex.Enumerations;
+﻿using ReferenceEngine.Bibtex.Enumerations;
 
-namespace Bibtex.Abstractions
+namespace ReferenceEngine.Bibtex.Abstractions
 {
     /// <summary>
     /// Represents an entry in the .aux file.

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Bibtex.Abstractions
+namespace ReferenceEngine.Bibtex.Abstractions
 {
     /// <summary>
     /// Represents a Bibtex Author - the author field is a little more complex than the other fields, so has some special handling.

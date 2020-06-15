@@ -1,14 +1,14 @@
 {
-  "executable": "LatexReferences",
+  "executable": "ReferenceEngine.Styles.UI",
   "splashscreen": {
     "imageFile": ""
   },
-  "name": "LatexReferences",
+  "name": "ReferenceEngine.Styles.UI",
   "author": "",
   "singleInstance": false,
   "build": {
-    "appId": "com.LatexReferences.app",
-    "productName": "LatexReferences",
+    "appId": "com.ReferenceEngine.Styles.UI.app",
+    "productName": "ReferenceEngine.Styles.UI",
     "copyright": "Copyright © 2020",
     "buildVersion": "1.0.0",
     "compression": "maximum",
@@ -19,14 +19,14 @@
       {
         "from": "./bin",
         "to": "bin",
-        "filter": ["**/*"]
+        "filter": [ "**/*" ]
       }
     ],
     "files": [
       {
         "from": "./ElectronHostHook/node_modules",
         "to": "ElectronHostHook/node_modules",
-        "filter": ["**/*"]
+        "filter": [ "**/*" ]
       },
       "**/*"
     ]

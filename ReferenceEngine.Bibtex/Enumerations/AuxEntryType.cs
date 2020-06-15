@@ -1,4 +1,4 @@
-﻿namespace Bibtex.Enumerations
+﻿namespace ReferenceEngine.Bibtex.Enumerations
 {
     /// <summary>
     /// Enumerates the possible types of AuxEntry.
@@ -14,17 +14,17 @@
         /// An entry of the form \bibstyle{}. This is ignored.
         /// </summary>
         Bibstyle,
-        
+
         /// <summary>
         /// An entry of the form \citation{}.
         /// </summary>
         Citation,
-        
+
         /// <summary>
         /// An entry of the form \bibcite{}.
         /// </summary>
         Bibcite,
-        
+
         /// <summary>
         /// An entry of the form \bibdata{}.
         /// </summary>

@@ -1,6 +1,6 @@
-﻿using Bibtex.Enumerations;
+﻿using ReferenceEngine.Bibtex.Enumerations;
 
-namespace Bibtex.Abstractions.Fields
+namespace ReferenceEngine.Bibtex.Abstractions.Fields
 {
     /// <summary>
     /// Represents a constant field in a BibtexEntry in the style file.

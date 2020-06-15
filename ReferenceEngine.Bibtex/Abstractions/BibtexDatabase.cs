@@ -1,7 +1,7 @@
-﻿using Bibtex.Abstractions.Entries;
+﻿using ReferenceEngine.Bibtex.Abstractions.Entries;
 using System.Collections.Generic;
 
-namespace Bibtex.Abstractions
+namespace ReferenceEngine.Bibtex.Abstractions
 {
     /// <summary>
     /// Represents a .bib file.

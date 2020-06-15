@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Bibtex.Extensions
+namespace ReferenceEngine.Bibtex.Extensions
 {
     /// <summary>
     /// Class containing extensions for Linq.

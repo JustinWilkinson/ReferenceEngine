@@ -1,7 +1,5 @@
-using Bibtex.Extensions;
 using ElectronNET.API;
 using ElectronNET.API.Entities;
-using LatexReferences.Database;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -10,10 +8,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
+using ReferenceEngine.Bibtex.Extensions;
+using ReferenceEngine.Styles.UI.Database;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace LatexReferences
+namespace ReferenceEngine.Styles.UI
 {
     public class Startup
     {

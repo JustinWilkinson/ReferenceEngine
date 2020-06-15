@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace LatexReferences.Migrations
+namespace ReferenceEngine.Styles.UI.Migrations
 {
     public partial class InitialCreate : Migration
     {

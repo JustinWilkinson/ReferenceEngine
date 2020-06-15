@@ -1,7 +1,7 @@
-﻿using Bibtex.Extensions;
+﻿using ReferenceEngine.Bibtex.Extensions;
 using System.Collections.Generic;
 
-namespace Bibtex.Abstractions.Entries
+namespace ReferenceEngine.Bibtex.Abstractions.Entries
 {
     /// <summary>
     /// Represents a String entry in a .bib file. Used to set variables inside the .bib file.

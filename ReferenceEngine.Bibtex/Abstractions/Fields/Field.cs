@@ -1,8 +1,8 @@
-﻿using Bibtex.Enumerations;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using ReferenceEngine.Bibtex.Enumerations;
 
-namespace Bibtex.Abstractions.Fields
+namespace ReferenceEngine.Bibtex.Abstractions.Fields
 {
     /// <summary>
     /// Abstract base class for BibtexEntry Fields in the style file.

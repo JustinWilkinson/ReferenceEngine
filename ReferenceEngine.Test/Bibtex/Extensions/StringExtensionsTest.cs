@@ -1,7 +1,7 @@
-﻿using Bibtex.Extensions;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using ReferenceEngine.Bibtex.Extensions;
 
-namespace Test.Bibtex.Extensions
+namespace ReferenceEngine.Test.Bibtex.Extensions
 {
     [TestFixture]
     public class StringExtensionsTest

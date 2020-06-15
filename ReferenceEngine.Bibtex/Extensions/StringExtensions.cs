@@ -1,4 +1,4 @@
-﻿namespace Bibtex.Extensions
+﻿namespace ReferenceEngine.Bibtex.Extensions
 {
     /// <summary>
     /// Contains useful extension methods for strings commonly found in Bibtex.

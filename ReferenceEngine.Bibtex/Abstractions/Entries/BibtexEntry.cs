@@ -1,11 +1,11 @@
-﻿using Bibtex.Abstractions.Fields;
-using Bibtex.Enumerations;
+﻿using ReferenceEngine.Bibtex.Abstractions.Fields;
+using ReferenceEngine.Bibtex.Enumerations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Bibtex.Abstractions.Entries
+namespace ReferenceEngine.Bibtex.Abstractions.Entries
 {
     /// <summary>
     /// Represents a citeable Bibtex Entry, such as an Article, or Book in a .bib file.

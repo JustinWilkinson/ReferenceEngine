@@ -1,7 +1,7 @@
-﻿using Bibtex.Abstractions;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using ReferenceEngine.Bibtex.Abstractions;
 
-namespace LatexReferences.Database
+namespace ReferenceEngine.Styles.UI.Database
 {
     public class ApplicationDbContext : DbContext
     {
@@ -11,7 +11,7 @@ namespace LatexReferences.Database
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            options.UseSqlite("Data Source=LatexReferences.sqlite");
+            options.UseSqlite("Data Source=ReferenceEngineStyles.sqlite");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -1,7 +1,7 @@
-﻿using Bibtex.Abstractions;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using ReferenceEngine.Bibtex.Abstractions;
 
-namespace Test.Bibtex.Abstractions
+namespace ReferenceEngine.Test.Bibtex.Abstractions
 {
     [TestFixture]
     public class LatexStringTest

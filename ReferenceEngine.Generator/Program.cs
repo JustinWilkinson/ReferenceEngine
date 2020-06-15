@@ -1,16 +1,16 @@
-﻿using Bibtex;
-using Bibtex.Extensions;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLog;
 using NLog.Extensions.Logging;
+using ReferenceEngine.Bibtex;
+using ReferenceEngine.Bibtex.Extensions;
 using System;
 using System.IO;
 using System.Reflection;
 using ILogger = NLog.ILogger;
 
-namespace BibliographyGenerator
+namespace ReferenceEngine.BibliographyGenerator
 {
     public class Program
     {
@@ -37,7 +37,7 @@ namespace BibliographyGenerator
                 bibliographyBuilder.TexFilePath = GetConfiguredPath("TexFilePath");
                 bibliographyBuilder.BibFilePath = GetConfiguredPath("BibFilePath");
                 bibliographyBuilder.StyleFilePath = GetConfiguredPath("StyleFilePath");
-                
+
                 bibliographyBuilder.Build();
                 bibliographyBuilder.Write();
 

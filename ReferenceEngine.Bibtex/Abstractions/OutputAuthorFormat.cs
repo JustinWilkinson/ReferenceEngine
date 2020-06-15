@@ -1,10 +1,10 @@
-﻿using Bibtex.Extensions;
+﻿using ReferenceEngine.Bibtex.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Bibtex.Abstractions
+namespace ReferenceEngine.Bibtex.Abstractions
 {
     /// <summary>
     /// Represents the format to apply to the Author field.

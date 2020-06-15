@@ -2,7 +2,7 @@ using ElectronNET.API;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace LatexReferences
+namespace ReferenceEngine.Styles.UI
 {
     public class Program
     {

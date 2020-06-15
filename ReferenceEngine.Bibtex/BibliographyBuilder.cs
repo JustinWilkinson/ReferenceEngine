@@ -1,15 +1,15 @@
-﻿using Bibtex.Abstractions;
-using Bibtex.Enumerations;
-using Bibtex.Extensions;
-using Bibtex.Manager;
-using Bibtex.Parser;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using ReferenceEngine.Bibtex.Abstractions;
+using ReferenceEngine.Bibtex.Enumerations;
+using ReferenceEngine.Bibtex.Extensions;
+using ReferenceEngine.Bibtex.Manager;
+using ReferenceEngine.Bibtex.Parser;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Bibtex
+namespace ReferenceEngine.Bibtex
 {
     /// <summary>
     /// Defines the methods required to build a bibliography style and write a styled .bbl file.
@@ -82,7 +82,7 @@ namespace Bibtex
 
         /// <inheritdoc />
         public string StyleFilePath { get; set; }
-        
+
         /// <inheritdoc />
         public BibliographyStyle BibliographyStyle { get; set; }
 
@@ -150,7 +150,7 @@ namespace Bibtex
             string targetPath = _fileManager.ReplaceExtension(TexFilePath, "bbl");
 
             _fileManager.DeleteIfExists(targetPath);
-            _fileManager.WriteStream(targetPath, writer => 
+            _fileManager.WriteStream(targetPath, writer =>
             {
                 writer.WriteLine("\\begin{thebibliography}{1}\r\n");
                 foreach (var bibitem in _bibitems)

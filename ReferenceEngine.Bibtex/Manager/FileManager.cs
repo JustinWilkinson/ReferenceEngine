@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace Bibtex.Manager
+namespace ReferenceEngine.Bibtex.Manager
 {
     public interface IFileManager
     {

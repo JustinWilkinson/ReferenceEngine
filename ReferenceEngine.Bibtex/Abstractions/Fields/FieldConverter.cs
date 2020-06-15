@@ -1,10 +1,10 @@
-﻿using Bibtex.Enumerations;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using ReferenceEngine.Bibtex.Enumerations;
 using System;
 using System.Collections.Generic;
 
-namespace Bibtex.Abstractions.Fields
+namespace ReferenceEngine.Bibtex.Abstractions.Fields
 {
     /// <summary>
     /// Defines a custom JsonConverter for the Field Base class which deserializes a Field based on its type.

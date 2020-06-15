@@ -3523,7 +3523,7 @@
    *
    * Usually you don't want to override the `order`, `fn` and `onLoad` props.
    * All the other properties are configurations that could be tweaked.
-   * @namespace modifiers
+   * @namespace ReferenceEngine.modifiers
    */
   var modifiers = {
     /**

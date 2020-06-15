@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
-namespace LatexReferences.Extensions
+namespace ReferenceEngine.Styles.UI.Extensions
 {
     public static class DbSetExtensions
     {

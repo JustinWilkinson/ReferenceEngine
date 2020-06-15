@@ -1,6 +1,6 @@
-﻿using Bibtex.Enumerations;
+﻿using ReferenceEngine.Bibtex.Enumerations;
 
-namespace Bibtex.Abstractions.Fields
+namespace ReferenceEngine.Bibtex.Abstractions.Fields
 {
     /// <summary>
     /// Represents the Author Field of a BibtexEntry in the style file, as these have more complex style rules.

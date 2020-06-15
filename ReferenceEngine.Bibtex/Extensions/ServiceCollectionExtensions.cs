@@ -1,8 +1,8 @@
-﻿using Bibtex.Manager;
-using Bibtex.Parser;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using ReferenceEngine.Bibtex.Manager;
+using ReferenceEngine.Bibtex.Parser;
 
-namespace Bibtex.Extensions
+namespace ReferenceEngine.Bibtex.Extensions
 {
     /// <summary>
     /// Contains extension methods for adding services to a collection.

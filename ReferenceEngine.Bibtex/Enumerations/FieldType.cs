@@ -1,4 +1,4 @@
-﻿namespace Bibtex.Enumerations
+﻿namespace ReferenceEngine.Bibtex.Enumerations
 {
     /// <summary>
     /// Represents a styling Field Type.

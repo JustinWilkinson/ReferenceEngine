@@ -1,6 +1,6 @@
-﻿using Bibtex.Extensions;
+﻿using ReferenceEngine.Bibtex.Extensions;
 
-namespace Bibtex.Abstractions.Entries
+namespace ReferenceEngine.Bibtex.Abstractions.Entries
 {
     /// <summary>
     /// Represents a preamble entry in a .bib file.

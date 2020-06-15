@@ -1,15 +1,15 @@
-﻿using Bibtex.Abstractions;
-using LatexReferences.Database;
-using LatexReferences.Extensions;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using ReferenceEngine.Bibtex.Abstractions;
+using ReferenceEngine.Styles.UI.Database;
+using ReferenceEngine.Styles.UI.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LatexReferences.Controllers
+namespace ReferenceEngine.Styles.UI.Controllers
 {
     public class EntryStylesController : Controller
     {
@@ -71,7 +71,7 @@ namespace LatexReferences.Controllers
             }
 
             var (found, value) = await _context.EntryStyles.TryFindAsync(id);
-            return found ? NotFound() : (IActionResult)View(value);
+            return found ? NotFound() : View(value) as IActionResult;
         }
 
         // POST: EntryStyles/Edit/5

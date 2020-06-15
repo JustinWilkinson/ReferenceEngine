@@ -1,11 +1,11 @@
-﻿using Bibtex.Abstractions.Fields;
-using Bibtex.Enumerations;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using ReferenceEngine.Bibtex.Abstractions.Fields;
+using ReferenceEngine.Bibtex.Enumerations;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Bibtex.Abstractions
+namespace ReferenceEngine.Bibtex.Abstractions
 {
     /// <summary>
     /// Represents the styling of an entry.
