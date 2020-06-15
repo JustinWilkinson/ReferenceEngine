@@ -1,15 +1,14 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29920.165
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LatexReferences", "LatexReferences\LatexReferences.csproj", "{591A9062-2740-4EDA-8276-5F939754C1BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReferenceEngine.Bibtex", "ReferenceEngine.Bibtex\ReferenceEngine.Bibtex.csproj", "{3E2B945F-E51B-44E1-8FA1-8E65B02D9364}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BibliographyGenerator", "BibliographyGenerator\BibliographyGenerator.csproj", "{CD6773B7-2804-4D3C-9858-15B921CB65D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReferenceEngine.Generator", "ReferenceEngine.Generator\ReferenceEngine.Generator.csproj", "{CD6773B7-2804-4D3C-9858-15B921CB65D2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bibtex", "Bibtex\Bibtex.csproj", "{3E2B945F-E51B-44E1-8FA1-8E65B02D9364}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReferenceEngine.Styles.UI", "ReferenceEngine.Styles.UI\ReferenceEngine.Styles.UI.csproj", "{591A9062-2740-4EDA-8276-5F939754C1BA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "Test\Test.csproj", "{8681D748-EA8B-46FC-BFBB-B8CDFA1E3666}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReferenceEngine.Test", "ReferenceEngine.Test\ReferenceEngine.Test.csproj", "{8681D748-EA8B-46FC-BFBB-B8CDFA1E3666}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5C8EA204-FFD4-4190-83AA-5C4C6D311241}"
 	ProjectSection(SolutionItems) = preProject

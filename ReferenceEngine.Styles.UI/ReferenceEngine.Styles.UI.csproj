@@ -32,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Bibtex\Bibtex.csproj" />
+    <ProjectReference Include="..\Bibtex\BibliographyBuilder.csproj" />
   </ItemGroup>
 
 </Project>

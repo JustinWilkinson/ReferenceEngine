@@ -2,7 +2,7 @@
 *.sqlite
 
 # Ignore extra JS libraries.
-LatexReferences/wwwroot/lib/extras/*
+ReferenceEngine.Styles.UI/wwwroot/lib/extras/*
 
 # User-specific files
 *.rsuser
