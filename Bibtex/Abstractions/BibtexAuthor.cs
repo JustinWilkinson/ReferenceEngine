@@ -30,7 +30,7 @@ namespace Bibtex.Abstractions
 
         /// <summary>
         /// Builds a BibtexAuthor from the given string.
-        /// This method supports all accepted BibTeX formats: https://texfaq.org/FAQ-manyauthor.
+        /// This method supports all accepted BibTeX formats: <see href="https://texfaq.org/FAQ-manyauthor"/>.
         /// </summary>
         /// <param name="author">The string to parse into an author</param>
         /// <returns></returns>

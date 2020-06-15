@@ -109,7 +109,7 @@ namespace Bibtex.Abstractions
             {
                 var authorBuilder = new StringBuilder();
                 var firstName = AbbreviateFirstNameCharacters.HasValue && AbbreviateFirstNameCharacters.Value > 0 ? $"{string.Concat(author.FirstName.Take(AbbreviateFirstNameCharacters.Value))}." : author.FirstName;
-                var middleNames = IncludeMiddleNames && author.MiddleNames != null && author.MiddleNames.Any() ? $" {string.Join(" ", author.MiddleNames)} " : " ";
+                var middleNames = IncludeMiddleNames && author.MiddleNames.HasContent() ? $" {string.Join(" ", author.MiddleNames)} " : " ";
                 var suffix = IncludeSuffix && author.Suffix != null ? $" {author.Suffix}" : "";
 
                 if (LastNameFirst)
