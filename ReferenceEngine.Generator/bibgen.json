@@ -1,7 +1,3 @@
 {
-  "Paths": {
-    "TexFilePath": "[CURRENT_DIRECTORY]/Sample/document.tex",
-    "BibFilePath": "[CURRENT_DIRECTORY]/Sample/lib.bib",
-    "StyleFilePath": "[CURRENT_DIRECTORY]/Sample/style.json"
-  }
+  "TexFilePath": "[CURRENT_DIRECTORY]/Sample/document.tex"
 }

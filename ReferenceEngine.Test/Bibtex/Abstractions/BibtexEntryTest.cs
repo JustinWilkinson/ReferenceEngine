@@ -3,7 +3,6 @@ using ReferenceEngine.Bibtex.Abstractions;
 using ReferenceEngine.Bibtex.Abstractions.Entries;
 using ReferenceEngine.Bibtex.Abstractions.Fields;
 using ReferenceEngine.Bibtex.Enumerations;
-using ReferenceEngine.Bibtex.Abstractions;
 using System;
 using System.Collections.Generic;
 

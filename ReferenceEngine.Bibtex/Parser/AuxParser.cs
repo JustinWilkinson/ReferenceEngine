@@ -39,7 +39,7 @@ namespace ReferenceEngine.Bibtex.Parser
         /// <summary>
         /// Converts a multi-line string into an enumerable of AuxEntry instances.
         /// </summary>
-        /// <param name="auxContent">The path to the file to parse.</param>
+        /// <param name="auxContent">The string to parse.</param>
         /// <returns>An IEnumerable of parsed AuxEntry instances.</returns>
         IEnumerable<AuxEntry> ParseString(string auxContent);
     }

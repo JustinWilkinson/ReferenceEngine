@@ -115,5 +115,75 @@ namespace ReferenceEngine.Test.Bibtex.Extensions
             Assert.IsTrue(result);
             Assert.AreEqual("Hello", str);
         }
+
+        [Test]
+        public void TryGetFirst_NoPredicateWithNoValueClass_ReturnsFalseWithDefaultOutValue()
+        {
+            // Arrange
+            var source = new List<string>();
+
+            // Act
+            var result = source.TryGetFirst(out var str);
+
+            // Assert
+            Assert.IsFalse(result);
+            Assert.IsNull(str);
+        }
+
+        [Test]
+        public void TryGetFirst_NoPredicateWithNoValueStruct_ReturnsFalseWithDefaultOutValue()
+        {
+            // Arrange
+            var source = new List<int>();
+
+            // Act
+            var result = source.TryGetFirst(out var integer);
+
+            // Assert
+            Assert.IsFalse(result);
+            Assert.AreEqual(0, integer);
+        }
+
+        [Test]
+        public void TryGetFirst_NoPredicateWithValue_ReturnsTrueWithCorrectOutValue()
+        {
+            // Arrange
+            var source = new[] { "Hello" };
+
+            // Act
+            var result = source.TryGetFirst(out var str);
+
+            // Assert
+            Assert.IsTrue(result);
+            Assert.AreEqual("Hello", str);
+        }
+
+        [Test]
+        public void TryGetFirst_WithPredicateAndNoMatch_ReturnsFalseWithDefaultOutValue()
+        {
+            // Arrange
+            var source = new[] { "Hello", "World" };
+
+            // Act
+            var result = source.TryGetFirst(s => s == "Not in source!", out var str);
+
+            // Assert
+            Assert.IsFalse(result);
+            Assert.IsNull(str);
+        }
+
+        [Test]
+        public void TryGetFirst_WithPredicateAndNoMatch_ReturnsTrueWithCorrectOutValue()
+        {
+            // Arrange
+            var source = new[] { "Hello", "World" };
+
+            // Act
+            var result = source.TryGetFirst(s => s == "Hello", out var str);
+
+            // Assert
+            Assert.IsTrue(result);
+            Assert.AreEqual("Hello", str);
+        }
     }
 }

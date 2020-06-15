@@ -25,7 +25,7 @@
     <None Update="Sample\lib.bib">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Sample\style.json">
+    <None Update="Sample\sample.style.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="nlog.config">

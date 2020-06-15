@@ -10,12 +10,14 @@
           "Type": "Field",
           "Bold": false,
           "Italic": false,
+          "Enquote": false,
           "Value": "Title"
         },
         {
           "Type": "AuthorField",
           "Bold": false,
           "Italic": false,
+          "Enquote": false,
           "Format": {
             "AbbreviateFirstNameCharacters": null,
             "LastNameFirst": false,
@@ -36,12 +38,14 @@
           "Type": "Field",
           "Bold": false,
           "Italic": true,
+          "Enquote": false,
           "Value": "Journal"
         },
         {
           "Type": "Field",
           "Bold": false,
           "Italic": false,
+          "Enquote": false,
           "Value": "Year"
         }
       ]
@@ -54,24 +58,28 @@
           "Type": "Field",
           "Bold": false,
           "Italic": false,
+          "Enquote": false,
           "Value": "Title"
         },
         {
           "Type": "Field",
           "Bold": false,
           "Italic": true,
+          "Enquote": false,
           "Value": "Pages"
         },
         {
           "Type": "Constant",
           "Bold": false,
           "Italic": false,
+          "Enquote": false,
           "Value": "by"
         },
         {
           "Type": "AuthorField",
           "Bold": false,
           "Italic": false,
+          "Enquote": false,
           "Format": {
             "AbbreviateFirstNameCharacters": null,
             "LastNameFirst": false,
@@ -91,12 +99,14 @@
           "Type": "Field",
           "Bold": false,
           "Italic": false,
+          "Enquote": false,
           "Value": "Publisher"
         },
         {
           "Type": "Field",
           "Bold": false,
           "Italic": false,
+          "Enquote": false,
           "Value": "Year"
         }
       ]
@@ -109,24 +119,28 @@
           "Type": "Field",
           "Bold": false,
           "Italic": false,
+          "Enquote": false,
           "Value": "Title"
         },
         {
           "Type": "Field",
           "Bold": false,
           "Italic": true,
+          "Enquote": false,
           "Value": "Pages"
         },
         {
           "Type": "Constant",
           "Bold": false,
           "Italic": false,
+          "Enquote": false,
           "Value": "by"
         },
         {
           "Type": "AuthorField",
           "Bold": false,
           "Italic": false,
+          "Enquote": false,
           "Format": {
             "AbbreviateFirstNameCharacters": null,
             "LastNameFirst": false,
@@ -146,12 +160,14 @@
           "Type": "Field",
           "Bold": false,
           "Italic": false,
+          "Enquote": false,
           "Value": "Publisher"
         },
         {
           "Type": "Field",
           "Bold": false,
           "Italic": false,
+          "Enquote": false,
           "Value": "Year"
         }
       ]
@@ -164,12 +180,14 @@
           "Type": "Field",
           "Bold": false,
           "Italic": false,
+          "Enquote": false,
           "Value": "Title"
         },
         {
           "Type": "AuthorField",
           "Bold": false,
           "Italic": false,
+          "Enquote": false,
           "Format": {
             "AbbreviateFirstNameCharacters": null,
             "LastNameFirst": false,
@@ -189,6 +207,7 @@
           "Type": "Field",
           "Bold": true,
           "Italic": false,
+          "Enquote": false,
           "Value": "Journal",
           "Suffix": ","
         },
@@ -196,6 +215,7 @@
           "Type": "Field",
           "Bold": false,
           "Italic": false,
+          "Enquote": false,
           "Value": "Year"
         }
       ]
@@ -208,12 +228,14 @@
           "Type": "Field",
           "Bold": false,
           "Italic": false,
+          "Enquote": false,
           "Value": "Title"
         },
         {
           "Type": "AuthorField",
           "Bold": false,
           "Italic": false,
+          "Enquote": false,
           "Format": {
             "AbbreviateFirstNameCharacters": null,
             "LastNameFirst": false,
@@ -233,12 +255,14 @@
           "Type": "Field",
           "Bold": false,
           "Italic": false,
+          "Enquote": false,
           "Value": "Institution"
         },
         {
           "Type": "Field",
           "Bold": false,
           "Italic": false,
+          "Enquote": false,
           "Value": "Year"
         }
       ]
@@ -251,12 +275,14 @@
           "Type": "Field",
           "Bold": false,
           "Italic": false,
+          "Enquote": false,
           "Value": "Title"
         },
         {
           "Type": "AuthorField",
           "Bold": false,
           "Italic": false,
+          "Enquote": false,
           "Format": {
             "AbbreviateFirstNameCharacters": null,
             "LastNameFirst": false,
@@ -276,12 +302,14 @@
           "Type": "Field",
           "Bold": false,
           "Italic": false,
+          "Enquote": false,
           "Value": "School"
         },
         {
           "Type": "Field",
           "Bold": false,
           "Italic": false,
+          "Enquote": false,
           "Value": "Year"
         }
       ]
