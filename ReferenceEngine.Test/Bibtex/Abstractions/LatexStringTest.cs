@@ -46,6 +46,19 @@ namespace ReferenceEngine.Test.Bibtex.Abstractions
         }
 
         [Test]
+        public void ToString_Enquote_ReturnsBoldValue()
+        {
+            // Arrange
+            var latex = new LatexString("String Value") { Enquote = true };
+
+            // Act
+            var result = latex.ToString();
+
+            // Assert
+            Assert.AreEqual(@"\enquote{String Value}", result);
+        }
+
+        [Test]
         public void ToString_ItalicAndBold_ReturnsItalicAndBoldValue()
         {
             // Arrange
@@ -56,6 +69,19 @@ namespace ReferenceEngine.Test.Bibtex.Abstractions
 
             // Assert
             Assert.AreEqual(@"\textbf{\emph{String Value}}", result);
+        }
+
+        [Test]
+        public void ToString_ItalicAndBoldAndEnquote_ReturnsItalicAndBoldValue()
+        {
+            // Arrange
+            var latex = new LatexString("String Value") { Bold = true, Italic = true, Enquote = true };
+
+            // Act
+            var result = latex.ToString();
+
+            // Assert
+            Assert.AreEqual(@"\enquote{\textbf{\emph{String Value}}}", result);
         }
     }
 }

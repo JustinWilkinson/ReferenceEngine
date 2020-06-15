@@ -25,6 +25,11 @@
         public bool Italic { get; set; }
 
         /// <summary>
+        /// Specifies whether or not this string should be displayed in quotes.
+        /// </summary>
+        public bool Enquote { get; set; }
+
+        /// <summary>
         /// The actual contents of the LatexString.
         /// </summary>
         public string Value { get; set; }
@@ -49,6 +54,10 @@
             if (Bold)
             {
                 value = $"\\textbf{{{value}}}";
+            }
+            if (Enquote)
+            {
+                value = $"\\enquote{{{value}}}";
             }
 
             return value;
