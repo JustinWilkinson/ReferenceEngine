@@ -29,17 +29,12 @@ namespace ReferenceEngine.BibliographyGenerator
         {
             try
             {
-                _logger.Trace("Bibliography generaor started.");
+                _logger.Trace("Bibliography generator started.");
 
                 var serviceProvider = ConfigureServices();
 
                 var bibliographyBuilder = serviceProvider.GetRequiredService<IBibliographyBuilder>();
-                bibliographyBuilder.TexFilePath = GetConfiguredPath("TexFilePath");
-                bibliographyBuilder.BibFilePath = GetConfiguredPath("BibFilePath");
-                bibliographyBuilder.StyleFilePath = GetConfiguredPath("StyleFilePath");
-
-                bibliographyBuilder.Build();
-                bibliographyBuilder.Write();
+                bibliographyBuilder.FromFile(GetConfiguredPath("TexFilePath")).Build().Write();
 
                 _logger.Trace("Bibliography successfully generated.");
             }
@@ -65,6 +60,6 @@ namespace ReferenceEngine.BibliographyGenerator
                 .BuildServiceProvider();
         }
 
-        private static string GetConfiguredPath(string pathName) => _config[$"Paths:{pathName}"].Replace("[CURRENT_DIRECTORY]", _baseDirectory);
+        private static string GetConfiguredPath(string pathName) => _config[pathName].Replace("[CURRENT_DIRECTORY]", _baseDirectory);
     }
 }
