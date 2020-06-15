@@ -1,6 +1,7 @@
 ﻿using Bibtex.Extensions;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Test.Bibtex.Extensions
 {
@@ -44,6 +45,76 @@ namespace Test.Bibtex.Extensions
 
             // Assert
             Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void TryGetSingle_NoPredicateWithNoValueClass_ReturnsFalseWithDefaultOutValue()
+        {
+            // Arrange
+            var source = new List<string>();
+
+            // Act
+            var result = source.TryGetSingle(out var str);
+
+            // Assert
+            Assert.IsFalse(result);
+            Assert.IsNull(str);
+        }
+
+        [Test]
+        public void TryGetSingle_NoPredicateWithNoValueStruct_ReturnsFalseWithDefaultOutValue()
+        {
+            // Arrange
+            var source = new List<int>();
+
+            // Act
+            var result = source.TryGetSingle(out var integer);
+
+            // Assert
+            Assert.IsFalse(result);
+            Assert.AreEqual(0, integer);
+        }
+
+        [Test]
+        public void TryGetSingle_NoPredicateWithValue_ReturnsTrueWithCorrectOutValue()
+        {
+            // Arrange
+            var source = new[] { "Hello" };
+
+            // Act
+            var result = source.TryGetSingle(out var str);
+
+            // Assert
+            Assert.IsTrue(result);
+            Assert.AreEqual("Hello", str);
+        }
+
+        [Test]
+        public void TryGetSingle_WithPredicateAndNoMatch_ReturnsFalseWithDefaultOutValue()
+        {
+            // Arrange
+            var source = new[] { "Hello", "World" };
+
+            // Act
+            var result = source.TryGetSingle(s => s == "Not in source!", out var str);
+
+            // Assert
+            Assert.IsFalse(result);
+            Assert.IsNull(str);
+        }
+
+        [Test]
+        public void TryGetSingle_WithPredicateAndNoMatch_ReturnsTrueWithCorrectOutValue()
+        {
+            // Arrange
+            var source = new[] { "Hello", "World" };
+
+            // Act
+            var result = source.TryGetSingle(s => s == "Hello", out var str);
+
+            // Assert
+            Assert.IsTrue(result);
+            Assert.AreEqual("Hello", str);
         }
     }
 }

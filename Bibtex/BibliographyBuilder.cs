@@ -1,12 +1,12 @@
 ﻿using Bibtex.Abstractions;
 using Bibtex.Enumerations;
+using Bibtex.Extensions;
 using Bibtex.Manager;
 using Bibtex.Parser;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 namespace Bibtex
@@ -88,6 +88,8 @@ namespace Bibtex
 
         /// <inheritdoc />
         /// <exception cref="ArgumentNullException">The TexFilePath, BibFilePath and BibliographyStyle (or a path to the Style file) must be provided</exception>
+        /// <exception cref="DirectoryNotFoundException">The directory containing the TexFilePath, BibFilePath and StyleFilePath (if provided) must exist</exception>
+        /// <exception cref="FileNotFoundException">The TexFilePath, BibFilePath and StyleFilePath (if provided) must exist</exception>
         public void Build()
         {
             _logger.LogTrace("Starting build of bibliography.");
@@ -107,7 +109,7 @@ namespace Bibtex
                     _fileManager.ThrowIfFileDoesNotExist(StyleFilePath);
                     try
                     {
-                        BibliographyStyle = JsonConvert.DeserializeObject<BibliographyStyle>(File.ReadAllText(StyleFilePath));
+                        BibliographyStyle = JsonConvert.DeserializeObject<BibliographyStyle>(_fileManager.ReadFileContents(StyleFilePath));
                     }
                     catch (Exception ex)
                     {
@@ -130,8 +132,7 @@ namespace Bibtex
 
             foreach (var auxEntry in auxEntries.Where(x => x.Type == AuxEntryType.Bibcite))
             {
-                var bibtexEntry = bibtexDatabase.Entries.SingleOrDefault(bibtexEntry => bibtexEntry.CitationKey == auxEntry.Key);
-                if (bibtexEntry != null)
+                if (bibtexDatabase.Entries.TryGetSingle(bibtexEntry => bibtexEntry.CitationKey == auxEntry.Key, out var bibtexEntry))
                 {
                     var style = BibliographyStyle.EntryStyles.SingleOrDefault(s => s.Type == bibtexEntry.EntryType) ?? EntryStyle.Default;
                     _bibitems.Add(new Bibitem(auxEntry, bibtexEntry, style));
@@ -148,15 +149,16 @@ namespace Bibtex
 
             string targetPath = _fileManager.ReplaceExtension(TexFilePath, "bbl");
 
-            File.Delete(targetPath);
-
-            using var writer = new StreamWriter(targetPath);
-            writer.WriteLine("\\begin{thebibliography}{1}\r\n");
-            foreach (var bibitem in _bibitems)
+            _fileManager.DeleteIfExists(targetPath);
+            _fileManager.WriteStream(targetPath, writer => 
             {
-                writer.WriteLine($"{bibitem}\r\n");
-            }
-            writer.WriteLine("\\end{thebibliography}");
+                writer.WriteLine("\\begin{thebibliography}{1}\r\n");
+                foreach (var bibitem in _bibitems)
+                {
+                    writer.WriteLine($"{bibitem}\r\n");
+                }
+                writer.WriteLine("\\end{thebibliography}");
+            });
 
             _logger.LogTrace("Finished writing .bbl file.");
         }
