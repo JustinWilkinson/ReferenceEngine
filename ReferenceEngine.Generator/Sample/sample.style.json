@@ -1,6 +1,5 @@
 {
-  "Id": 0,
-  "Name": "Example",
+  "Name": "Sample",
   "EntryStyles": [
     {
       "Name": "Article Rule",
@@ -17,7 +16,7 @@
             "Delimiter": ",",
             "FinalDelimiter": "and",
             "NumberOfNamedAuthors": 3,
-            "TruncatedAuthors": {
+            "TruncatedAuthorsText": {
               "Italic": true,
               "Value": "et al."
             }
@@ -60,7 +59,7 @@
             "Delimiter": ",",
             "FinalDelimiter": "and",
             "NumberOfNamedAuthors": 3,
-            "TruncatedAuthors": {
+            "TruncatedAuthorsText": {
               "Italic": true,
               "Value": "et al."
             }
@@ -101,8 +100,7 @@
             "Delimiter": ",",
             "FinalDelimiter": "and",
             "NumberOfNamedAuthors": 3,
-            "TruncatedAuthors": {
-              "Bold": false,
+            "TruncatedAuthorsText": {
               "Italic": true,
               "Value": "et al."
             }
@@ -134,8 +132,7 @@
             "Delimiter": ",",
             "FinalDelimiter": "and",
             "NumberOfNamedAuthors": 3,
-            "TruncatedAuthors": {
-              "Bold": false,
+            "TruncatedAuthorsText": {
               "Italic": true,
               "Value": "et al."
             }
@@ -168,8 +165,7 @@
             "Delimiter": ",",
             "FinalDelimiter": "and",
             "NumberOfNamedAuthors": 3,
-            "TruncatedAuthors": {
-              "Bold": false,
+            "TruncatedAuthorsText": {
               "Italic": true,
               "Value": "et al."
             }
@@ -200,8 +196,7 @@
             "Delimiter": ",",
             "FinalDelimiter": "and",
             "NumberOfNamedAuthors": 3,
-            "TruncatedAuthors": {
-              "Bold": false,
+            "TruncatedAuthorsText": {
               "Italic": true,
               "Value": "et al."
             }

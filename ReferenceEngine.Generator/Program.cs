@@ -11,17 +11,27 @@ using ILogger = NLog.ILogger;
 
 namespace ReferenceEngine.BibliographyGenerator
 {
+    /// <summary>
+    /// Contains entry point for bibgen.exe
+    /// </summary>
     public class Program
     {
         private static readonly string _baseDirectory;
         private static readonly ILogger _logger;
 
+        /// <summary>
+        /// Static constructor - performs one off initialisation.
+        /// </summary>
         static Program()
         {
             _baseDirectory = Path.GetDirectoryName(Uri.UnescapeDataString(new UriBuilder(Assembly.GetExecutingAssembly().CodeBase).Path));
             _logger = LogManager.GetCurrentClassLogger();
         }
 
+        /// <summary>
+        /// Entry point for bibgen.exe.
+        /// </summary>
+        /// <param name="args">Expects a path to the .tex file to be passed here.</param>
         public static void Main(string[] args)
         {
             try
@@ -54,15 +64,19 @@ namespace ReferenceEngine.BibliographyGenerator
             }
         }
 
+        /// <summary>
+        /// Adds all the services required by the program and adds them to a service collection.
+        /// </summary>
+        /// <returns>A service provider with all the services required by the program.</returns>
         private static IServiceProvider ConfigureServices()
         {
             return new ServiceCollection()
+                .AddBibliographyBuilder()
                 .AddLogging(oLogBuilder =>
                 {
                     oLogBuilder.ClearProviders();
                     oLogBuilder.AddNLog();
                 })
-                .AddBibliographyBuilder()
                 .BuildServiceProvider();
         }
     }
