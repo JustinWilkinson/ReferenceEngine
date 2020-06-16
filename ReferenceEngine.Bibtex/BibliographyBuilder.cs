@@ -18,22 +18,22 @@ namespace ReferenceEngine.Bibtex
     public interface IBibliographyBuilder
     {
         /// <summary>
-        /// The path to the .tex file to read.
+        /// The path to the .tex file to read. This must be set prior to calling <see cref="Build"/>.
         /// </summary>
         string TexFilePath { get; set; }
 
         /// <summary>
-        /// The path to the .bib file to read.
+        /// The path to the .bib file to read. This must be set prior to calling <see cref="Build"/>.
         /// </summary>
         string BibFilePath { get; set; }
 
         /// <summary>
-        /// The path to the style file to read.
+        /// The path to the style file to read. This, or <see cref="BibliographyStyle"/> must be set prior to calling <see cref="Build"/>.
         /// </summary>
         string StyleFilePath { get; set; }
 
         /// <summary>
-        /// The bibliography style to use.
+        /// The bibliography style to use. This, or <see cref="StyleFilePath"/> must be set prior to calling <see cref="Build"/>.
         /// </summary>
         BibliographyStyle BibliographyStyle { get; set; }
 
@@ -170,14 +170,17 @@ namespace ReferenceEngine.Bibtex
                 _auxEntries = _auxParser.ParseFile(_auxPath).ToList();
             }
 
-            try
+            if (BibliographyStyle == null && StyleFilePath != null)
             {
-                BibliographyStyle = JsonConvert.DeserializeObject<BibliographyStyle>(_fileManager.ReadFileContents(StyleFilePath));
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An error occurred parsing the style file.");
-                throw;
+                try
+                {
+                    BibliographyStyle = JsonConvert.DeserializeObject<BibliographyStyle>(_fileManager.ReadFileContents(StyleFilePath));
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "An error occurred parsing the style file.");
+                    throw;
+                }
             }
 
             var bibliography = new Bibliography(_fileManager, _loggerFactory.CreateLogger<Bibliography>())
