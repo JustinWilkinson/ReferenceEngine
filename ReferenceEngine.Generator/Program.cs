@@ -34,7 +34,8 @@ namespace ReferenceEngine.BibliographyGenerator
                 var serviceProvider = ConfigureServices();
 
                 var bibliographyBuilder = serviceProvider.GetRequiredService<IBibliographyBuilder>();
-                bibliographyBuilder.FromFile(GetConfiguredPath("TexFilePath")).Build().Write();
+                var bibliography = bibliographyBuilder.FromFile(GetConfiguredPath("TexFilePath")).Build();
+                bibliography.Write();
 
                 _logger.Trace("Bibliography successfully generated.");
             }
