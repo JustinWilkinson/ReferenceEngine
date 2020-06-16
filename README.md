@@ -12,6 +12,8 @@
 ## Usage
 * As mentioned above bibgen.exe can simply be used in place of Bibtex. It reads in a `.bib` file and formats it based on the contents of the `.style.json` file specified in the `.tex` file.
 * The ReferenceEngine takes a collection of entry styles, that look like the below sample, and applies the relevant styling to entries that match the type.
+
+### Sample JSON
 ```
 {
   "Name": "Book Rule",
@@ -56,7 +58,8 @@
 }
 ```
 
-Given the following Bibtex Entry, the output would look like this:
+### Sample Styling
+Given the following Bibtex Entry:
 ```
 @BOOK{
 	AUTHOR = {Alice, Bob, Charlie, David and Eve},
@@ -66,6 +69,7 @@ Given the following Bibtex Entry, the output would look like this:
 	CHAPTER = {Some Chapter}
 }
 ```
+The output would look like this:
 > [1] "An Amazing Book" by Alice, Bob, Charlie *et al.* (p. 20-30), 2020.
 
 ## Code
