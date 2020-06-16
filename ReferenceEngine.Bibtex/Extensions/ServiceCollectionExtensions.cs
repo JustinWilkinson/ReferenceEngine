@@ -16,7 +16,8 @@ namespace ReferenceEngine.Bibtex.Extensions
         /// <returns>A reference to this instance after the operation has completed, for method chaining.</returns>
         public static IServiceCollection AddBibliographyBuilder(this IServiceCollection services)
         {
-            return services.AddSingleton<IFileManager, FileManager>()
+            return services.AddLogging()
+                .AddSingleton<IFileManager, FileManager>()
                 .AddSingleton<IAuxParser, AuxParser>()
                 .AddSingleton<IBibtexParser, BibtexParser>()
                 .AddSingleton<IBibliographyBuilder, BibliographyBuilder>();

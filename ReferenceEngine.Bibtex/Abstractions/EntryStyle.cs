@@ -52,6 +52,26 @@ namespace ReferenceEngine.Bibtex.Abstractions
         /// <summary>
         /// The default styling.
         /// </summary>
-        public static EntryStyle Default = new EntryStyle { Fields = new List<Field>() };
+        public static EntryStyle Default = new EntryStyle
+        {
+            Fields = new List<Field>
+            {
+                new EntryField
+                {
+                    Value = "Title",
+                    Suffix = ",",
+                },
+                new EntryAuthorField
+                {
+                    Format = new OutputAuthorFormat(),
+                    Suffix = ","
+                },
+                new EntryField
+                {
+                    Value = "Year",
+                    Suffix = "."
+                }
+            }
+        };
     }
 }
