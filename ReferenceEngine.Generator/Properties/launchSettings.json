@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ReferenceEngine.Generator": {
+      "commandName": "Project",
+      "commandLineArgs": "Sample\\document.tex"
+    }
+  }
+}

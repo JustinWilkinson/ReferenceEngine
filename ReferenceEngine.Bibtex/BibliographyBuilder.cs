@@ -48,13 +48,7 @@ namespace ReferenceEngine.Bibtex
         /// Builds the BibliographyStyle and applies it to the contents of the BibFilePath.
         /// </summary>
         /// <returns>This bibliography builder instance for method chaining.</returns>
-        BibliographyBuilder Build();
-
-        /// <summary>
-        /// Writes the bibliography to a .bbl file.
-        /// </summary>
-        /// <returns>This bibliography builder instance for method chaining.</returns>
-        BibliographyBuilder Write();
+        Bibliography Build();
     }
 
     /// <summary>
@@ -66,11 +60,10 @@ namespace ReferenceEngine.Bibtex
         private readonly IAuxParser _auxParser;
         private readonly IBibtexParser _bibParser;
         private readonly ILogger<BibliographyBuilder> _logger;
-
-        private readonly List<Bibitem> _bibitems = new List<Bibitem>();
+        private readonly ILoggerFactory _loggerFactory;
 
         private string _auxPath;
-        private IEnumerable<AuxEntry> _auxEntries;
+        private List<AuxEntry> _auxEntries;
         private bool _auxFileParsed = false;
 
         /// <summary>
@@ -86,6 +79,7 @@ namespace ReferenceEngine.Bibtex
             _auxParser = auxParser;
             _bibParser = bibParser;
             _logger = logger;
+            _loggerFactory = new LoggerFactory();
         }
 
         /// <inheritdoc />
@@ -114,28 +108,37 @@ namespace ReferenceEngine.Bibtex
             var texDirectory = Path.GetDirectoryName(texFilePath);
 
             _auxPath = _fileManager.ReplaceExtension(TexFilePath, "aux");
-            _auxEntries = _auxParser.ParseFile(_auxPath);
+            _auxEntries = _auxParser.ParseFile(_auxPath).ToList();
             _auxFileParsed = true;
 
-            BibFilePath = _auxEntries.TryGetFirst(x => x.Type == AuxEntryType.Bibdata, out var auxBibdataEntry) ? Path.Combine(texDirectory, $"{auxBibdataEntry.Key}.bib") : null;
-            StyleFilePath = _auxEntries.TryGetFirst(x => x.Type == AuxEntryType.Bibstyle, out var auxBibstyleEntry) ? Path.Combine(texDirectory, $"{auxBibstyleEntry.Key}.style.json") : null;
+            if (_auxEntries.TryGetFirst(x => x.Type == AuxEntryType.Bibdata, out var auxBibdataEntry))
+            {
+                BibFilePath = auxBibdataEntry.Key.EndsWith(".bib") ? Path.Combine(texDirectory, auxBibdataEntry.Key) : Path.Combine(texDirectory, $"{auxBibdataEntry.Key}.bib");
+                _fileManager.ThrowIfFileDoesNotExist(BibFilePath);
+            }
+
+            if (_auxEntries.TryGetFirst(x => x.Type == AuxEntryType.Bibstyle, out var auxBibstyleEntry))
+            {
+                StyleFilePath = auxBibstyleEntry.Key.EndsWith(".style.json") ? Path.Combine(texDirectory, auxBibstyleEntry.Key) : Path.Combine(texDirectory, $"{auxBibstyleEntry.Key}.style.json");
+                _fileManager.ThrowIfFileDoesNotExist(StyleFilePath);
+            }
 
             return this;
         }
 
         /// <inheritdoc />
-        /// <exception cref="ArgumentNullException">The TexFilePath must be provided prior to running.</exception>
-        /// <exception cref="System.IO.DirectoryNotFoundException">The directory containing the TexFilePath, BibFilePath and StyleFilePath must exist.</exception>
-        /// <exception cref="System.IO.FileNotFoundException">The files at TexFilePath, BibFilePath and StyleFilePath (if provided) must exist.</exception>
-        public BibliographyBuilder Build()
+        /// <exception cref="InvalidOperationException ">The TexFilePath must be provided prior to calling this method.</exception>
+        /// <exception cref="DirectoryNotFoundException">The directory containing the TexFilePath, BibFilePath and StyleFilePath must exist.</exception>
+        /// <exception cref="FileNotFoundException">The files at TexFilePath, BibFilePath and StyleFilePath (if provided) must exist.</exception>
+        public Bibliography Build()
         {
             _logger.LogTrace("Starting build of bibliography.");
 
             if (!_auxFileParsed)
-            { 
+            {
                 if (TexFilePath == null)
                 {
-                    throw new ArgumentNullException(nameof(TexFilePath));
+                    throw new InvalidOperationException("TexFilePath cannot be null!");
                 }
                 else
                 {
@@ -144,22 +147,28 @@ namespace ReferenceEngine.Bibtex
 
                 if (BibFilePath == null)
                 {
-                    throw new ArgumentNullException(nameof(BibFilePath));
+                    throw new InvalidOperationException("BibFilePath cannot be null!");
+                }
+                else
+                {
+                    _fileManager.ThrowIfFileDoesNotExist(BibFilePath);
                 }
 
-                if (BibliographyStyle == null && StyleFilePath == null)
+                if (BibliographyStyle == null)
                 {
-                    throw new ArgumentNullException(nameof(BibliographyStyle));
+                    if (StyleFilePath == null)
+                    {
+                        throw new InvalidOperationException("Either the BibliographyStyle, or the StyleFilePath cannot be null!");
+                    }
+                    else
+                    {
+                        _fileManager.ThrowIfFileDoesNotExist(StyleFilePath);
+                    }
                 }
 
                 _auxPath = _fileManager.ReplaceExtension(TexFilePath, "aux");
-                _auxEntries = _auxParser.ParseFile(_auxPath);
+                _auxEntries = _auxParser.ParseFile(_auxPath).ToList();
             }
-
-            _fileManager.ThrowIfFileDoesNotExist(BibFilePath);
-            _fileManager.ThrowIfFileDoesNotExist(StyleFilePath);
-
-            var bibtexDatabase = _bibParser.ParseFile(BibFilePath);
 
             try
             {
@@ -171,41 +180,25 @@ namespace ReferenceEngine.Bibtex
                 throw;
             }
 
-            foreach (var auxEntry in _auxEntries.Where(x => x.Type == AuxEntryType.Bibcite))
+            var bibliography = new Bibliography(_fileManager, _loggerFactory.CreateLogger<Bibliography>())
+            {
+                TargetPath = _fileManager.ReplaceExtension(TexFilePath, "bbl"),
+                TargetAuxPath = _auxPath
+            };
+
+            var bibtexDatabase = _bibParser.ParseFile(BibFilePath);
+            foreach (var auxEntry in _auxEntries.Where(x => x.Type == AuxEntryType.Citation))
             {
                 if (bibtexDatabase.Entries.TryGetSingle(bibtexEntry => bibtexEntry.CitationKey == auxEntry.Key, out var bibtexEntry))
                 {
                     var style = BibliographyStyle.EntryStyles.SingleOrDefault(s => s.Type == bibtexEntry.EntryType) ?? EntryStyle.Default;
-                    _bibitems.Add(new Bibitem(auxEntry, bibtexEntry, style));
+                    bibliography.Bibitems.Add(new Bibitem(auxEntry, bibtexEntry, style));
                 }
             }
 
             _logger.LogTrace("Bibliography build completed.");
 
-            return this;
-        }
-
-        /// <inheritdoc />
-        public BibliographyBuilder Write()
-        {
-            _logger.LogTrace("Starting write of .bbl file.");
-
-            string targetPath = _fileManager.ReplaceExtension(TexFilePath, "bbl");
-
-            _fileManager.DeleteIfExists(targetPath);
-            _fileManager.WriteStream(targetPath, writer =>
-            {
-                writer.WriteLine("\\begin{thebibliography}{1}\r\n");
-                foreach (var bibitem in _bibitems)
-                {
-                    writer.WriteLine($"{bibitem}\r\n");
-                }
-                writer.WriteLine("\\end{thebibliography}");
-            });
-
-            _logger.LogTrace("Finished writing .bbl file.");
-
-            return this;
+            return bibliography;
         }
     }
 }

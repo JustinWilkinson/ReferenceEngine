@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLog;
 using NLog.Extensions.Logging;
@@ -15,13 +14,11 @@ namespace ReferenceEngine.BibliographyGenerator
     public class Program
     {
         private static readonly string _baseDirectory;
-        private static readonly IConfiguration _config;
         private static readonly ILogger _logger;
 
         static Program()
         {
             _baseDirectory = Path.GetDirectoryName(Uri.UnescapeDataString(new UriBuilder(Assembly.GetExecutingAssembly().CodeBase).Path));
-            _config = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("bibgen.json", false, true).Build();
             _logger = LogManager.GetCurrentClassLogger();
         }
 
@@ -29,14 +26,23 @@ namespace ReferenceEngine.BibliographyGenerator
         {
             try
             {
-                _logger.Trace("Bibliography generator started.");
+                if (args.Length > 0)
+                {
+                    var path = Path.IsPathRooted(args[0]) ? args[0] : Path.Combine(_baseDirectory, args[0]);
 
-                var serviceProvider = ConfigureServices();
+                    _logger.Trace($"Bibliography generator started with path: '{path}'.");
 
-                var bibliographyBuilder = serviceProvider.GetRequiredService<IBibliographyBuilder>();
-                bibliographyBuilder.FromFile(GetConfiguredPath("TexFilePath")).Build().Write();
+                    var serviceProvider = ConfigureServices();
+                    var bibliographyBuilder = serviceProvider.GetRequiredService<IBibliographyBuilder>();
+                    var bibliography = bibliographyBuilder.FromFile(path).Build();
+                    bibliography.Write();
 
-                _logger.Trace("Bibliography successfully generated.");
+                    _logger.Trace($"Bibliography successfully generated for file at path: '{path}'.");
+                }
+                else
+                {
+                    throw new ArgumentException("Expected a path to a tex file to be provided!");
+                }
             }
             catch (Exception ex)
             {
@@ -59,7 +65,5 @@ namespace ReferenceEngine.BibliographyGenerator
                 .AddBibliographyBuilder()
                 .BuildServiceProvider();
         }
-
-        private static string GetConfiguredPath(string pathName) => _config[pathName].Replace("[CURRENT_DIRECTORY]", _baseDirectory);
     }
 }

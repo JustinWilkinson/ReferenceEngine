@@ -40,7 +40,8 @@ namespace ReferenceEngine.Bibtex.Manager
         /// </summary>
         /// <param name="path">Path to write to.</param>
         /// <param name="write">Custom write action.</param>
-        void WriteStream(string path, Action<StreamWriter> write);
+        /// <param name="append">Append to existing file (defaults to false).</param>
+        void WriteStream(string path, Action<StreamWriter> write, bool append = false);
     }
 
     public class FileManager : IFileManager
@@ -86,9 +87,9 @@ namespace ReferenceEngine.Bibtex.Manager
         }
 
         /// <inheritdoc />
-        public void WriteStream(string path, Action<StreamWriter> write)
+        public void WriteStream(string path, Action<StreamWriter> write, bool append = false)
         {
-            using var writer = new StreamWriter(path);
+            using var writer = new StreamWriter(path, append);
             write(writer);
         }
     }

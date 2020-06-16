@@ -11,7 +11,7 @@
         Relax,
 
         /// <summary>
-        /// An entry of the form \bibstyle{}. This is ignored.
+        /// An entry of the form \bibstyle{}, used to identify the .style.json file.
         /// </summary>
         Bibstyle,
 
@@ -26,7 +26,7 @@
         Bibcite,
 
         /// <summary>
-        /// An entry of the form \bibdata{}.
+        /// An entry of the form \bibdata{} used to identify the .bib file.
         /// </summary>
         Bibdata
     }
