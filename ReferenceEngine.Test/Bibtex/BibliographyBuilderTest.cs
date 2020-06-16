@@ -8,7 +8,6 @@ using ReferenceEngine.Bibtex.Manager;
 using ReferenceEngine.Bibtex.Parser;
 using System;
 using System.Collections.Generic;
-using System.IO;
 
 namespace ReferenceEngine.Test.Bibtex
 {
