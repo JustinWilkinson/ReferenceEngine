@@ -11,6 +11,7 @@ namespace ReferenceEngine.Test.Bibtex.Abstractions
     [TestFixture]
     public class BibliographyTest
     {
+        private const string AuxPath = "AuxPath";
         private const string BblPath = "BblPath";
 
         private readonly Mock<IFileManager> _mockFileManager = new Mock<IFileManager>();
@@ -20,14 +21,15 @@ namespace ReferenceEngine.Test.Bibtex.Abstractions
         public void Write_WritesContents_CallsCorrectMethods()
         {
             // Arrange
-            var bibliography = new Bibliography(_mockFileManager.Object, _mockLogger.Object) { TargetPath = BblPath };
+            var bibliography = new Bibliography(_mockFileManager.Object, _mockLogger.Object) { TargetAuxPath = AuxPath, TargetPath = BblPath };
 
             // Act
             bibliography.Write();
 
             // Assert
+            _mockFileManager.Verify(x => x.WriteStream(AuxPath, It.IsAny<Action<StreamWriter>>(), true), Times.Once);
             _mockFileManager.Verify(x => x.DeleteIfExists(BblPath), Times.Once);
-            _mockFileManager.Verify(x => x.WriteStream(BblPath, It.IsAny<Action<StreamWriter>>()), Times.Once);
+            _mockFileManager.Verify(x => x.WriteStream(BblPath, It.IsAny<Action<StreamWriter>>(), false), Times.Once);
             _mockFileManager.VerifyNoOtherCalls();
         }
     }

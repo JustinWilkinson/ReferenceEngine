@@ -40,7 +40,7 @@ namespace ReferenceEngine.Bibtex.Abstractions
             {
                 throw new ArgumentNullException(nameof(entryStyle));
             }
-            if (!auxEntry.Key.Equals(bibtexEntry.Key, StringComparison.OrdinalIgnoreCase))
+            if (!auxEntry.Key.Equals(bibtexEntry.CitationKey, StringComparison.OrdinalIgnoreCase))
             {
                 throw new ArgumentException($"The AuxEntry Key '{auxEntry.Key}' must match the BibtexEntry CitationKey '{bibtexEntry.CitationKey}'!");
             }

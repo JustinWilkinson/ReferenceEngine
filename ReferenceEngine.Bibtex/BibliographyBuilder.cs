@@ -63,7 +63,7 @@ namespace ReferenceEngine.Bibtex
         private readonly ILoggerFactory _loggerFactory;
 
         private string _auxPath;
-        private IEnumerable<AuxEntry> _auxEntries;
+        private List<AuxEntry> _auxEntries;
         private bool _auxFileParsed = false;
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace ReferenceEngine.Bibtex
             var texDirectory = Path.GetDirectoryName(texFilePath);
 
             _auxPath = _fileManager.ReplaceExtension(TexFilePath, "aux");
-            _auxEntries = _auxParser.ParseFile(_auxPath);
+            _auxEntries = _auxParser.ParseFile(_auxPath).ToList();
             _auxFileParsed = true;
 
             if (_auxEntries.TryGetFirst(x => x.Type == AuxEntryType.Bibdata, out var auxBibdataEntry))
@@ -162,13 +162,12 @@ namespace ReferenceEngine.Bibtex
                     }
                     else
                     {
-
                         _fileManager.ThrowIfFileDoesNotExist(StyleFilePath);
                     }
                 }
 
                 _auxPath = _fileManager.ReplaceExtension(TexFilePath, "aux");
-                _auxEntries = _auxParser.ParseFile(_auxPath);
+                _auxEntries = _auxParser.ParseFile(_auxPath).ToList();
             }
 
             try
@@ -184,10 +183,11 @@ namespace ReferenceEngine.Bibtex
             var bibliography = new Bibliography(_fileManager, _loggerFactory.CreateLogger<Bibliography>())
             {
                 TargetPath = _fileManager.ReplaceExtension(TexFilePath, "bbl"),
+                TargetAuxPath = _auxPath
             };
 
             var bibtexDatabase = _bibParser.ParseFile(BibFilePath);
-            foreach (var auxEntry in _auxEntries.Where(x => x.Type == AuxEntryType.Bibcite))
+            foreach (var auxEntry in _auxEntries.Where(x => x.Type == AuxEntryType.Citation))
             {
                 if (bibtexDatabase.Entries.TryGetSingle(bibtexEntry => bibtexEntry.CitationKey == auxEntry.Key, out var bibtexEntry))
                 {
