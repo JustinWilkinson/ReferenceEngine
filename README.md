@@ -70,7 +70,7 @@ Given the following Bibtex Entry:
 }
 ```
 The output would look like this:
-> [1] "An Amazing Book" by Alice, Bob, Charlie *et al.* (p. 20-30), 2020.
+> [1] "An Amazing Book" by Alice, Bob, Charlie *et al.* (p. 20-30), **2020**.
 
 ## Code
 
