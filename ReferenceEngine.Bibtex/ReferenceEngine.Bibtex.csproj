@@ -6,7 +6,7 @@
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <Copyright>Justin Wilkinson 2020</Copyright>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
-    <Description>A parser for Bibtex files, and bibliography builder.</Description>
+    <Description>A parser for Bibtex files, and a bibliography builder.</Description>
     <Authors>Justin Wilkinson</Authors>
     <Company />
   </PropertyGroup>

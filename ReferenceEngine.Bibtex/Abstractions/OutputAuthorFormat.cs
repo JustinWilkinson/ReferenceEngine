@@ -48,12 +48,13 @@ namespace ReferenceEngine.Bibtex.Abstractions
         public string FinalDelimiter { get; set; } = "and";
 
         /// <summary>
-        /// The number of authors to include before truncating, and appending the TruncatedAuthorsText
+        /// The number of authors to include before truncating, and appending the TruncatedAuthorsText.
+        /// Defaults to 3.
         /// </summary>
         public int NumberOfNamedAuthors { get; set; } = 3;
 
         /// <summary>
-        /// A LatexString defining whether or not, defaults to "<i>et al.</i>"
+        /// A LatexString defining whether or not, defaults to "<i>et al.</i>".
         /// </summary>
         public LatexString TruncatedAuthorsText { get; set; } = new LatexString("et al.") { Italic = true };
 

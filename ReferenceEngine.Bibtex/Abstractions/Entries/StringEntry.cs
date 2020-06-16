@@ -27,6 +27,6 @@ namespace ReferenceEngine.Bibtex.Abstractions.Entries
         /// Formats the StringEntry as a .bib entry.
         /// </summary>
         /// <returns>The comment formatted as it would be in a .bib file.</returns>
-        public override string ToString() => $"@COMMENT{{{Content.Key} = {{{Content.Value}}}}}";
+        public override string ToString() => $"@STRING{{{Content.Key} = {{{Content.Value}}}}}";
     }
 }
