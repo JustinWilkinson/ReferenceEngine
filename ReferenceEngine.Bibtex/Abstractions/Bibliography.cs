@@ -87,12 +87,7 @@ namespace ReferenceEngine.Bibtex.Abstractions
 
             _fileManager.WriteStream(TargetAuxPath, append: true, write: writer =>
             {
-                foreach (var preamble in Preambles)
-                {
-                    writer.WriteLine(preamble);
-                }
-
-                foreach ((string key, int index) in Bibitems.Select((x, index) => (x.CitationKey, index)))
+                foreach ((string key, int index) in Bibitems.Select((x, index) => (x.CitationKey, index + 1)))
                 {
                     writer.WriteLine($"\\bibcite{{{key}}}{{{index}}}");
                 }
@@ -101,6 +96,11 @@ namespace ReferenceEngine.Bibtex.Abstractions
             _fileManager.DeleteIfExists(TargetPath);
             _fileManager.WriteStream(TargetPath, writer =>
             {
+                foreach (var preamble in Preambles)
+                {
+                    writer.WriteLine(preamble);
+                }
+
                 writer.WriteLine("\\begin{thebibliography}{1}\r\n");
                 foreach (var bibitem in Bibitems)
                 {

@@ -187,7 +187,8 @@ namespace ReferenceEngine.Bibtex
             var bibliography = new Bibliography(_fileManager, _bibliographyLogger)
             {
                 TargetPath = _fileManager.ReplaceExtension(TexFilePath, "bbl"),
-                TargetAuxPath = _auxPath
+                TargetAuxPath = _auxPath,
+                Preambles = bibtexDatabase.Preambles.Select(x => x.Content).ToList()
             };
 
             // Extract citations from Aux Entries, match with entries in the Bibtex Database and apply styling.

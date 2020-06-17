@@ -202,7 +202,7 @@ namespace ReferenceEngine.Bibtex.Parser
                     var split = field.TrimIgnoredCharacters().Split('=', 2, StringSplitOptions.RemoveEmptyEntries);
                     if (split.Length == 2)
                     {
-                        keyValuePairs.Add(split[0].TrimIgnoredCharacters(), split[1].TrimIgnoredCharacters());
+                        keyValuePairs.Add(split[0].TrimIgnoredCharacters().RemoveBraces(), split[1].TrimIgnoredCharacters().RemoveBraces());
                     }
                 }
 

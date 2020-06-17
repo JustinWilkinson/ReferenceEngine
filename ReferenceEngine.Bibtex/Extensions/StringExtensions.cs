@@ -14,7 +14,7 @@ namespace ReferenceEngine.Bibtex.Extensions
         /// Trims spaces, quotes, braces, tabs and new lines from both ends of the source string.
         /// </summary>
         /// <param name="str">Source string</param>
-        /// <returns>The trimmeds string.</returns>
+        /// <returns>The trimmed string.</returns>
         public static string TrimIgnoredCharacters(this string str) => str.Trim(' ', '"', '{', '}', '\t', '\r', '\n');
 
         /// <summary>
