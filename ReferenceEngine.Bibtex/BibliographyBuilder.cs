@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using ReferenceEngine.Bibtex.Abstractions;
+using ReferenceEngine.Bibtex.Abstractions.Entries;
 using ReferenceEngine.Bibtex.Enumerations;
 using ReferenceEngine.Bibtex.Extensions;
 using ReferenceEngine.Bibtex.Manager;
@@ -60,7 +61,7 @@ namespace ReferenceEngine.Bibtex
         private readonly IAuxParser _auxParser;
         private readonly IBibtexParser _bibParser;
         private readonly ILogger<BibliographyBuilder> _logger;
-        private readonly ILoggerFactory _loggerFactory;
+        private readonly ILogger<Bibliography> _bibliographyLogger;
 
         private string _auxPath;
         private List<AuxEntry> _auxEntries;
@@ -79,7 +80,7 @@ namespace ReferenceEngine.Bibtex
             _auxParser = auxParser;
             _bibParser = bibParser;
             _logger = logger;
-            _loggerFactory = new LoggerFactory();
+            _bibliographyLogger = new LoggerFactory().CreateLogger<Bibliography>();
         }
 
         /// <inheritdoc />
@@ -183,15 +184,14 @@ namespace ReferenceEngine.Bibtex
                 }
             }
 
-
             var bibtexDatabase = _bibParser.ParseFile(BibFilePath);
-            var bibliography = new Bibliography(_fileManager, _loggerFactory.CreateLogger<Bibliography>())
+            var bibliography = new Bibliography(_fileManager, _bibliographyLogger)
             {
                 TargetPath = _fileManager.ReplaceExtension(TexFilePath, "bbl"),
-                TargetAuxPath = _auxPath,
-                Preambles = bibtexDatabase.Preambles
+                TargetAuxPath = _auxPath
             };
 
+            // Extract citations from Aux Entries, match with entries in the Bibtex Database and apply styling.
             foreach (var auxEntry in _auxEntries.Where(x => x.Type == AuxEntryType.Citation))
             {
                 if (bibtexDatabase.Entries.TryGetSingle(bibtexEntry => bibtexEntry.CitationKey == auxEntry.Key, out var bibtexEntry))
@@ -199,6 +199,15 @@ namespace ReferenceEngine.Bibtex
                     var style = BibliographyStyle.EntryStyles.SingleOrDefault(s => s.Type == bibtexEntry.EntryType) ?? EntryStyle.Default;
                     bibliography.Bibitems.Add(new Bibitem(auxEntry, bibtexEntry, style));
                 }
+            }
+
+            // Perform string variable substitution.
+            for (var i = 0; i < bibtexDatabase.Strings.Count; i++)
+            {
+                var entryContent = bibtexDatabase.Strings[i].Content;
+                var join = i == bibtexDatabase.Strings.Count - 1 ? "" : " # ";
+                bibliography.Preambles = bibtexDatabase.Preambles.Select(preamble => preamble.Content.Substitute(entryContent, '#', join)).ToList();
+                bibliography.Bibitems.ForEach(bibitem => bibitem.Detail = bibitem.Detail.Substitute(entryContent, '#', join));
             }
 
             _logger.LogTrace("Bibliography build completed.");

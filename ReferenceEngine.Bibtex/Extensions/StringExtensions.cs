@@ -1,4 +1,8 @@
-﻿namespace ReferenceEngine.Bibtex.Extensions
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace ReferenceEngine.Bibtex.Extensions
 {
     /// <summary>
     /// Contains useful extension methods for strings commonly found in Bibtex.
@@ -18,5 +22,67 @@
         /// <param name="str">Source string</param>
         /// <returns></returns>
         public static string RemoveBraces(this string str) => str.Replace("{", "").Replace("}", "");
+
+        /// <summary>
+        /// Split a string on a given character, provided it is not contained in quotes.
+        /// </summary>
+        /// <param name="input">String to split.</param>
+        /// <param name="splitChar">Character to split on.</param>
+        /// <returns>An IEnumerable of strings</returns>
+        public static IEnumerable<string> SplitOnUnquotedCharacter(this string input, char splitChar)
+        {
+            var leftBraceCount = 0;
+            var rightBraceCount = 0;
+            var inQuotes = false;
+
+            StringBuilder current = new StringBuilder();
+            for (int i = 0; i < input.Length; i++)
+            {
+                var c = input[i];
+                if (c == '"')
+                {
+                    inQuotes = leftBraceCount == rightBraceCount ? !inQuotes : inQuotes;
+                }
+                else if (!inQuotes && leftBraceCount == rightBraceCount && c == splitChar)
+                {
+                    yield return current.ToString().TrimIgnoredCharacters();
+                    current.Clear();
+                }
+                else
+                {
+                    if (c == '{')
+                    {
+                        leftBraceCount++;
+                    }
+                    else if (c == '}')
+                    {
+                        rightBraceCount++;
+                    }
+
+                    current.Append(c);
+                }
+            }
+
+            yield return current.ToString();
+        }
+
+        /// <summary>
+        /// Performs string variable substitution/concatenation, by splitting a string on an unquoted character
+        /// and replacing any instances of the substitution key in the resulting collection with the substitution value before rejoining the string with the specified string.
+        /// </summary>
+        /// <param name="toSubstitute">String to perform substitution on.</param>
+        /// <param name="substitution">Key value pair for substitution.</param>
+        /// <param name="splitChar">Character to split string on.</param>
+        /// <param name="join">String used to re-join concatenated strings.</param>
+        /// <returns></returns>
+        public static string Substitute(this string toSubstitute, KeyValuePair<string, string> substitution, char splitChar = ' ', string join = "")
+        {
+            if (!toSubstitute.Contains(substitution.Key))
+            {
+                return toSubstitute;
+            }
+
+            return string.Join(join, toSubstitute.SplitOnUnquotedCharacter(splitChar).Select(str => substitution.Key == str ? substitution.Value : str));
+        }
     }
 }

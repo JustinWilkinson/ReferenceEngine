@@ -30,7 +30,7 @@ namespace ReferenceEngine.Bibtex.Abstractions
         /// <summary>
         /// The collection of styled Bibitems.
         /// </summary>
-        ICollection<Preamble> Preambles { get; set; }
+        ICollection<string> Preambles { get; set; }
 
         /// <summary>
         /// Writes the bibliography to the <see cref="TargetPath"/> .bbl file and adds the \bibcite entries to the aux file.
@@ -56,7 +56,7 @@ namespace ReferenceEngine.Bibtex.Abstractions
         public ICollection<Bibitem> Bibitems { get; set; }
 
         /// <inheritdoc />
-        public ICollection<Preamble> Preambles { get; set; }
+        public ICollection<string> Preambles { get; set; }
 
         /// <summary>
         /// Constructs a new Bibliography instance initialised with empty <see cref="Bibitems"/> and <see cref="Preambles"/> collections, and assigns the relevant fields with the provided values.
@@ -68,6 +68,7 @@ namespace ReferenceEngine.Bibtex.Abstractions
             _fileManager = fileManager;
             _logger = logger;
             Bibitems = new List<Bibitem>();
+            Preambles = new List<string>();
         }
 
         /// <inheritdoc />
@@ -89,7 +90,7 @@ namespace ReferenceEngine.Bibtex.Abstractions
             {
                 foreach (var preamble in Preambles)
                 {
-                    writer.WriteLine(preamble.Content);
+                    writer.WriteLine(preamble);
                 }
 
                 foreach ((string key, int index) in Bibitems.Select((x, index) => (x.CitationKey, index)))

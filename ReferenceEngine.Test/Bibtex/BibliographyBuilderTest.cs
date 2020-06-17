@@ -82,6 +82,7 @@ namespace ReferenceEngine.Test.Bibtex
             _mockFileManager.Setup(x => x.ReadFileContents(It.IsAny<string>())).Returns("{ Id: 1, Name: \"Some Name\", EntryStyles: [] }");
             _mockFileManager.Setup(x => x.ReplaceExtension(It.IsAny<string>(), It.IsAny<string>())).Returns(AuxPath);
             _mockAuxParser.Setup(x => x.ParseFile(It.IsAny<string>())).Returns(new List<AuxEntry>());
+            _mockBibtexParser.Setup(x => x.ParseFile(It.IsAny<string>())).Returns(new BibtexDatabase("Test"));
 
             // Act
             var bibliography = _bibliographyBuilder.Build();
@@ -118,6 +119,7 @@ namespace ReferenceEngine.Test.Bibtex
                 new AuxEntry(AuxEntryType.Bibdata) { Key = BibPath },
                 new AuxEntry(AuxEntryType.Bibstyle) { Key = StylePath }
             });
+            _mockBibtexParser.Setup(x => x.ParseFile(It.IsAny<string>())).Returns(new BibtexDatabase("Test"));
 
             // Act
             var bibliography = _bibliographyBuilder.FromFile(TexPath).Build();
