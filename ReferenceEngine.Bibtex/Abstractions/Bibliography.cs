@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using ReferenceEngine.Bibtex.Abstractions.Entries;
 using ReferenceEngine.Bibtex.Manager;
 using System;
 using System.Collections.Generic;
@@ -86,7 +85,7 @@ namespace ReferenceEngine.Bibtex.Abstractions
 
             _logger.LogTrace("Starting write of .bbl file.");
 
-            _fileManager.WriteStream(TargetAuxPath, append: true, write: writer => 
+            _fileManager.WriteStream(TargetAuxPath, append: true, write: writer =>
             {
                 foreach (var preamble in Preambles)
                 {

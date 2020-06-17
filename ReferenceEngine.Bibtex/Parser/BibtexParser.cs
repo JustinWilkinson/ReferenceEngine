@@ -249,7 +249,7 @@ namespace ReferenceEngine.Bibtex.Parser
                         openingBraceCharacter = character;
                         closingBraceCharacter = openingBraceCharacter == '{' ? '}' : ')';
                         leftBraceCount++;
-                    } 
+                    }
                     else if (character == openingBraceCharacter.Value)
                     {
                         leftBraceCount++;
