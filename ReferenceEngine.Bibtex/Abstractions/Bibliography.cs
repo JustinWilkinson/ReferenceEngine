@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using ReferenceEngine.Bibtex.Abstractions.Entries;
 using ReferenceEngine.Bibtex.Manager;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,11 @@ namespace ReferenceEngine.Bibtex.Abstractions
         ICollection<Bibitem> Bibitems { get; set; }
 
         /// <summary>
+        /// The collection of styled Bibitems.
+        /// </summary>
+        ICollection<Preamble> Preambles { get; set; }
+
+        /// <summary>
         /// Writes the bibliography to the <see cref="TargetPath"/> .bbl file and adds the \bibcite entries to the aux file.
         /// </summary>
         void Write();
@@ -49,23 +55,19 @@ namespace ReferenceEngine.Bibtex.Abstractions
         /// <inheritdoc />
         public ICollection<Bibitem> Bibitems { get; set; }
 
-        /// <summary>
-        /// Constructs a new Bibliography instance initialised with an empty <see cref="Bibitems"/> collection.
-        /// </summary>
-        public Bibliography()
-        {
-            Bibitems = new List<Bibitem>();
-        }
+        /// <inheritdoc />
+        public ICollection<Preamble> Preambles { get; set; }
 
         /// <summary>
-        /// Constructs a new Bibliography instance initialised with an empty <see cref="Bibitems"/> collection, and assigns the relevant fields with the provided values.
+        /// Constructs a new Bibliography instance initialised with empty <see cref="Bibitems"/> and <see cref="Preambles"/> collections, and assigns the relevant fields with the provided values.
         /// </summary>
         /// <param name="fileManager"><see cref="IFileManager"/> instance used to write the bibliography.</param>
         /// <param name="logger"><see cref="ILogger{TCategoryName}"/> instance used to log messages.</param>
-        public Bibliography(IFileManager fileManager, ILogger<Bibliography> logger) : this()
+        public Bibliography(IFileManager fileManager, ILogger<Bibliography> logger)
         {
             _fileManager = fileManager;
             _logger = logger;
+            Bibitems = new List<Bibitem>();
         }
 
         /// <inheritdoc />
@@ -85,6 +87,11 @@ namespace ReferenceEngine.Bibtex.Abstractions
 
             _fileManager.WriteStream(TargetAuxPath, append: true, write: writer => 
             {
+                foreach (var preamble in Preambles)
+                {
+                    writer.WriteLine(preamble.Content);
+                }
+
                 foreach ((string key, int index) in Bibitems.Select((x, index) => (x.CitationKey, index)))
                 {
                     writer.WriteLine($"\\bibcite{{{key}}}{{{index}}}");

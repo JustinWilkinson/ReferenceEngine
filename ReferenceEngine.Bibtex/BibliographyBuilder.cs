@@ -183,13 +183,15 @@ namespace ReferenceEngine.Bibtex
                 }
             }
 
+
+            var bibtexDatabase = _bibParser.ParseFile(BibFilePath);
             var bibliography = new Bibliography(_fileManager, _loggerFactory.CreateLogger<Bibliography>())
             {
                 TargetPath = _fileManager.ReplaceExtension(TexFilePath, "bbl"),
-                TargetAuxPath = _auxPath
+                TargetAuxPath = _auxPath,
+                Preambles = bibtexDatabase.Preambles
             };
 
-            var bibtexDatabase = _bibParser.ParseFile(BibFilePath);
             foreach (var auxEntry in _auxEntries.Where(x => x.Type == AuxEntryType.Citation))
             {
                 if (bibtexDatabase.Entries.TryGetSingle(bibtexEntry => bibtexEntry.CitationKey == auxEntry.Key, out var bibtexEntry))
