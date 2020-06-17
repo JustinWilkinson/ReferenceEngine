@@ -72,5 +72,19 @@ namespace ReferenceEngine.Bibtex.Extensions
             value = source.FirstOrDefault(predicate);
             return !EqualityComparer<T>.Default.Equals(value, default);
         }
+
+        /// <summary>
+        /// Performs an action for each element in an enumerable.
+        /// </summary>
+        /// <typeparam name="T">Type of elements in the enumerable.</typeparam>
+        /// <param name="enumerable">Enumerable to perform actions on</param>
+        /// <param name="action">Action to perform.</param>
+        public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
+        {
+            foreach (T item in enumerable)
+            {
+                action(item);
+            }
+        }
     }
 }

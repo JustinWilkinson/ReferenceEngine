@@ -7,6 +7,7 @@ using ReferenceEngine.Bibtex.Manager;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace ReferenceEngine.Bibtex.Parser
@@ -189,7 +190,7 @@ namespace ReferenceEngine.Bibtex.Parser
         public BibtexEntry GetEntryContent(EntryType entryType, StreamReader sr)
         {
             var keyValuePairs = new Dictionary<string, string>();
-            List<string> fields = SplitOnUnquotedCharacter(GetTextBetweenBraces(sr));
+            var fields = GetTextBetweenBraces(sr).SplitOnUnquotedCharacter(',').ToList();
 
             if (fields.Count > 0)
             {
@@ -222,13 +223,13 @@ namespace ReferenceEngine.Bibtex.Parser
         /// <inheritdoc />
         public StringEntry GetStringEntry(StreamReader sr) => new StringEntry(GetTextBetweenBraces(sr));
 
-        #region Private
+        #region Static
         /// <summary>
         /// Extract the contents of a StreamReader contained in a set of braces.
         /// </summary>
         /// <param name="sr">StreamReader to read</param>
         /// <returns>A string contained between a set of braces.</returns>
-        private string GetTextBetweenBraces(StreamReader sr)
+        public static string GetTextBetweenBraces(StreamReader sr)
         {
             var content = new StringBuilder();
 
@@ -248,7 +249,7 @@ namespace ReferenceEngine.Bibtex.Parser
                         openingBraceCharacter = character;
                         closingBraceCharacter = openingBraceCharacter == '{' ? '}' : ')';
                         leftBraceCount++;
-                    } 
+                    }
                     else if (character == openingBraceCharacter.Value)
                     {
                         leftBraceCount++;
@@ -281,53 +282,6 @@ namespace ReferenceEngine.Bibtex.Parser
             }
 
             return content.ToString();
-        }
-
-        /// <summary>
-        /// Split a string on a given character, provided it is not contained in quotes.
-        /// </summary>
-        /// <param name="input">String to split.</param>
-        /// <param name="splitChar">Character to split on, defaults to a comma ','.</param>
-        /// <returns>A list of strings </returns>
-        private List<string> SplitOnUnquotedCharacter(string input, char splitChar = ',')
-        {
-            List<string> lst = new List<string>();
-
-            var leftBraceCount = 0;
-            var rightBraceCount = 0;
-            var inQuotes = false;
-
-            StringBuilder current = new StringBuilder();
-            for (int i = 0; i < input.Length; i++)
-            {
-                var c = input[i];
-                if (c == '"')
-                {
-                    inQuotes = leftBraceCount == rightBraceCount ? !inQuotes : inQuotes;
-                }
-                else if (!inQuotes && leftBraceCount == rightBraceCount && c == splitChar)
-                {
-                    lst.Add(current.ToString().TrimIgnoredCharacters());
-                    current.Clear();
-                }
-                else
-                {
-                    if (c == '{')
-                    {
-                        leftBraceCount++;
-                    }
-                    else if (c == '}')
-                    {
-                        rightBraceCount++;
-                    }
-
-                    current.Append(c);
-                }
-            }
-
-            lst.Add(current.ToString());
-
-            return lst;
         }
         #endregion
     }

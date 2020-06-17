@@ -60,7 +60,7 @@ namespace ReferenceEngine.Bibtex
         private readonly IAuxParser _auxParser;
         private readonly IBibtexParser _bibParser;
         private readonly ILogger<BibliographyBuilder> _logger;
-        private readonly ILoggerFactory _loggerFactory;
+        private readonly ILogger<Bibliography> _bibliographyLogger;
 
         private string _auxPath;
         private List<AuxEntry> _auxEntries;
@@ -79,7 +79,7 @@ namespace ReferenceEngine.Bibtex
             _auxParser = auxParser;
             _bibParser = bibParser;
             _logger = logger;
-            _loggerFactory = new LoggerFactory();
+            _bibliographyLogger = new LoggerFactory().CreateLogger<Bibliography>();
         }
 
         /// <inheritdoc />
@@ -183,19 +183,37 @@ namespace ReferenceEngine.Bibtex
                 }
             }
 
-            var bibliography = new Bibliography(_fileManager, _loggerFactory.CreateLogger<Bibliography>())
+            var bibtexDatabase = _bibParser.ParseFile(BibFilePath);
+            var bibliography = new Bibliography(_fileManager, _bibliographyLogger)
             {
                 TargetPath = _fileManager.ReplaceExtension(TexFilePath, "bbl"),
-                TargetAuxPath = _auxPath
+                TargetAuxPath = _auxPath,
+                Preambles = bibtexDatabase.Preambles.Select(x => x.Content).ToList()
             };
 
-            var bibtexDatabase = _bibParser.ParseFile(BibFilePath);
+            // Extract citations from Aux Entries, match with entries in the Bibtex Database and apply styling.
             foreach (var auxEntry in _auxEntries.Where(x => x.Type == AuxEntryType.Citation))
             {
                 if (bibtexDatabase.Entries.TryGetSingle(bibtexEntry => bibtexEntry.CitationKey == auxEntry.Key, out var bibtexEntry))
                 {
                     var style = BibliographyStyle.EntryStyles.SingleOrDefault(s => s.Type == bibtexEntry.EntryType) ?? EntryStyle.Default;
                     bibliography.Bibitems.Add(new Bibitem(auxEntry, bibtexEntry, style));
+                }
+            }
+
+            // Perform string variable substitution.
+            for (var i = 0; i < bibtexDatabase.Strings.Count; i++)
+            {
+                var entryContent = bibtexDatabase.Strings[i].Content;
+                if (i == bibtexDatabase.Strings.Count - 1)
+                {
+                    bibliography.Preambles = bibtexDatabase.Preambles.Select(p => p.Content.Substitute(entryContent, '#', " ", x => x.Trim().RemoveFromStart('{', '"').RemoveFromEnd('}', '"'))).ToList();
+                    bibliography.Bibitems.ForEach(bibitem => bibitem.Detail = bibitem.Detail.Substitute(entryContent, '#', " ", x => x.Trim().RemoveFromStart('{', '"').RemoveFromEnd('}', '"')));
+                }
+                else
+                {
+                    bibliography.Preambles = bibtexDatabase.Preambles.Select(preamble => preamble.Content.Substitute(entryContent, '#')).ToList();
+                    bibliography.Bibitems.ForEach(bibitem => bibitem.Detail = bibitem.Detail.Substitute(entryContent, '#'));
                 }
             }
 
