@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using ReferenceEngine.Bibtex.Abstractions;
-using ReferenceEngine.Bibtex.Abstractions.Entries;
 using ReferenceEngine.Bibtex.Enumerations;
 using ReferenceEngine.Bibtex.Extensions;
 using ReferenceEngine.Bibtex.Manager;
@@ -205,9 +204,16 @@ namespace ReferenceEngine.Bibtex
             for (var i = 0; i < bibtexDatabase.Strings.Count; i++)
             {
                 var entryContent = bibtexDatabase.Strings[i].Content;
-                var join = i == bibtexDatabase.Strings.Count - 1 ? "" : " # ";
-                bibliography.Preambles = bibtexDatabase.Preambles.Select(preamble => preamble.Content.Substitute(entryContent, '#', join)).ToList();
-                bibliography.Bibitems.ForEach(bibitem => bibitem.Detail = bibitem.Detail.Substitute(entryContent, '#', join));
+                if (i == bibtexDatabase.Strings.Count - 1)
+                {
+                    bibliography.Preambles = bibtexDatabase.Preambles.Select(p => p.Content.Substitute(entryContent, '#', " ", x => x.Trim().RemoveFromStart('{', '"').RemoveFromEnd('}', '"'))).ToList();
+                    bibliography.Bibitems.ForEach(bibitem => bibitem.Detail = bibitem.Detail.Substitute(entryContent, '#', " ", x => x.Trim().RemoveFromStart('{', '"').RemoveFromEnd('}', '"')));
+                }
+                else
+                {
+                    bibliography.Preambles = bibtexDatabase.Preambles.Select(preamble => preamble.Content.Substitute(entryContent, '#')).ToList();
+                    bibliography.Bibitems.ForEach(bibitem => bibitem.Detail = bibitem.Detail.Substitute(entryContent, '#'));
+                }
             }
 
             _logger.LogTrace("Bibliography build completed.");
