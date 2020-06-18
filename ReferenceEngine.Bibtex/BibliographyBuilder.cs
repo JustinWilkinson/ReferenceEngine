@@ -194,10 +194,13 @@ namespace ReferenceEngine.Bibtex
             // Extract citations from Aux Entries, match with entries in the Bibtex Database and apply styling.
             foreach (var auxEntry in _auxEntries.Where(x => x.Type == AuxEntryType.Citation))
             {
-                if (bibtexDatabase.Entries.TryGetSingle(bibtexEntry => bibtexEntry.CitationKey == auxEntry.Key, out var bibtexEntry))
+                if (!bibliography.Bibitems.Any(x => x.CitationKey == auxEntry.Key))
                 {
-                    var style = BibliographyStyle.EntryStyles.SingleOrDefault(s => s.Type == bibtexEntry.EntryType) ?? EntryStyle.Default;
-                    bibliography.Bibitems.Add(new Bibitem(auxEntry, bibtexEntry, style));
+                    if (bibtexDatabase.Entries.TryGetSingle(bibtexEntry => bibtexEntry.CitationKey == auxEntry.Key, out var bibtexEntry))
+                    {
+                        var style = BibliographyStyle.EntryStyles.SingleOrDefault(s => s.Type == bibtexEntry.EntryType) ?? EntryStyle.Default;
+                        bibliography.Bibitems.Add(new Bibitem(auxEntry, bibtexEntry, style));
+                    }
                 }
             }
 
