@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SC = System.StringComparison;
 
 namespace ReferenceEngine.Bibtex.Abstractions.Entries
 {
@@ -231,11 +232,11 @@ namespace ReferenceEngine.Bibtex.Abstractions.Entries
         {
             get
             {
-                if (propertyName.Equals(ENTRY_TYPE, StringComparison.OrdinalIgnoreCase))
+                if (propertyName.Equals(ENTRY_TYPE, SC.OrdinalIgnoreCase))
                 {
                     return EntryType.ToString();
                 }
-                else if (propertyName.Equals(CITATION_KEY, StringComparison.OrdinalIgnoreCase))
+                else if (propertyName.Equals(CITATION_KEY, SC.OrdinalIgnoreCase))
                 {
                     return CitationKey;
                 }
@@ -248,7 +249,7 @@ namespace ReferenceEngine.Bibtex.Abstractions.Entries
             }
             set
             {
-                if (propertyName.Equals(ENTRY_TYPE, StringComparison.OrdinalIgnoreCase) || propertyName.Equals(CITATION_KEY, StringComparison.OrdinalIgnoreCase))
+                if (propertyName.Equals(ENTRY_TYPE, SC.OrdinalIgnoreCase) || propertyName.Equals(CITATION_KEY, SC.OrdinalIgnoreCase))
                 {
                     throw new MemberAccessException($"Cannot set read-only property: '{propertyName}'");
                 }
@@ -326,6 +327,34 @@ namespace ReferenceEngine.Bibtex.Abstractions.Entries
             }
 
             return builder.ToString();
+        }
+
+        /// <summary>
+        /// Styles the BibtexEntry's label according to the provided style.
+        /// </summary>
+        /// <param name="style">Style to apply.</param>
+        /// <returns>A string LaTeX formatted string with styling.</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public string GetStyledLabel(EntryStyle style, int index)
+        {
+            if (style is null)
+            {
+                throw new ArgumentNullException(nameof(style));
+            }
+            
+            if (style.Label != null)
+            {
+                style.Label = style.Label.Replace("{Index}", index.ToString(), SC.OrdinalIgnoreCase).Replace($"{{{CITATION_KEY}}}", CitationKey, SC.OrdinalIgnoreCase).Replace($"{{{ENTRY_TYPE}}}", EntryType.ToString(), SC.OrdinalIgnoreCase);
+                
+                foreach (var property in _keyValuePairs)
+                {
+                    style.Label = style.Label.Replace($"{{{property.Key}}}", property.Value, SC.OrdinalIgnoreCase);
+                }
+
+                return style.Label;
+            }
+
+            return index.ToString();
         }
 
         /// <summary>

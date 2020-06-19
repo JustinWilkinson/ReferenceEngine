@@ -12,7 +12,8 @@ namespace ReferenceEngine.Styles.UI.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: true),
+                    OrderBy = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -27,6 +28,7 @@ namespace ReferenceEngine.Styles.UI.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(nullable: true),
                     Type = table.Column<int>(nullable: false),
+                    Label = table.Column<string>(nullable: true),
                     Fields = table.Column<string>(nullable: true),
                     BibliographyStyleId = table.Column<int>(nullable: true)
                 },

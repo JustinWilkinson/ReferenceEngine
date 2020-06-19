@@ -1,5 +1,7 @@
-﻿using System;
+﻿using ReferenceEngine.Bibtex.Extensions;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ReferenceEngine.Bibtex.Abstractions
 {
@@ -35,7 +37,7 @@ namespace ReferenceEngine.Bibtex.Abstractions
         /// <param name="author">The string to parse into an author</param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        /// /// <exception cref="ArgumentException">Thrown if the provided string is empty or consists solely of whitespace.</exception>
+        /// <exception cref="ArgumentException">Thrown if the provided string is empty or consists solely of whitespace.</exception>
         public static BibtexAuthor FromString(string author)
         {
             if (author is null)
@@ -141,6 +143,16 @@ namespace ReferenceEngine.Bibtex.Abstractions
             }
 
             return bibtexAuthor;
+        }
+
+        /// <summary>
+        /// Gets last name of the first author in the author field, used for ordering purposes.
+        /// </summary>
+        /// <param name="authorField">Author field contents.</param>
+        /// <returns>Returns null if author is null or whitespace, otherwise returns the first author's last name.</returns>
+        public static string GetFirstAuthorLastName(string authorField)
+        {
+            return !string.IsNullOrWhiteSpace(authorField) ? authorField.Split("and", StringSplitOptions.RemoveEmptyEntries).Select(x => FromString(x.TrimIgnoredCharacters())).FirstOrDefault()?.LastName : null;
         }
     }
 }

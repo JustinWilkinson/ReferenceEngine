@@ -1,7 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
-using ReferenceEngine.Bibtex.Abstractions;
+using ReferenceEngine.Bibtex;
+using ReferenceEngine.Bibtex.Enumerations;
 using ReferenceEngine.Bibtex.Manager;
 using System;
 using System.IO;
@@ -27,6 +28,7 @@ namespace ReferenceEngine.Test.Bibtex.Abstractions
             bibliography.Write();
 
             // Assert
+            _mockFileManager.Verify(x => x.ThrowIfFileDoesNotExist(AuxPath), Times.Once);
             _mockFileManager.Verify(x => x.WriteStream(AuxPath, It.IsAny<Action<StreamWriter>>(), true), Times.Once);
             _mockFileManager.Verify(x => x.DeleteIfExists(BblPath), Times.Once);
             _mockFileManager.Verify(x => x.WriteStream(BblPath, It.IsAny<Action<StreamWriter>>(), false), Times.Once);

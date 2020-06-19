@@ -84,5 +84,18 @@ namespace ReferenceEngine.Test.Bibtex.Abstractions
             var ex = Assert.Throws<FormatException>(() => BibtexAuthor.FromString("This, has, too, many, parts"));
             Assert.AreEqual("Unrecognized BibTeX format for author field with value: 'This, has, too, many, parts'", ex.Message);
         }
+
+        [Test]
+        public void GetFirstAuthorLastName_TwoAuthors_ReturnsCorrectValue()
+        {
+            // Arrange
+            var input = "Author One and Author Two";
+
+            // Act
+            var lastName = BibtexAuthor.GetFirstAuthorLastName(input);
+
+            // Assert
+            Assert.AreEqual("One", lastName);
+        }
     }
 }

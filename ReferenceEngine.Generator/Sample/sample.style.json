@@ -1,5 +1,6 @@
 {
   "Name": "Sample",
+  "OrderBy": "Appearance",
   "EntryStyles": [
     {
       "Name": "Article Rule",
