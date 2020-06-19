@@ -19,6 +19,11 @@
                 <input asp-for="Name" class="form-control col-4" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
+            <div class="form-group row ml-0">
+                <label asp-for="OrderBy" class="col-form-label mr-2"></label>
+                <select asp-for="OrderBy" class="form-control" asp-items="Html.GetEnumSelectList<BibliographyOrder>()"></select>
+                <span asp-validation-for="OrderBy" class="text-danger"></span>
+            </div>
             <h4>Styles</h4>
             <hr />
             <div id="entryStylesContainer" class="mb-1">

@@ -25,6 +25,9 @@ namespace ReferenceEngine.Styles.UI.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("OrderBy")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
                     b.ToTable("BibliographyStyles");

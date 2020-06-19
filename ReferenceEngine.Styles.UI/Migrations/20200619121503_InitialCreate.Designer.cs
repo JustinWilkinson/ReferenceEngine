@@ -9,7 +9,7 @@ using ReferenceEngine.Styles.UI.Database;
 namespace ReferenceEngine.Styles.UI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200619095904_InitialCreate")]
+    [Migration("20200619121503_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,6 +26,9 @@ namespace ReferenceEngine.Styles.UI.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("OrderBy")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
