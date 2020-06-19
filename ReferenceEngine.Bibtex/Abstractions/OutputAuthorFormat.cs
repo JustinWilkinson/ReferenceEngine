@@ -104,7 +104,7 @@ namespace ReferenceEngine.Bibtex.Abstractions
                 throw new ArgumentNullException(nameof(authorField));
             }
 
-            var authors = authorField.Split("and", StringSplitOptions.RemoveEmptyEntries).Select(x => x.TrimIgnoredCharacters()).Select(x => BibtexAuthor.FromString(x));
+            var authors = authorField.Split("and", StringSplitOptions.RemoveEmptyEntries).Select(x => BibtexAuthor.FromString(x.TrimIgnoredCharacters()));
 
             foreach (var author in authors)
             {

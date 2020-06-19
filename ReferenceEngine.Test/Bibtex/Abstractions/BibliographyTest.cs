@@ -1,7 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
-using ReferenceEngine.Bibtex.Abstractions;
+using ReferenceEngine.Bibtex;
+using ReferenceEngine.Bibtex.Enumerations;
 using ReferenceEngine.Bibtex.Manager;
 using System;
 using System.IO;

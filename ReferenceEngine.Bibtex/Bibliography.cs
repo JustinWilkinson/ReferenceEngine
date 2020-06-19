@@ -1,10 +1,12 @@
 ﻿using Microsoft.Extensions.Logging;
+using ReferenceEngine.Bibtex.Abstractions;
+using ReferenceEngine.Bibtex.Enumerations;
 using ReferenceEngine.Bibtex.Manager;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ReferenceEngine.Bibtex.Abstractions
+namespace ReferenceEngine.Bibtex
 {
     /// <summary>
     /// Represents a bibliography built by an <see cref="IBibliographyBuilder"/>.
@@ -20,6 +22,11 @@ namespace ReferenceEngine.Bibtex.Abstractions
         /// Path to the target .aux file to write \bibcite data to. This must be specified before calling the <see cref="Write"/> method.
         /// </summary>
         string TargetAuxPath { get; set; }
+
+        /// <summary>
+        /// Method of ordering.
+        /// </summary>
+        BibliographyOrder OrderBy { get; }
 
         /// <summary>
         /// The collection of styled Bibitems.
@@ -52,6 +59,9 @@ namespace ReferenceEngine.Bibtex.Abstractions
         public string TargetAuxPath { get; set; }
 
         /// <inheritdoc />
+        public BibliographyOrder OrderBy { get; }
+
+        /// <inheritdoc />
         public ICollection<Bibitem> Bibitems { get; set; }
 
         /// <inheritdoc />
@@ -62,12 +72,14 @@ namespace ReferenceEngine.Bibtex.Abstractions
         /// </summary>
         /// <param name="fileManager"><see cref="IFileManager"/> instance used to write the bibliography.</param>
         /// <param name="logger"><see cref="ILogger{TCategoryName}"/> instance used to log messages.</param>
-        public Bibliography(IFileManager fileManager, ILogger<Bibliography> logger)
+        /// <param name="orderBy"><see cref="BibliographyOrder"/> associated with the bibliography, defaults to Appearance.</param>
+        public Bibliography(IFileManager fileManager, ILogger<Bibliography> logger, BibliographyOrder orderBy = BibliographyOrder.Appearance)
         {
             _fileManager = fileManager;
             _logger = logger;
             Bibitems = new List<Bibitem>();
             Preambles = new List<string>();
+            OrderBy = orderBy;
         }
 
         /// <inheritdoc />

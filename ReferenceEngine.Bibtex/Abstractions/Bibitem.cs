@@ -53,7 +53,7 @@ namespace ReferenceEngine.Bibtex.Abstractions
         }
 
         /// <summary>
-        /// The index (position) associated with the citation in the text.
+        /// The index of the bibitem in the bibliography.
         /// </summary>
         public int Index { get; set; }
 

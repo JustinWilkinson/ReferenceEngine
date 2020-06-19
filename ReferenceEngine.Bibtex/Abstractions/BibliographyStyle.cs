@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using ReferenceEngine.Bibtex.Enumerations;
+using System.Collections.Generic;
 
 namespace ReferenceEngine.Bibtex.Abstractions
 {
@@ -16,6 +17,11 @@ namespace ReferenceEngine.Bibtex.Abstractions
         /// The Name of the Bibliography Style, for easy identification.
         /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Controls the bibliography entry ordering.
+        /// </summary>
+        public BibliographyOrder OrderBy { get; set; } = BibliographyOrder.Appearance;
 
         /// <summary>
         /// The styles to apply to entries in the database.

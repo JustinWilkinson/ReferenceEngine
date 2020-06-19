@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Bson;
 using ReferenceEngine.Bibtex.Abstractions;
+using ReferenceEngine.Bibtex.Abstractions.Entries;
 using ReferenceEngine.Bibtex.Enumerations;
 using ReferenceEngine.Bibtex.Extensions;
 using ReferenceEngine.Bibtex.Manager;
@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace ReferenceEngine.Bibtex
 {
@@ -176,23 +177,18 @@ namespace ReferenceEngine.Bibtex
             }
 
             var bibtexDatabase = _bibParser.ParseFile(BibFilePath);
-            var bibliography = new Bibliography(_fileManager, _bibliographyLogger)
+            var bibliography = new Bibliography(_fileManager, _bibliographyLogger, BibliographyStyle.OrderBy)
             {
                 TargetPath = _fileManager.ReplaceExtension(TexFilePath, "bbl"),
                 TargetAuxPath = _auxPath,
-                Preambles = bibtexDatabase.Preambles.Select(x => x.Content).ToList()
-            };
-
-            // Build up unique collection of bibitems.
-            var citationKeys = new HashSet<string>();
-            foreach (var auxEntry in _auxEntries.Where(x => x.Type == AuxEntryType.Citation))
-            {
-                if (!citationKeys.Contains(auxEntry.Key))
+                Preambles = bibtexDatabase.Preambles.Select(x => x.Content).ToList(),
+                Bibitems = BibliographyStyle.OrderBy switch
                 {
-                    citationKeys.Add(auxEntry.Key);
-                    bibliography.Bibitems.Add(GetMatchingBibitemFromDatabase(auxEntry, bibtexDatabase, citationKeys.Count));
+                    BibliographyOrder.FirstAuthorLastName => GetBibitemsOrderedByFirstAuthorLastName(bibtexDatabase).ToList(),
+                    BibliographyOrder.Title => GetBibitemsOrderedByTitle(bibtexDatabase).ToList(),
+                    _ => GetBibitemsInOrderOfAppearance(bibtexDatabase).ToList()
                 }
-            }
+            };
 
             PerformStringSubstitutions(bibliography, bibtexDatabase);
 
@@ -202,19 +198,91 @@ namespace ReferenceEngine.Bibtex
         }
 
         #region Private
-        private Bibitem GetMatchingBibitemFromDatabase(AuxEntry auxEntry, BibtexDatabase bibtexDatabase, int index)
+        private IEnumerable<Bibitem> GetBibitemsInOrderOfAppearance(BibtexDatabase bibtexDatabase)
         {
-            if (bibtexDatabase.Entries.TryGetFirst(bibtexEntry => bibtexEntry.CitationKey == auxEntry.Key, out var bibtexEntry))
+            // Build up unique collection of bibitems.
+            var citationKeys = new HashSet<string>();
+            foreach (var auxEntry in _auxEntries.Where(x => x.Type == AuxEntryType.Citation))
             {
-                var style = BibliographyStyle.EntryStyles.FirstOrDefault(s => s.Type == bibtexEntry.EntryType) ?? EntryStyle.Default;
-                return new Bibitem(index, auxEntry, bibtexEntry, style);
+                if (!citationKeys.Contains(auxEntry.Key))
+                {
+                    citationKeys.Add(auxEntry.Key);
+
+                    if (bibtexDatabase.Entries.TryGetFirst(bibtexEntry => bibtexEntry.CitationKey == auxEntry.Key, out var bibtexEntry))
+                    {
+                        var style = BibliographyStyle.EntryStyles.FirstOrDefault(s => s.Type == bibtexEntry.EntryType) ?? EntryStyle.Default;
+                        yield return new Bibitem(citationKeys.Count, auxEntry, bibtexEntry, style);
+                    }
+                    else
+                    {
+                        var warning = $"No bibliography entry matching citation key: '{auxEntry.Key}' found.";
+                        _logger.LogWarning(warning);
+                        yield return new Bibitem(citationKeys.Count, auxEntry.Key, auxEntry.Label, warning);
+                    }
+                }
             }
-            else
+        }
+
+        private IEnumerable<Bibitem> GetBibitemsOrderedByFirstAuthorLastName(BibtexDatabase bibtexDatabase)
+        {
+            var matchedEntries = GetMatchedEntries(bibtexDatabase);
+
+            // Iterate over the ordered collection and convert to Bibitems.
+            var index = 0;
+            foreach (var matchedEntry in matchedEntries.OrderBy(x => BibtexAuthor.GetFirstAuthorLastName(x.BibtexEntry?.Author) ?? x.BibtexEntry?.Title))
             {
-                var warning = $"No bibliography entry matching citation key: '{auxEntry.Key}' found.";
-                _logger.LogWarning(warning);
-                return new Bibitem(index, auxEntry.Key, auxEntry.Label, warning);
+                if (matchedEntry.BibtexEntry != null)
+                {
+                    yield return new Bibitem(++index, matchedEntry.AuxEntry, matchedEntry.BibtexEntry, matchedEntry.EntryStyle);
+                }
+                else
+                {
+                    var warning = $"No bibliography entry matching citation key: '{matchedEntry.AuxEntry.Key}' found.";
+                    _logger.LogWarning(warning);
+                    yield return new Bibitem(++index, matchedEntry.AuxEntry.Key, matchedEntry.AuxEntry.Label, warning);
+                }
             }
+        }
+
+        private IEnumerable<Bibitem> GetBibitemsOrderedByTitle(BibtexDatabase bibtexDatabase)
+        {
+            var matchedEntries = GetMatchedEntries(bibtexDatabase);
+
+            // Iterate over the ordered collection and convert to Bibitems.
+            var index = 0;
+            foreach (var matchedEntry in matchedEntries.OrderBy(x => x.BibtexEntry?.Title))
+            {
+                if (matchedEntry.BibtexEntry != null)
+                {
+                    yield return new Bibitem(++index, matchedEntry.AuxEntry, matchedEntry.BibtexEntry, matchedEntry.EntryStyle);
+                }
+                else
+                {
+                    var warning = $"No bibliography entry matching citation key: '{matchedEntry.AuxEntry.Key}' found.";
+                    _logger.LogWarning(warning);
+                    yield return new Bibitem(++index, matchedEntry.AuxEntry.Key, matchedEntry.AuxEntry.Label, warning);
+                }
+            }
+        }
+
+        private List<(AuxEntry AuxEntry, BibtexEntry BibtexEntry, EntryStyle EntryStyle)> GetMatchedEntries(BibtexDatabase bibtexDatabase)
+        {
+            // Build up unique collection of bibtex entries.
+            var matchedEntries = new List<(AuxEntry AuxEntry, BibtexEntry BibtexEntry, EntryStyle EntryStyle)>();
+            var citationKeys = new HashSet<string>();
+
+            foreach (var auxEntry in _auxEntries.Where(x => x.Type == AuxEntryType.Citation))
+            {
+                if (!citationKeys.Contains(auxEntry.Key))
+                {
+                    citationKeys.Add(auxEntry.Key);
+                    var bibtexEntry = bibtexDatabase.Entries.FirstOrDefault(bibtexEntry => bibtexEntry.CitationKey == auxEntry.Key);
+                    var entryStyle = bibtexEntry != null ? (BibliographyStyle.EntryStyles.FirstOrDefault(s => s.Type == bibtexEntry.EntryType) ?? EntryStyle.Default) : null;
+                    matchedEntries.Add((auxEntry, bibtexEntry, entryStyle));
+                }
+            }
+
+            return matchedEntries;
         }
 
         private void PerformStringSubstitutions(Bibliography bibliography, BibtexDatabase bibtexDatabase)
