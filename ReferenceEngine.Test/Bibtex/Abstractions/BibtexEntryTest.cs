@@ -5,6 +5,7 @@ using ReferenceEngine.Bibtex.Abstractions.Fields;
 using ReferenceEngine.Bibtex.Enumerations;
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 
 namespace ReferenceEngine.Test.Bibtex.Abstractions
 {
@@ -22,7 +23,74 @@ namespace ReferenceEngine.Test.Bibtex.Abstractions
         {
             // Arrange
             var entry = GetEntry();
-            var style = new EntryStyle
+            var style = GetStyle();
+
+            // Act
+            var result = entry.ApplyStyle(style);
+
+            // Assert
+            Assert.AreEqual("A Really Awesome Article by A. N. Author in \\emph{Some Really Good Journal}, 2020.", result);
+        }
+
+        [Test]
+        public void GetStyledLabel_NoStyling_ReturnsIndex()
+        {
+            // Arrange
+            var entry = GetEntry();
+            var style = GetStyle();
+
+            // Act
+            var result = entry.GetStyledLabel(style, 1);
+
+            // Assert
+            Assert.AreEqual("1", result);
+        }
+
+        [Test]
+        public void GetStyledLabel_WithLabelStyling_ReturnsTemplatedLabel()
+        {
+            // Arrange
+            var entry = GetEntry();
+            var style = GetStyle();
+            style.Label = "{Index} - ({Year})";
+
+            // Act
+            var result = entry.GetStyledLabel(style, 1);
+
+            // Assert
+            Assert.AreEqual("1 - (2020)", result);
+        }
+
+        [Test]
+        public void GetStyledLabel_WithLabelStyling_ReturnsTemplatedLabelCaseInsensitive()
+        {
+            // Arrange
+            var entry = GetEntry();
+            var style = GetStyle();
+            style.Label = "{Index} - ({YEAR})";
+
+            // Act
+            var result = entry.GetStyledLabel(style, 1);
+
+            // Assert
+            Assert.AreEqual("1 - (2020)", result);
+        }
+
+        #region Private Helpers
+        private BibtexEntry GetEntry()
+        {
+            return new BibtexEntry(EntryType.Article, "Article1", new Dictionary<string, string>
+            {
+                { "Author", "A. N. Author" },
+                { "Title", "A Really Awesome Article" },
+                { "Year", "2020" },
+                { "Journal", "Some Really Good Journal" }
+            });
+        }
+
+        private EntryStyle GetStyle()
+        {
+            return new EntryStyle
             {
                 Fields = new List<Field>
                 {
@@ -34,23 +102,7 @@ namespace ReferenceEngine.Test.Bibtex.Abstractions
                     new EntryField { Value = "Year", Suffix = "." }
                 }
             };
-
-            // Act
-            var result = entry.ApplyStyle(style);
-
-            // Assert
-            Assert.AreEqual("A Really Awesome Article by A. N. Author in \\emph{Some Really Good Journal}, 2020.", result);
         }
-
-        public BibtexEntry GetEntry()
-        {
-            return new BibtexEntry(EntryType.Article, "Article1", new Dictionary<string, string>
-            {
-                { "Author", "A. N. Author" },
-                { "Title", "A Really Awesome Article" },
-                { "Year", "2020" },
-                { "Journal", "Some Really Good Journal" }
-            });
-        }
+        #endregion
     }
 }
