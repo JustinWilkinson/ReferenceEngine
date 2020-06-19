@@ -83,8 +83,10 @@ namespace ReferenceEngine.Bibtex.Abstractions
                 throw new InvalidOperationException("TargetAuxPath property cannot be null!");
             }
 
-            _logger.LogTrace("Starting write of .bbl file.");
+            _fileManager.ThrowIfFileDoesNotExist(TargetPath);
+            _fileManager.ThrowIfFileDoesNotExist(TargetAuxPath);
 
+            _logger.LogTrace("Starting write to .aux file.");
             _fileManager.WriteStream(TargetAuxPath, append: true, write: writer =>
             {
                 foreach ((string key, int index) in Bibitems.Select((x, index) => (x.CitationKey, index + 1)))
@@ -92,7 +94,9 @@ namespace ReferenceEngine.Bibtex.Abstractions
                     writer.WriteLine($"\\bibcite{{{key}}}{{{index}}}");
                 }
             });
+            _logger.LogTrace("Finished write to .aux file.");
 
+            _logger.LogTrace("Starting write of .bbl file.");
             _fileManager.DeleteIfExists(TargetPath);
             _fileManager.WriteStream(TargetPath, writer =>
             {

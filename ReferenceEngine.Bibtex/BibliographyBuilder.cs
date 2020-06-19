@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Bson;
 using ReferenceEngine.Bibtex.Abstractions;
 using ReferenceEngine.Bibtex.Enumerations;
 using ReferenceEngine.Bibtex.Extensions;
@@ -140,30 +141,21 @@ namespace ReferenceEngine.Bibtex
                 {
                     throw new InvalidOperationException("TexFilePath cannot be null!");
                 }
-                else
-                {
-                    _fileManager.ThrowIfFileDoesNotExist(TexFilePath);
-                }
-
-                if (BibFilePath == null)
+                else if (BibFilePath == null)
                 {
                     throw new InvalidOperationException("BibFilePath cannot be null!");
                 }
-                else
+                else if (BibliographyStyle == null && StyleFilePath == null)
                 {
-                    _fileManager.ThrowIfFileDoesNotExist(BibFilePath);
+                    throw new InvalidOperationException("Either the BibliographyStyle, or the StyleFilePath cannot be null!");
                 }
 
-                if (BibliographyStyle == null)
+                _fileManager.ThrowIfFileDoesNotExist(BibFilePath);
+                _fileManager.ThrowIfFileDoesNotExist(TexFilePath);
+
+                if (StyleFilePath != null)
                 {
-                    if (StyleFilePath == null)
-                    {
-                        throw new InvalidOperationException("Either the BibliographyStyle, or the StyleFilePath cannot be null!");
-                    }
-                    else
-                    {
-                        _fileManager.ThrowIfFileDoesNotExist(StyleFilePath);
-                    }
+                    _fileManager.ThrowIfFileDoesNotExist(StyleFilePath);
                 }
 
                 _auxPath = _fileManager.ReplaceExtension(TexFilePath, "aux");
@@ -191,38 +183,59 @@ namespace ReferenceEngine.Bibtex
                 Preambles = bibtexDatabase.Preambles.Select(x => x.Content).ToList()
             };
 
-            // Extract citations from Aux Entries, match with entries in the Bibtex Database and apply styling.
+            // Build up unique collection of bibitems.
+            var citationKeys = new HashSet<string>();
             foreach (var auxEntry in _auxEntries.Where(x => x.Type == AuxEntryType.Citation))
             {
-                if (!bibliography.Bibitems.Any(x => x.CitationKey == auxEntry.Key))
+                if (!citationKeys.Contains(auxEntry.Key))
                 {
-                    if (bibtexDatabase.Entries.TryGetSingle(bibtexEntry => bibtexEntry.CitationKey == auxEntry.Key, out var bibtexEntry))
-                    {
-                        var style = BibliographyStyle.EntryStyles.SingleOrDefault(s => s.Type == bibtexEntry.EntryType) ?? EntryStyle.Default;
-                        bibliography.Bibitems.Add(new Bibitem(auxEntry, bibtexEntry, style));
-                    }
+                    citationKeys.Add(auxEntry.Key);
+                    bibliography.Bibitems.Add(GetMatchingBibitemFromDatabase(auxEntry, bibtexDatabase));
                 }
             }
 
-            // Perform string variable substitution.
-            for (var i = 0; i < bibtexDatabase.Strings.Count; i++)
-            {
-                var entryContent = bibtexDatabase.Strings[i].Content;
-                if (i == bibtexDatabase.Strings.Count - 1)
-                {
-                    bibliography.Preambles = bibtexDatabase.Preambles.Select(p => p.Content.Substitute(entryContent, '#', " ", x => x.Trim().RemoveFromStart('{', '"').RemoveFromEnd('}', '"'))).ToList();
-                    bibliography.Bibitems.ForEach(bibitem => bibitem.Detail = bibitem.Detail.Substitute(entryContent, '#', " ", x => x.Trim().RemoveFromStart('{', '"').RemoveFromEnd('}', '"')));
-                }
-                else
-                {
-                    bibliography.Preambles = bibtexDatabase.Preambles.Select(preamble => preamble.Content.Substitute(entryContent, '#')).ToList();
-                    bibliography.Bibitems.ForEach(bibitem => bibitem.Detail = bibitem.Detail.Substitute(entryContent, '#'));
-                }
-            }
+            PerformStringSubstitutions(bibliography, bibtexDatabase);
 
             _logger.LogTrace("Bibliography build completed.");
 
             return bibliography;
         }
+
+        #region Private
+        private Bibitem GetMatchingBibitemFromDatabase(AuxEntry auxEntry, BibtexDatabase bibtexDatabase)
+        {
+            if (bibtexDatabase.Entries.TryGetFirst(bibtexEntry => bibtexEntry.CitationKey == auxEntry.Key, out var bibtexEntry))
+            {
+                var style = BibliographyStyle.EntryStyles.FirstOrDefault(s => s.Type == bibtexEntry.EntryType) ?? EntryStyle.Default;
+                return new Bibitem(auxEntry, bibtexEntry, style);
+            }
+            else
+            {
+                var warning = $"No bibliography entry matching citation key: '{auxEntry.Key}' found.";
+                _logger.LogWarning(warning);
+                return new Bibitem(auxEntry.Key, auxEntry.Label, warning);
+            }
+        }
+
+        private void PerformStringSubstitutions(Bibliography bibliography, BibtexDatabase bibtexDatabase)
+        {
+            for (var i = 0; i < bibtexDatabase.Strings.Count; i++)
+            {
+                var stringContent = bibtexDatabase.Strings[i].Content;
+                if (i == bibtexDatabase.Strings.Count - 1)
+                {
+                    bibliography.Preambles = bibtexDatabase.Preambles.Select(p => SubstituteAndConcatenate(p.Content, stringContent)).ToList();
+                    bibliography.Bibitems.ForEach(bibitem => bibitem.Detail = SubstituteAndConcatenate(bibitem.Detail, stringContent));
+                }
+                else
+                {
+                    bibliography.Preambles = bibtexDatabase.Preambles.Select(preamble => preamble.Content.Substitute(stringContent, '#')).ToList();
+                    bibliography.Bibitems.ForEach(bibitem => bibitem.Detail = bibitem.Detail.Substitute(stringContent, '#'));
+                }
+            }
+        }
+
+        private string SubstituteAndConcatenate(string str, KeyValuePair<string, string> kvp) => str.Substitute(kvp, '#', " ", x => x.Trim().RemoveFromStart('{', '"').RemoveFromEnd('}', '"'));
+        #endregion
     }
 }
