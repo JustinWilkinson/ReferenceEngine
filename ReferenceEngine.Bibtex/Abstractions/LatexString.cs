@@ -1,4 +1,6 @@
-﻿namespace ReferenceEngine.Bibtex.Abstractions
+﻿using System;
+
+namespace ReferenceEngine.Bibtex.Abstractions
 {
     /// <summary>
     /// A wrapper for a string that has basic latex styling applied to it.
@@ -8,10 +10,11 @@
         /// <summary>
         /// Constructs a new LatexString with the provided value.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Value to assign to the LatexString</param>
+        /// <exception cref="ArgumentNullException"></exception>
         public LatexString(string value)
         {
-            Value = value;
+            Value = value ?? throw new ArgumentNullException(nameof(value));
         }
 
         /// <summary>

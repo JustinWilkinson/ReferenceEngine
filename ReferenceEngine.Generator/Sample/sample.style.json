@@ -185,6 +185,7 @@
     {
       "Name": "PhD Thesis Rule",
       "Type": "PhDThesis",
+      "Label": "{Index} ({Year})",
       "Fields": [
         {
           "Type": "Field",

@@ -11,8 +11,9 @@ namespace ReferenceEngine.Bibtex.Abstractions
         /// <summary>
         /// Constructs a new Bibitem and assigns string values to a bibitem.
         /// </summary>
-        public Bibitem(string citationKey = null, string label = null, string detail = null)
+        public Bibitem(int index, string citationKey = null, string label = null, string detail = null)
         {
+            Index = index;
             CitationKey = citationKey;
             Label = label;
             Detail = detail;
@@ -26,7 +27,7 @@ namespace ReferenceEngine.Bibtex.Abstractions
         /// <param name="entryStyle">The style to apply to the Bibitem.</param>
         /// <exception cref="ArgumentNullException"></exception>
         /// /// <exception cref="ArgumentException">Thrown when the AuxEntry key and the BibtexEntry key do not match.</exception>
-        public Bibitem(AuxEntry auxEntry, BibtexEntry bibtexEntry, EntryStyle entryStyle)
+        public Bibitem(int index, AuxEntry auxEntry, BibtexEntry bibtexEntry, EntryStyle entryStyle)
         {
             if (auxEntry is null)
             {
@@ -45,10 +46,16 @@ namespace ReferenceEngine.Bibtex.Abstractions
                 throw new ArgumentException($"The AuxEntry Key '{auxEntry.Key}' must match the BibtexEntry CitationKey '{bibtexEntry.CitationKey}'!");
             }
 
+            Index = index;
             CitationKey = auxEntry.Key;
-            Label = auxEntry.Label;
+            Label = bibtexEntry.GetStyledLabel(entryStyle, index);
             Detail = bibtexEntry.ApplyStyle(entryStyle);
         }
+
+        /// <summary>
+        /// The index (position) associated with the citation in the text.
+        /// </summary>
+        public int Index { get; set; }
 
         /// <summary>
         /// The citation key associated with the Bibitem.

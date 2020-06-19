@@ -83,7 +83,6 @@ namespace ReferenceEngine.Bibtex.Abstractions
                 throw new InvalidOperationException("TargetAuxPath property cannot be null!");
             }
 
-            _fileManager.ThrowIfFileDoesNotExist(TargetPath);
             _fileManager.ThrowIfFileDoesNotExist(TargetAuxPath);
 
             _logger.LogTrace("Starting write to .aux file.");

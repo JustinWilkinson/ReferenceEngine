@@ -30,6 +30,13 @@ namespace ReferenceEngine.Bibtex.Abstractions
         public EntryType Type { get; set; }
 
         /// <summary>
+        /// Optional custom label template (used in inline citation). Can use any field value (including those not in the field list provided).
+        /// These fields should referenced by name in the value, provided it is enclosed in braces, e.g. "{Author} {Year}". Can also use "{Index}" to use the citation index.
+        /// If not provided, the index is used.
+        /// </summary>
+        public string Label { get; set; }
+
+        /// <summary>
         /// The fields to be extracted from the entry.
         /// </summary>
         [NotMapped]
@@ -37,10 +44,7 @@ namespace ReferenceEngine.Bibtex.Abstractions
         public IEnumerable<Field> Fields
         {
             get => FieldsJson != null ? JsonConvert.DeserializeObject<IEnumerable<Field>>(FieldsJson, new FieldConverter()) : new List<Field>();
-            set
-            {
-                FieldsJson = JsonConvert.SerializeObject(value);
-            }
+            set => FieldsJson = JsonConvert.SerializeObject(value);
         }
 
         /// <summary>

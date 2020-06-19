@@ -190,7 +190,7 @@ namespace ReferenceEngine.Bibtex
                 if (!citationKeys.Contains(auxEntry.Key))
                 {
                     citationKeys.Add(auxEntry.Key);
-                    bibliography.Bibitems.Add(GetMatchingBibitemFromDatabase(auxEntry, bibtexDatabase));
+                    bibliography.Bibitems.Add(GetMatchingBibitemFromDatabase(auxEntry, bibtexDatabase, citationKeys.Count));
                 }
             }
 
@@ -202,18 +202,18 @@ namespace ReferenceEngine.Bibtex
         }
 
         #region Private
-        private Bibitem GetMatchingBibitemFromDatabase(AuxEntry auxEntry, BibtexDatabase bibtexDatabase)
+        private Bibitem GetMatchingBibitemFromDatabase(AuxEntry auxEntry, BibtexDatabase bibtexDatabase, int index)
         {
             if (bibtexDatabase.Entries.TryGetFirst(bibtexEntry => bibtexEntry.CitationKey == auxEntry.Key, out var bibtexEntry))
             {
                 var style = BibliographyStyle.EntryStyles.FirstOrDefault(s => s.Type == bibtexEntry.EntryType) ?? EntryStyle.Default;
-                return new Bibitem(auxEntry, bibtexEntry, style);
+                return new Bibitem(index, auxEntry, bibtexEntry, style);
             }
             else
             {
                 var warning = $"No bibliography entry matching citation key: '{auxEntry.Key}' found.";
                 _logger.LogWarning(warning);
-                return new Bibitem(auxEntry.Key, auxEntry.Label, warning);
+                return new Bibitem(index, auxEntry.Key, auxEntry.Label, warning);
             }
         }
 
