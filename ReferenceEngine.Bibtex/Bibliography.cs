@@ -102,7 +102,7 @@ namespace ReferenceEngine.Bibtex
             {
                 foreach (var bibitem in Bibitems)
                 {
-                    writer.WriteLine($"\\bibcite{{{bibitem}}}{{{bibitem.Index}}}");
+                    writer.WriteLine($"\\bibcite{{{bibitem.CitationKey}}}{{{bibitem.Index}}}");
                 }
             });
             _logger.LogTrace("Finished write to .aux file.");
