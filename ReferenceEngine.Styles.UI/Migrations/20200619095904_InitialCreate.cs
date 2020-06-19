@@ -27,6 +27,7 @@ namespace ReferenceEngine.Styles.UI.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(nullable: true),
                     Type = table.Column<int>(nullable: false),
+                    Label = table.Column<string>(nullable: true),
                     Fields = table.Column<string>(nullable: true),
                     BibliographyStyleId = table.Column<int>(nullable: true)
                 },
