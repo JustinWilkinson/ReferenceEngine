@@ -1,5 +1,8 @@
-﻿using ReferenceEngine.Bibtex.Enumerations;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using ReferenceEngine.Bibtex.Enumerations;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace ReferenceEngine.Bibtex.Abstractions
 {
@@ -21,6 +24,8 @@ namespace ReferenceEngine.Bibtex.Abstractions
         /// <summary>
         /// Controls the bibliography entry ordering.
         /// </summary>
+        [JsonConverter(typeof(StringEnumConverter))]
+        [DisplayName("Order By")]
         public BibliographyOrder OrderBy { get; set; } = BibliographyOrder.Appearance;
 
         /// <summary>

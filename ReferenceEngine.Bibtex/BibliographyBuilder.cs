@@ -184,8 +184,8 @@ namespace ReferenceEngine.Bibtex
                 Preambles = bibtexDatabase.Preambles.Select(x => x.Content).ToList(),
                 Bibitems = BibliographyStyle.OrderBy switch
                 {
-                    BibliographyOrder.FirstAuthorLastName => GetBibitemsOrderedByFirstAuthorLastName(bibtexDatabase).ToList(),
-                    BibliographyOrder.Title => GetBibitemsOrderedByTitle(bibtexDatabase).ToList(),
+                    BibliographyOrder.AuthorLastName => GetBibitemsOrderedByFirstAuthorLastName(bibtexDatabase),
+                    BibliographyOrder.Title => GetBibitemsOrderedByTitle(bibtexDatabase),
                     _ => GetBibitemsInOrderOfAppearance(bibtexDatabase).ToList()
                 }
             };
@@ -223,47 +223,9 @@ namespace ReferenceEngine.Bibtex
             }
         }
 
-        private IEnumerable<Bibitem> GetBibitemsOrderedByFirstAuthorLastName(BibtexDatabase bibtexDatabase)
-        {
-            var matchedEntries = GetMatchedEntries(bibtexDatabase);
+        private List<Bibitem> GetBibitemsOrderedByFirstAuthorLastName(BibtexDatabase bibtexDatabase) => GetOrderedItems(GetMatchedEntries(bibtexDatabase), x => BibtexAuthor.GetFirstAuthorLastName(x.BibtexEntry?.Author) ?? x.BibtexEntry?.Title).ToList();
 
-            // Iterate over the ordered collection and convert to Bibitems.
-            var index = 0;
-            foreach (var matchedEntry in matchedEntries.OrderBy(x => BibtexAuthor.GetFirstAuthorLastName(x.BibtexEntry?.Author) ?? x.BibtexEntry?.Title))
-            {
-                if (matchedEntry.BibtexEntry != null)
-                {
-                    yield return new Bibitem(++index, matchedEntry.AuxEntry, matchedEntry.BibtexEntry, matchedEntry.EntryStyle);
-                }
-                else
-                {
-                    var warning = $"No bibliography entry matching citation key: '{matchedEntry.AuxEntry.Key}' found.";
-                    _logger.LogWarning(warning);
-                    yield return new Bibitem(++index, matchedEntry.AuxEntry.Key, matchedEntry.AuxEntry.Label, warning);
-                }
-            }
-        }
-
-        private IEnumerable<Bibitem> GetBibitemsOrderedByTitle(BibtexDatabase bibtexDatabase)
-        {
-            var matchedEntries = GetMatchedEntries(bibtexDatabase);
-
-            // Iterate over the ordered collection and convert to Bibitems.
-            var index = 0;
-            foreach (var matchedEntry in matchedEntries.OrderBy(x => x.BibtexEntry?.Title))
-            {
-                if (matchedEntry.BibtexEntry != null)
-                {
-                    yield return new Bibitem(++index, matchedEntry.AuxEntry, matchedEntry.BibtexEntry, matchedEntry.EntryStyle);
-                }
-                else
-                {
-                    var warning = $"No bibliography entry matching citation key: '{matchedEntry.AuxEntry.Key}' found.";
-                    _logger.LogWarning(warning);
-                    yield return new Bibitem(++index, matchedEntry.AuxEntry.Key, matchedEntry.AuxEntry.Label, warning);
-                }
-            }
-        }
+        private List<Bibitem> GetBibitemsOrderedByTitle(BibtexDatabase bibtexDatabase) => GetOrderedItems(GetMatchedEntries(bibtexDatabase), x => x.BibtexEntry?.Title).ToList();
 
         private List<(AuxEntry AuxEntry, BibtexEntry BibtexEntry, EntryStyle EntryStyle)> GetMatchedEntries(BibtexDatabase bibtexDatabase)
         {
@@ -283,6 +245,24 @@ namespace ReferenceEngine.Bibtex
             }
 
             return matchedEntries;
+        }
+
+        private IEnumerable<Bibitem> GetOrderedItems<T>(List<(AuxEntry AuxEntry, BibtexEntry BibtexEntry, EntryStyle EntryStyle)> matchedEntries, Func<(AuxEntry AuxEntry, BibtexEntry BibtexEntry, EntryStyle EntryStyle), T> keySelector)
+        {
+            var index = 0;
+            foreach (var matchedEntry in matchedEntries.OrderBy(x => keySelector(x)))
+            {
+                if (matchedEntry.BibtexEntry != null)
+                {
+                    yield return new Bibitem(++index, matchedEntry.AuxEntry, matchedEntry.BibtexEntry, matchedEntry.EntryStyle);
+                }
+                else
+                {
+                    var warning = $"No bibliography entry matching citation key: '{matchedEntry.AuxEntry.Key}' found.";
+                    _logger.LogWarning(warning);
+                    yield return new Bibitem(++index, matchedEntry.AuxEntry.Key, matchedEntry.AuxEntry.Label, warning);
+                }
+            }
         }
 
         private void PerformStringSubstitutions(Bibliography bibliography, BibtexDatabase bibtexDatabase)
