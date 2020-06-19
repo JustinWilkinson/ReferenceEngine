@@ -88,9 +88,9 @@ namespace ReferenceEngine.Bibtex.Abstractions
             _logger.LogTrace("Starting write to .aux file.");
             _fileManager.WriteStream(TargetAuxPath, append: true, write: writer =>
             {
-                foreach ((string key, int index) in Bibitems.Select((x, index) => (x.CitationKey, index + 1)))
+                foreach (var bibitem in Bibitems)
                 {
-                    writer.WriteLine($"\\bibcite{{{key}}}{{{index}}}");
+                    writer.WriteLine($"\\bibcite{{{bibitem}}}{{{bibitem.Index}}}");
                 }
             });
             _logger.LogTrace("Finished write to .aux file.");
